@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="1043.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <BorderPane>
+               <top>
+                  <AnchorPane prefHeight="40.0">
+                     <children>
+                        <Separator layoutY="25.0" prefHeight="0.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label contentDisplay="CENTER" layoutX="44.0" layoutY="6.0" text="FAQ" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </top>
+               <center>
+                  <StackPane BorderPane.alignment="CENTER">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <left>
+                              <AnchorPane style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <tabs>
+                                        <Tab text="Replied Questions">
+                                          <content>
+                                            <AnchorPane>
+                                                   <children>
+                                                      <TableView fx:id="tblbReplied" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                         <columns>
+                                                            <TableColumn fx:id="repliedIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
+                                                            <TableColumn fx:id="repliedIndex02" prefWidth="120.0" resizable="false" sortable="false" text="Customer ID" />
+                                                            <TableColumn fx:id="repliedIndex03" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
+                                                            <TableColumn fx:id="repliedIndex04" prefWidth="300.0" resizable="false" sortable="false" text="Questions" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                          </content>
+                                        </Tab>
+                                        <Tab text="Unreplied Questions">
+                                          <content>
+                                            <AnchorPane>
+                                                   <children>
+                                                      <TableView fx:id="tblbUnreplied" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                         <columns>
+                                                            <TableColumn fx:id="unrepliedIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
+                                                            <TableColumn fx:id="unrepliedIndex02" prefWidth="120.0" resizable="false" sortable="false" text="Customer ID" />
+                                                            <TableColumn fx:id="unrepliedIndex03" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
+                                                            <TableColumn fx:id="unrepliedIndex04" prefWidth="300.0" resizable="false" sortable="false" text="Questions" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                          </content>
+                                        </Tab>
+                                      </tabs>
+                                       <opaqueInsets>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </opaqueInsets>
+                                    </TabPane>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets bottom="5.0" right="5.0" top="5.0" />
+                                 </opaqueInsets>
+                                 <BorderPane.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </BorderPane.margin>
+                              </AnchorPane>
+                           </left>
+                           <center>
+                              <StackPane prefHeight="462.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <BorderPane style="-fx-border-radius: 5; -fx-border-color: orange;">
+                                       <StackPane.margin>
+                                          <Insets bottom="5.0" left="5.0" top="5.0" />
+                                       </StackPane.margin>
+                                       <top>
+                                          <AnchorPane fx:id="searchBar1" prefHeight="40.0" prefWidth="896.0" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <Label fx:id="lblCustomerName" prefHeight="40.0" prefWidth="200.0" text="Customer Name" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="10.0" />
+                                                   </padding>
+                                                   <font>
+                                                      <Font name="System Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Separator prefHeight="0.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                             </children>
+                                             <BorderPane.margin>
+                                                <Insets bottom="5.0" />
+                                             </BorderPane.margin>
+                                          </AnchorPane>
+                                       </top>
+                                       <center>
+                                          <AnchorPane style="-fx-border-radius: 5; -fx-border-color: #a6a6a6;" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="scroll-pane-item-management" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <content>
+                                                      <VBox prefHeight="309.0" prefWidth="500.0" />
+                                                   </content>
+                                                </ScrollPane>
+                                             </children>
+                                             <BorderPane.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" />
+                                             </BorderPane.margin>
+                                          </AnchorPane>
+                                       </center>
+                                       <bottom>
+                                          <AnchorPane BorderPane.alignment="CENTER">
+                                             <children>
+                                                <TextField fx:id="txtField01" promptText="Type message..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="0.0">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </TextField>
+                                                <Button fx:id="btnSend" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefWidth="60.0" text="Button" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <graphic>
+                                                      <FontAwesomeIconView fill="#f88222" glyphName="SEND" />
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                             <BorderPane.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" />
+                                             </BorderPane.margin>
+                                          </AnchorPane>
+                                       </bottom>
+                                    </BorderPane>
+                                 </children>
+                              </StackPane>
+                           </center>
+                           <top>
+                              <AnchorPane fx:id="searchBar" prefWidth="896.0" style="-fx-border-color: #F88222; -fx-border-radius: 5; -fx-background-color: #F88222;" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <GridPane layoutX="2.0" layoutY="12.0" prefWidth="852.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="3.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="104.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="134.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="47.0" minWidth="2.0" prefWidth="47.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="130.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="220.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="37.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="186.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="121.0" text="Customer ID">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets bottom="5.0" left="20.0" top="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <TextField fx:id="txtSeeks10" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="143.0" promptText="Search: F3" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                                             <GridPane.margin>
+                                                <Insets />
+                                             </GridPane.margin>
+                                             <font>
+                                                <Font size="13.0" />
+                                             </font>
+                                          </TextField>
+                                          <Label prefHeight="17.0" prefWidth="121.0" text="Customer Name" GridPane.columnIndex="3">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <TextField fx:id="txtSeeks11" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="315.0" promptText="Search: F3" GridPane.columnIndex="4">
+                                             <font>
+                                                <Font size="13.0" />
+                                             </font>
+                                          </TextField>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                              </AnchorPane>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </StackPane>
+               </center>
+            </BorderPane>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

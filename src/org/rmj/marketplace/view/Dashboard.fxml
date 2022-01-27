@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="1043.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <BorderPane>
+               <top>
+                  <AnchorPane prefHeight="40.0">
+                     <children>
+                        <Separator layoutY="25.0" prefHeight="0.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label contentDisplay="CENTER" layoutX="44.0" layoutY="6.0" text="DASHBOARD" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </top>
+               <center>
+                  <StackPane prefHeight="427.0" prefWidth="536.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <top>
+                              <AnchorPane minHeight="-Infinity" prefHeight="178.0" prefWidth="536.0" style="-fx-border-radius: 5; -fx-border-color: orange;" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <PieChart fx:id="pie01" labelsVisible="false" layoutX="-74.0" layoutY="-100.0" prefHeight="190.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                                 <BorderPane.margin>
+                                    <Insets bottom="5.0" left="5.0" top="5.0" />
+                                 </BorderPane.margin>
+                              </AnchorPane>
+                           </top>
+                           <center>
+                              <AnchorPane prefHeight="221.0" prefWidth="536.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TabPane style="-fx-border-color: orange; -fx-border-radius: 5;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                                       <tabs>
+                                          <Tab fx:id="tabPO" text="Unconfirmed PO">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="625.0">
+                                                   <children>
+                                                      <TableView fx:id="tblPO" layoutX="9.0" layoutY="14.0" prefHeight="190.0" prefWidth="454.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                         <columns>
+                                                            <TableColumn fx:id="PO01" prefWidth="64.0" text="No." />
+                                                            <TableColumn fx:id="PO02" prefWidth="86.0" text="Trans. No." />
+                                                            <TableColumn fx:id="PO03" prefWidth="120.0" text="Date" />
+                                                            <TableColumn fx:id="PO04" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="Project Name" />
+                                                            <TableColumn fx:id="PO05" prefWidth="120.0" text="PO Number" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </Tab>
+                                          <Tab fx:id="tabReceiving" text="Unconfirmed PO Receiving">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="625.0">
+                                                   <children>
+                                                      <TableView fx:id="tblPO1" layoutX="9.0" layoutY="14.0" prefHeight="190.0" prefWidth="454.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                         <columns>
+                                                            <TableColumn fx:id="PO011" prefWidth="64.0" text="No." />
+                                                            <TableColumn fx:id="PO021" prefWidth="86.0" text="Trans. No." />
+                                                            <TableColumn fx:id="PO031" prefWidth="120.0" text="Date" />
+                                                            <TableColumn fx:id="PO041" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="Project Name" />
+                                                            <TableColumn fx:id="PO051" prefWidth="120.0" text="PO Number" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </Tab>
+                                          <Tab fx:id="tabReturns" text="Unconfirmed PO Return">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="625.0">
+                                                   <children>
+                                                      <TableView fx:id="tblPO2" layoutX="9.0" layoutY="14.0" prefHeight="190.0" prefWidth="454.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                         <columns>
+                                                            <TableColumn fx:id="PO012" prefWidth="64.0" text="No." />
+                                                            <TableColumn fx:id="PO022" prefWidth="86.0" text="Trans. No." />
+                                                            <TableColumn fx:id="PO032" prefWidth="120.0" text="Date" />
+                                                            <TableColumn fx:id="PO042" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="Project Name" />
+                                                            <TableColumn fx:id="PO052" prefWidth="120.0" text="PO Number" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </Tab>
+                                          <Tab fx:id="tabOpenTransfer" text="Unconfirmed Transfer">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="625.0">
+                                                   <children>
+                                                      <TableView fx:id="tblPO3" layoutX="9.0" layoutY="14.0" prefHeight="190.0" prefWidth="454.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                         <columns>
+                                                            <TableColumn fx:id="PO013" prefWidth="64.0" text="No." />
+                                                            <TableColumn fx:id="PO023" prefWidth="86.0" text="Trans. No." />
+                                                            <TableColumn fx:id="PO033" prefWidth="120.0" text="Date" />
+                                                            <TableColumn fx:id="PO043" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="Project Name" />
+                                                            <TableColumn fx:id="PO053" prefWidth="120.0" text="PO Number" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </Tab>
+                                          <Tab fx:id="tabUnpostedTransfer" text="Unposted Transfer">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="625.0">
+                                                   <children>
+                                                      <TableView fx:id="tblPO4" layoutX="9.0" layoutY="14.0" prefHeight="190.0" prefWidth="454.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                         <columns>
+                                                            <TableColumn fx:id="PO014" prefWidth="64.0" text="No." />
+                                                            <TableColumn fx:id="PO024" prefWidth="86.0" text="Trans. No." />
+                                                            <TableColumn fx:id="PO034" prefWidth="120.0" text="Date" />
+                                                            <TableColumn fx:id="PO044" maxWidth="-1.0" minWidth="-1.0" prefWidth="-1.0" text="Project Name" />
+                                                            <TableColumn fx:id="PO054" prefWidth="120.0" text="PO Number" />
+                                                         </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </Tab>
+                                       </tabs>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </TabPane>
+                                 </children>
+                              </AnchorPane>
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </StackPane>
+               </center>
+               <left>
+                  <AnchorPane prefHeight="389.0" prefWidth="563.0" style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label alignment="CENTER" layoutY="6.0" prefHeight="15.0" prefWidth="304.0" text="Projects List" textFill="WHITE" AnchorPane.topAnchor="10.0" />
+                        <TableView fx:id="tblDetail" prefHeight="193.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <columns>
+                              <TableColumn fx:id="index01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
+                              <TableColumn fx:id="index02" prefWidth="120.0" resizable="false" sortable="false" text="Code" />
+                              <TableColumn fx:id="index03" prefWidth="225.0" resizable="false" sortable="false" text="Project Name" />
+                              <TableColumn fx:id="index04" prefWidth="120.0" resizable="false" sortable="false" text="Value" />
+                           </columns>
+                        </TableView>
+                     </children>
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </BorderPane.margin>
+                  </AnchorPane>
+               </left>
+            </BorderPane>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

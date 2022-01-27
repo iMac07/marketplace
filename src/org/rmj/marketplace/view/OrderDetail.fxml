@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" style="-fx-border-color: orange;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="togglenavigation.OrderDetailController">
+   <children>
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="searchBar">
+               <children>
+                  <GridPane layoutX="2.0" layoutY="22.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="125.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="123.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="78.0" minWidth="10.0" prefWidth="78.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="10.0" prefWidth="147.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="58.0" prefWidth="72.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="209.0" minWidth="100.0" prefWidth="141.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="121.0" text="Reference No.">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lblOrderDate" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="2.0" prefHeight="27.0" prefWidth="186.0" text=" January 13, 2022" textAlignment="RIGHT" GridPane.columnIndex="6">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" right="10.0" top="5.0" />
+                           </padding>
+                        </Label>
+                        <Separator prefWidth="200.0" style="-fx-background-color: orange;" GridPane.columnSpan="7" GridPane.rowIndex="1" />
+                        <Label alignment="CENTER_RIGHT" layoutX="597.0" layoutY="10.0" prefHeight="27.0" prefWidth="186.0" text="Date:" textAlignment="RIGHT" GridPane.columnIndex="5">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" right="10.0" top="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lblReference" layoutX="442.0" layoutY="10.0" prefHeight="27.0" prefWidth="186.0" text="M00121000001" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" right="10.0" top="5.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </AnchorPane>
+            <AnchorPane>
+               <children>
+                  <Separator prefWidth="200.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <GridPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="32.0" minHeight="29.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="23.0" minHeight="0.0" prefHeight="9.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="67.0" minHeight="17.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="53.0" minHeight="6.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="36.0" minHeight="15.0" prefHeight="19.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label fx:id="lblCustAdd" alignment="TOP_LEFT" layoutX="10.0" layoutY="38.0" text="Brgy. Cawayan Bogtong, Malasiqui, Pangasinan 2421" textOverrun="CLIP" wrapText="true" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+                        <Label layoutX="518.0" layoutY="13.0" prefHeight="14.0" prefWidth="196.0" text="Shipped To:" GridPane.columnIndex="5">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblCustName" layoutX="10.0" layoutY="13.0" prefHeight="20.0" prefWidth="245.0" text="Jonathan Sabiniano" textOverrun="CLIP" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="20.0" prefWidth="245.0" text="Tel. No. :  09124695126" textOverrun="CLIP" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                        <Label layoutX="510.0" layoutY="15.0" prefHeight="14.0" prefWidth="196.0" text="Billed To:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblSellerName" layoutX="510.0" layoutY="35.0" prefHeight="20.0" prefWidth="245.0" text="Guanzon Group Marketplace" textOverrun="CLIP" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblSellerAdd" alignment="TOP_LEFT" layoutX="510.0" layoutY="48.0" text="Brgy. II, Guanzon Bldg., Perez Blvd.,Dagupan City, Pangasinan 2400" textOverrun="CLIP" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+                        <Label layoutX="510.0" layoutY="88.0" prefHeight="20.0" prefWidth="245.0" text="Tel. No. : (075) 522 1097" textOverrun="CLIP" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="15.0" right="15.0" />
+                     </padding>
+                  </GridPane>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin></AnchorPane>
+            <AnchorPane>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label text="ORDER SUMMARY">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </Label>
+                        <TableView fx:id="tblOrders" stylesheets="@../css/Tables.css">
+                           <columns>
+                              <TableColumn fx:id="orderindex01" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Product Image" />
+                              <TableColumn fx:id="orderindex02" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" resizable="false" sortable="false" text="Product Name" />
+                              <TableColumn fx:id="orderindex03" maxWidth="-1.0" minWidth="30.0" prefWidth="-1.0" resizable="false" sortable="false" text="Qty" />
+                              <TableColumn fx:id="orderindex04" maxWidth="-1.0" minWidth="102.0" prefWidth="-1.0" resizable="false" sortable="false" text="Price" />
+                              <TableColumn fx:id="orderindex05" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" resizable="false" sortable="false" text="Total" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </AnchorPane>
+            <AnchorPane layoutX="10.0" layoutY="57.0">
+               <children>
+                  <GridPane layoutY="45.0" prefHeight="122.0" prefWidth="708.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="324.0" minWidth="10.0" prefWidth="163.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="259.0" minWidth="0.0" prefWidth="88.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="0.0" prefWidth="51.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="0.0" prefWidth="88.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.0" minWidth="10.0" prefWidth="122.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.0" minWidth="10.0" prefWidth="112.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="88.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="196.0" text="Total Amount :" textAlignment="RIGHT" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="lblTotal" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="220.0" style="-fx-background-color: #4d5656;" text="₱ 1,054.00" textFill="#ff6200" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="System Bold Italic" size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                           <GridPane.margin>
+                              <Insets left="20.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="306.0" layoutY="98.0" prefHeight="14.0" prefWidth="196.0" text="Vat 18% : " textAlignment="RIGHT" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="500.0" layoutY="60.0" prefHeight="14.0" prefWidth="196.0" text="₱ 54.00" textAlignment="RIGHT" GridPane.columnIndex="6" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="500.0" layoutY="40.0" prefHeight="14.0" prefWidth="196.0" text="₱ 1,000.00" textAlignment="RIGHT" GridPane.columnIndex="6">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="500.0" layoutY="42.0" prefHeight="14.0" prefWidth="196.0" text="Sub-Total : " textAlignment="RIGHT" GridPane.columnIndex="5">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="543.0" layoutY="35.0" prefHeight="14.0" prefWidth="196.0" text="Shipping Fee : " textAlignment="RIGHT" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="626.0" layoutY="35.0" prefHeight="14.0" prefWidth="196.0" text="₱ 0.00" textAlignment="RIGHT" GridPane.columnIndex="6" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
