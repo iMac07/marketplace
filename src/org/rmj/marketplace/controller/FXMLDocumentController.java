@@ -9,8 +9,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,24 +16,19 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
@@ -49,10 +42,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.rmj.marketplace.model.ScreenInterface;
 import org.rmj.appdriver.GRider;
-import org.rmj.appdriver.SQLUtil;
-import org.rmj.appdriver.agent.MsgBox;
-import org.rmj.appdriver.agentfx.ShowMessageFX;
-import org.rmj.appdriver.constants.EditMode;
 
 /**
  *
@@ -122,12 +111,12 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         getTime();
         try {
             
-            setScene(loadAnimate("/view/MainDashboard.fxml"));
+            setScene(loadAnimate("/org/rmj/marketplace/view/MainDashboard.fxml"));
             // TODO
-            item_management = FXMLLoader.load(getClass().getResource("/view/ItemManagement.fxml"));
-            order_processing = FXMLLoader.load(getClass().getResource("/view/ItemManagement.fxml"));
-            client_info = FXMLLoader.load(getClass().getResource("/view/ItemManagement.fxml"));
-            question_answer = FXMLLoader.load(getClass().getResource("/view/ItemManagement.fxml"));
+            item_management = FXMLLoader.load(getClass().getResource("/org/rmj/marketplace/view/ItemManagement.fxml"));
+            order_processing = FXMLLoader.load(getClass().getResource("/org/rmj/marketplace/view/ItemManagement.fxml"));
+            client_info = FXMLLoader.load(getClass().getResource("/org/rmj/marketplace/view/ItemManagement.fxml"));
+            question_answer = FXMLLoader.load(getClass().getResource("/org/rmj/marketplace/view/ItemManagement.fxml"));
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -224,37 +213,37 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     }
     @FXML
     private void switchItem(ActionEvent event) throws IOException {
-        setScene(loadAnimate("/view/ItemManagement.fxml"));
+        setScene(loadAnimate("/org/rmj/marketplace/view/ItemManagement.fxml"));
     }
     @FXML
     private void switchOrder(ActionEvent event) throws IOException {
-        setScene(loadAnimate("/view/OrderProcessing.fxml"));
+        setScene(loadAnimate("/org/rmj/marketplace/view/OrderProcessing.fxml"));
     }
     @FXML
     private void switchWayBill(ActionEvent event) throws IOException {
-        setScene(loadAnimate("/view/WayBill.fxml"));
+        setScene(loadAnimate("/org/rmj/marketplace/view/WayBill.fxml"));
     }
     @FXML
     private void switchPickup(ActionEvent event) throws IOException {
-        setScene(loadAnimate("/view/Pickup.fxml"));
+        setScene(loadAnimate("/org/rmj/marketplace/view/Pickup.fxml"));
     }
     @FXML
     private void switchClient(ActionEvent event) throws IOException {
-        setScene(loadAnimate("/view/ClientInfo.fxml"));
+        setScene(loadAnimate("/org/rmj/marketplace/view/ClientInfo.fxml"));
       
     }
     @FXML
     private void switchQA(ActionEvent event) throws IOException {
-        setScene(loadAnimate("/view/Faq.fxml"));
+        setScene(loadAnimate("/org/rmj/marketplace/view/Faq.fxml"));
     }
     
     @FXML
     private void switchDashboard(ActionEvent event) throws IOException {
-        setScene(loadAnimate("/view/MainDashboard.fxml"));
+        setScene(loadAnimate("/org/rmj/marketplace/view/MainDashboard.fxml"));
     }
     @FXML
     private void switchRatings(ActionEvent event) throws IOException {
-        setScene(loadAnimate("/view/RatingsAndReviews.fxml"));
+        setScene(loadAnimate("/org/rmj/marketplace/view/RatingsAndReviews.fxml"));
     }
     @FXML
     private void handleButtonCloseClick(MouseEvent event) {
@@ -270,21 +259,21 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     private ScreenInterface getController(String fsValue){
        
         switch (fsValue){
-            case "/view/MainDashboard.fxml":
+            case "/org/rmj/marketplace/view/MainDashboard.fxml":
                 return (ScreenInterface) new MainDashboardController();
-             case "/view/ItemManagement.fxml":
+             case "/org/rmj/marketplace/view/ItemManagement.fxml":
                 return (ScreenInterface) new ItemManagementController();
-             case "/view/OrderProcessing.fxml":
+             case "/org/rmj/marketplace/view/OrderProcessing.fxml":
                 return (ScreenInterface) new OrderProcessingController();
-             case "/view/WayBill.fxml":
+             case "/org/rmj/marketplace/view/WayBill.fxml":
                 return (ScreenInterface) new WayBillController();
-             case "/view/Pickup.fxml":
+             case "/org/rmj/marketplace/view/Pickup.fxml":
                 return (ScreenInterface) new PickupController();
-             case "/view/ClientInfo.fxml":
+             case "/org/rmj/marketplace/view/ClientInfo.fxml":
                 return (ScreenInterface) new ClientInfoController();
-             case "/view/RatingsAndReviews.fxml":
+             case "/org/rmj/marketplace/view/RatingsAndReviews.fxml":
                 return (ScreenInterface) new RatingsAndReviewsController();
-             case "/view/Faq.fxml":
+             case "/org/rmj/marketplace/view/Faq.fxml":
                 return (ScreenInterface) new FAQController();
             
             default:
