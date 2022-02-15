@@ -225,6 +225,14 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ToggleButton>
+                              <ToggleButton fx:id="btnReports" graphicTextGap="15.0" layoutX="10.0" layoutY="332.0" mnemonicParsing="false" onAction="#switchReports" prefHeight="45.0" prefWidth="190.0" styleClass="side-button" text="Reports">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="FILE_TEXT" size="25" styleClass="sidebar-icon" textAlignment="CENTER" />
+                                 </graphic>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ToggleButton>
                            </children>
                         </VBox>
                      </children>

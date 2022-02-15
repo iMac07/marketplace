@@ -76,6 +76,8 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     @FXML
     private ToggleButton btnRatings;
     @FXML
+    private ToggleButton btnReports;
+    @FXML
     private FontAwesomeIconView drawer_icon;
     private ToggleGroup drawer_button;
     private TranslateTransition openNav;
@@ -138,6 +140,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
          btnRatings.setToggleGroup(drawer_button);
          btnWayBill.setToggleGroup(drawer_button);  
          btnPickup.setToggleGroup(drawer_button);
+         btnReports.setToggleGroup(drawer_button);
          btnDashboard.setSelected(true);
 //         drawer_button.selectedToggleProperty().addListener(
 //				new ChangeListener<Toggle>()
@@ -183,6 +186,11 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         Tooltip qnarate = new Tooltip("RATINGS AND REVIEWS");
         hackTooltipStartTiming(qnarate);
         btnRatings.setTooltip(qnarate);
+        
+        
+        Tooltip reports = new Tooltip("STANDARD REPORTS");
+        hackTooltipStartTiming(reports);
+        btnReports.setTooltip(reports);
         
     }
     public void setGRider(GRider foValue) {
@@ -245,6 +253,12 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     private void switchRatings(ActionEvent event) throws IOException {
         setScene(loadAnimate("/org/rmj/marketplace/view/RatingsAndReviews.fxml"));
     }
+    
+    @FXML
+    private void switchReports(ActionEvent event) throws IOException {
+        setScene(loadAnimate("/org/rmj/marketplace/view/Reports.fxml"));
+    }
+    
     @FXML
     private void handleButtonCloseClick(MouseEvent event) {
         Stage stage = (Stage) btnClose.getScene().getWindow();
@@ -275,6 +289,8 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
                 return (ScreenInterface) new RatingsAndReviewsController();
              case "/org/rmj/marketplace/view/Faq.fxml":
                 return (ScreenInterface) new FAQController();
+             case "/org/rmj/marketplace/view/Reports.fxml":
+                return (ScreenInterface) new ReportsController();
             
             default:
                 return null;
@@ -314,6 +330,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         btnClient.setTooltip(null);
         btnQA.setTooltip(null);
         btnRatings.setTooltip(null);
+        btnReports.setTooltip(null);
         
         btnDashboard.setContentDisplay(ContentDisplay.LEFT);
         btnItemManagement.setContentDisplay(ContentDisplay.LEFT);
@@ -323,6 +340,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         btnRatings.setContentDisplay(ContentDisplay.LEFT);
         btnWayBill.setContentDisplay(ContentDisplay.LEFT);
         btnPickup.setContentDisplay(ContentDisplay.LEFT);
+        btnReports.setContentDisplay(ContentDisplay.LEFT);
         btnItemManagement.setAlignment(Pos.BASELINE_LEFT);
         btnDashboard.setAlignment(Pos.BASELINE_LEFT);
         btnOrder.setAlignment(Pos.BASELINE_LEFT);
@@ -332,6 +350,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         btnRatings.setAlignment(Pos.BASELINE_LEFT);
         btnWayBill.setAlignment(Pos.BASELINE_LEFT);
         btnPickup.setAlignment(Pos.BASELINE_LEFT);
+        btnReports.setAlignment(Pos.BASELINE_LEFT);
         nav_bar.setPrefWidth(190);
    }
    public void closeDrawerAlignment(){
@@ -343,6 +362,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         btnRatings.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         btnWayBill.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         btnPickup.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        btnReports.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         btnItemManagement.setAlignment(Pos.CENTER);
         btnOrder.setAlignment(Pos.CENTER);
         btnClient.setAlignment(Pos.CENTER);
@@ -351,6 +371,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         btnRatings.setAlignment(Pos.CENTER);
         btnWayBill.setAlignment(Pos.CENTER);
         btnPickup.setAlignment(Pos.CENTER);
+        btnReports.setAlignment(Pos.CENTER);
         nav_bar.setPrefWidth(50);
         tooltip();
    }
