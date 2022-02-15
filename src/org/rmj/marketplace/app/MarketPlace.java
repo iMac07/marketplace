@@ -32,6 +32,7 @@ public class MarketPlace extends Application {
         
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.getIcons().add(new Image("/org/rmj/marketplace/images/guanzo_small_logo.png"));
         // set stage as maximized but not full screen
         stage.setX(bounds.getMinX());
         stage.setY(bounds.getMinY());

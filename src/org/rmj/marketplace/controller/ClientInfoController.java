@@ -6,8 +6,6 @@
 package org.rmj.marketplace.controller;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import org.rmj.marketplace.model.ScreenInterface;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,21 +14,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.util.Callback;
 import org.rmj.marketplace.model.OrderModel;
 import org.rmj.appdriver.GRider;
+import org.rmj.marketplace.model.ClientInfoModel;
 
 /**
  * FXML Controller class
@@ -84,13 +77,15 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     private AnchorPane MainOrderProcessing;
     
     
-    private final ObservableList<OrderModel> data = FXCollections.observableArrayList();
+    private final ObservableList<OrderModel> order_data = FXCollections.observableArrayList();
+    
+    private final ObservableList<ClientInfoModel> client_data = FXCollections.observableArrayList();
     @FXML
     @Override
     public void initialize(URL url, ResourceBundle rb) {
            
       
-        initGrid();
+        initClientGrid();
         // TODO
     }    
 
@@ -107,7 +102,45 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     private void tblClients_Click(MouseEvent event) {
         clienrRow = tblClients.getSelectionModel().getSelectedIndex();
     }
-    public void initGrid() { 
-           
+    public void initClientGrid() { 
+        orderIndex01.setStyle("-fx-alignment: CENTER-LEFT;");
+        orderIndex02.setStyle("-fx-alignment: CENTER-LEFT;");
+        orderIndex03.setStyle("-fx-alignment: CENTER-LEFT;");
+        orderIndex04.setStyle("-fx-alignment: CENTER-LEFT;");
+        orderIndex05.setStyle("-fx-alignment: CENTER-LEFT;");
+        
+        orderIndex01.setCellValueFactory(new PropertyValueFactory<>("cleintIndex01"));
+        orderIndex02.setCellValueFactory(new PropertyValueFactory<>("cleintIndex02"));
+        orderIndex03.setCellValueFactory(new PropertyValueFactory<>("cleintIndex03"));
+        orderIndex04.setCellValueFactory(new PropertyValueFactory<>("cleintIndex04"));
+        orderIndex05.setCellValueFactory(new PropertyValueFactory<>("cleintIndex05"));
+        tblOrders.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
+            TableHeaderRow header = (TableHeaderRow) tblOrders.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                header.setReordering(false);
+            });
+        });
+        tblOrders.setItems(order_data);
+        tblOrders.autosize(); 
+    }
+    
+    public void initOrderGrid() { 
+        clientsIndex01.setStyle("-fx-alignment: CENTER-LEFT;");
+        clientsIndex02.setStyle("-fx-alignment: CENTER-LEFT;");
+        clientsIndex03.setStyle("-fx-alignment: CENTER-LEFT;");
+        clientsIndex04.setStyle("-fx-alignment: CENTER-LEFT;");
+        
+        clientsIndex01.setCellValueFactory(new PropertyValueFactory<>("cleintIndex01"));
+        clientsIndex02.setCellValueFactory(new PropertyValueFactory<>("cleintIndex02"));
+        clientsIndex03.setCellValueFactory(new PropertyValueFactory<>("cleintIndex03"));
+        clientsIndex04.setCellValueFactory(new PropertyValueFactory<>("cleintIndex04"));
+        tblClients.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
+            TableHeaderRow header = (TableHeaderRow) tblClients.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                header.setReordering(false);
+            });
+        });
+        tblClients.setItems(client_data);
+        tblClients.autosize(); 
     }
 }
