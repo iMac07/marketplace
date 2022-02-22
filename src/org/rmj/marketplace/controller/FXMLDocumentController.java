@@ -14,8 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -49,6 +47,8 @@ import org.rmj.appdriver.GRider;
  */
 public class FXMLDocumentController implements Initializable, ScreenInterface {
     private GRider oApp;
+    private static ToggleButton[] navButtons;
+    private static Tooltip[] navTooltip;
     @FXML
     private Pane btnMin;
     @FXML
@@ -79,11 +79,14 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     private ToggleButton btnReports;
     @FXML
     private FontAwesomeIconView drawer_icon;
-    private ToggleGroup drawer_button;
+    public static ToggleGroup drawer_button;
     private TranslateTransition openNav;
     private TranslateTransition closeNav;
     private TranslateTransition closeFastNav;
    
+    public static void setNavButtonsSelected(int pnValue){
+        navButtons[pnValue].setSelected(true);
+    }
     AnchorPane item_management,order_processing,client_info,question_answer;
     @FXML
     private AnchorPane MainAnchor;
@@ -111,151 +114,115 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     public void initialize(URL url, ResourceBundle rb) {
         
         getTime();
-        try {
-            
-            setScene(loadAnimate("/org/rmj/marketplace/view/MainDashboard.fxml"));
-            // TODO
-            item_management = FXMLLoader.load(getClass().getResource("/org/rmj/marketplace/view/ItemManagement.fxml"));
-            order_processing = FXMLLoader.load(getClass().getResource("/org/rmj/marketplace/view/ItemManagement.fxml"));
-            client_info = FXMLLoader.load(getClass().getResource("/org/rmj/marketplace/view/ItemManagement.fxml"));
-            question_answer = FXMLLoader.load(getClass().getResource("/org/rmj/marketplace/view/ItemManagement.fxml"));
-        } catch (IOException ex) {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setScene(loadAnimate("/org/rmj/marketplace/view/MainDashboard.fxml"));
         openNav = new TranslateTransition(Duration.millis(100), nav_bar);
         openNav.setToX(nav_bar.getTranslateX()-nav_bar.getWidth());
         closeNav = new TranslateTransition(Duration.millis(100), nav_bar);
         closeFastNav = new TranslateTransition(Duration.millis(.1), nav_bar);
-        btnDashboard.pressedProperty();
         initToggleGroup();
         openDrawerAlignment();
     } 
     private void initToggleGroup(){
-         drawer_button = new ToggleGroup();
-         btnDashboard.setToggleGroup(drawer_button);
-         btnItemManagement.setToggleGroup(drawer_button);
-         btnOrder.setToggleGroup(drawer_button);
-         btnClient.setToggleGroup(drawer_button);
-         btnQA.setToggleGroup(drawer_button);
-         btnRatings.setToggleGroup(drawer_button);
-         btnWayBill.setToggleGroup(drawer_button);  
-         btnPickup.setToggleGroup(drawer_button);
-         btnReports.setToggleGroup(drawer_button);
-         btnDashboard.setSelected(true);
-//         drawer_button.selectedToggleProperty().addListener(
-//				new ChangeListener<Toggle>()
-//	{
-//            public void changed(ObservableValue<? extends Toggle> ov,
-//                                    final Toggle toggle, final Toggle new_toggle)
-//            {
-//                    String toggleBtn = ((ToggleButton)new_toggle).getText();
-//                    System.out.println(toggleBtn);
-//            }
-//        });
+        drawer_button = new ToggleGroup();
+        navButtons = new ToggleButton[]{
+            btnDashboard,
+            btnItemManagement,
+            btnOrder,  
+            btnWayBill,
+            btnPickup,
+            btnClient,
+            btnQA,
+            btnRatings,
+            btnReports
+        };
+        for (ToggleButton navButton : navButtons) {
+            navButton.setToggleGroup(drawer_button);
+        }
+        navButtons[0].setSelected(true);
     }
     
     private void tooltip (){
-        Tooltip dashtip = new Tooltip("DASHBOARD");
-        hackTooltipStartTiming(dashtip);
-        btnDashboard.setTooltip(dashtip);
-        
-        Tooltip itemmgmttip = new Tooltip("ITEM MANAGEMENT");
-        hackTooltipStartTiming(itemmgmttip);
-        btnItemManagement.setTooltip(itemmgmttip);
-        
-        Tooltip ordprostip = new Tooltip("ORDER PROCESSING");
-        hackTooltipStartTiming(ordprostip);
-        btnOrder.setTooltip(ordprostip);
-        
-        Tooltip billtip = new Tooltip("WAY BILL");
-        hackTooltipStartTiming(billtip);
-        btnWayBill.setTooltip(billtip);
-        
-        Tooltip picktip = new Tooltip("PICK UP");
-        hackTooltipStartTiming(picktip);
-        btnPickup.setTooltip(picktip);
-        
-        Tooltip cltinfotip = new Tooltip("CLIENT INFO");
-        hackTooltipStartTiming(cltinfotip);
-        btnClient.setTooltip(cltinfotip);
-        
-        Tooltip qnatip = new Tooltip("QUESTION AND ANSWER");
-        hackTooltipStartTiming(qnatip);
-        btnQA.setTooltip(qnatip);
-        
-        Tooltip qnarate = new Tooltip("RATINGS AND REVIEWS");
-        hackTooltipStartTiming(qnarate);
-        btnRatings.setTooltip(qnarate);
-        
-        
-        Tooltip reports = new Tooltip("STANDARD REPORTS");
-        hackTooltipStartTiming(reports);
-        btnReports.setTooltip(reports);
-        
+        navTooltip = new Tooltip[]{
+            new Tooltip("DASHBOARD"),
+            new Tooltip("ITEM MANAGEMENT"),
+            new Tooltip("ORDER PROCESSING"),
+            new Tooltip("WAY BILL"),
+            new Tooltip("PICK UP"),
+            new Tooltip("CLIENT INFO"),
+            new Tooltip("QUESTION AND ANSWER"),
+            new Tooltip("RATINGS AND REVIEWS"),
+            new Tooltip("STANDARD REPORTS")
+        };
+        for(int t = 0; t < navTooltip.length; t++){
+            hackTooltipStartTiming(navTooltip[t]);
+            navButtons[t].setTooltip(navTooltip[t]);
+        }
     }
+    @Override
     public void setGRider(GRider foValue) {
         oApp = foValue;
     }
     public void drawerOpen() {
         
        if ((nav_bar.getWidth()) == 50 ) {
-//            drawer.getStyleClass().remove("sidebar-button");
-//            drawer.getStyleClass().add("sidebar-button-active");
-            
-            
-            
             openDrawerAlignment();
             openNav.play(); 
-            
-            
         } else {
-//            ln(-(nav_bar.getWidth()));
-            
             closeDrawerAlignment();
             closeNav.play();
           }
-    } 
+    }
+   
     private void setScene(AnchorPane foPane){
         workingSpace.getChildren().clear();
         workingSpace.getChildren().add(foPane);
     }
     @FXML
     private void switchItem(ActionEvent event) throws IOException {
+        setNavButtonsSelected(1);
         setScene(loadAnimate("/org/rmj/marketplace/view/ItemManagement.fxml"));
     }
     @FXML
     private void switchOrder(ActionEvent event) throws IOException {
+        setNavButtonsSelected(2);
         setScene(loadAnimate("/org/rmj/marketplace/view/OrderProcessing.fxml"));
     }
     @FXML
     private void switchWayBill(ActionEvent event) throws IOException {
+        setNavButtonsSelected(3);
         setScene(loadAnimate("/org/rmj/marketplace/view/WayBill.fxml"));
     }
     @FXML
     private void switchPickup(ActionEvent event) throws IOException {
+        setNavButtonsSelected(4);
         setScene(loadAnimate("/org/rmj/marketplace/view/Pickup.fxml"));
     }
     @FXML
     private void switchClient(ActionEvent event) throws IOException {
+        setNavButtonsSelected(5);
         setScene(loadAnimate("/org/rmj/marketplace/view/ClientInfo.fxml"));
       
     }
     @FXML
     private void switchQA(ActionEvent event) throws IOException {
+        setNavButtonsSelected(6);
         setScene(loadAnimate("/org/rmj/marketplace/view/Faq.fxml"));
     }
     
     @FXML
     private void switchDashboard(ActionEvent event) throws IOException {
+        setNavButtonsSelected(0);
         setScene(loadAnimate("/org/rmj/marketplace/view/MainDashboard.fxml"));
     }
     @FXML
     private void switchRatings(ActionEvent event) throws IOException {
+        setNavButtonsSelected(7);
         setScene(loadAnimate("/org/rmj/marketplace/view/RatingsAndReviews.fxml"));
     }
     
     @FXML
     private void switchReports(ActionEvent event) throws IOException {
+        setNavButtonsSelected(8);
         setScene(loadAnimate("/org/rmj/marketplace/view/Reports.fxml"));
     }
     
@@ -296,6 +263,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
                 return null;
         }
     }
+   
    private AnchorPane loadAnimate(String fsFormName){
        
         ScreenInterface fxObj = getController(fsFormName);
@@ -323,55 +291,18 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         return null;
     }
    public void openDrawerAlignment(){
-       
-        btnDashboard.setTooltip(null);
-        btnItemManagement.setTooltip(null);
-        btnOrder.setTooltip(null);
-        btnClient.setTooltip(null);
-        btnQA.setTooltip(null);
-        btnRatings.setTooltip(null);
-        btnReports.setTooltip(null);
-        
-        btnDashboard.setContentDisplay(ContentDisplay.LEFT);
-        btnItemManagement.setContentDisplay(ContentDisplay.LEFT);
-        btnOrder.setContentDisplay(ContentDisplay.LEFT);
-        btnClient.setContentDisplay(ContentDisplay.LEFT);
-        btnQA.setContentDisplay(ContentDisplay.LEFT);
-        btnRatings.setContentDisplay(ContentDisplay.LEFT);
-        btnWayBill.setContentDisplay(ContentDisplay.LEFT);
-        btnPickup.setContentDisplay(ContentDisplay.LEFT);
-        btnReports.setContentDisplay(ContentDisplay.LEFT);
-        btnItemManagement.setAlignment(Pos.BASELINE_LEFT);
-        btnDashboard.setAlignment(Pos.BASELINE_LEFT);
-        btnOrder.setAlignment(Pos.BASELINE_LEFT);
-        btnClient.setAlignment(Pos.BASELINE_LEFT);
-        btnQA.setAlignment(Pos.BASELINE_LEFT);
-        btnDashboard.setAlignment(Pos.BASELINE_LEFT);
-        btnRatings.setAlignment(Pos.BASELINE_LEFT);
-        btnWayBill.setAlignment(Pos.BASELINE_LEFT);
-        btnPickup.setAlignment(Pos.BASELINE_LEFT);
-        btnReports.setAlignment(Pos.BASELINE_LEFT);
+        for (ToggleButton navButton : navButtons) {
+            navButton.setTooltip(null);
+            navButton.setContentDisplay(ContentDisplay.LEFT);
+            navButton.setAlignment(Pos.BASELINE_LEFT);
+        }
         nav_bar.setPrefWidth(190);
    }
    public void closeDrawerAlignment(){
-        btnItemManagement.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnOrder.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnClient.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnQA.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnDashboard.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnRatings.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnWayBill.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnPickup.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnReports.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        btnItemManagement.setAlignment(Pos.CENTER);
-        btnOrder.setAlignment(Pos.CENTER);
-        btnClient.setAlignment(Pos.CENTER);
-        btnQA.setAlignment(Pos.CENTER);
-        btnDashboard.setAlignment(Pos.CENTER);
-        btnRatings.setAlignment(Pos.CENTER);
-        btnWayBill.setAlignment(Pos.CENTER);
-        btnPickup.setAlignment(Pos.CENTER);
-        btnReports.setAlignment(Pos.CENTER);
+       for (ToggleButton navButton : navButtons) {
+            navButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            navButton.setAlignment(Pos.CENTER);
+        }
         nav_bar.setPrefWidth(50);
         tooltip();
    }
@@ -394,28 +325,25 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         String formattedDate= dateFormat.format(date);
         
         DateAndTime.setText(formattedDate+ " || " + formattedTime);
-        
         }),
          new KeyFrame(Duration.seconds(1))
         );
-        
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
+        
     }
-  public static void hackTooltipStartTiming(Tooltip tooltip) {
-    try {
-        Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
-        fieldBehavior.setAccessible(true);
-        Object objBehavior = fieldBehavior.get(tooltip);
-
-        Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
-        fieldTimer.setAccessible(true);
-        Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
-
-        objTimer.getKeyFrames().clear();
-        objTimer.getKeyFrames().add(new KeyFrame(new Duration(100)));
-    } catch (Exception e) {
-        e.printStackTrace();
+    public static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(100)));
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException e) {
+            e.printStackTrace();
+        }
     }
-}
 }

@@ -16,6 +16,7 @@ public class ClientInfoModel {
     private SimpleStringProperty cleintIndex02;  
     private SimpleStringProperty cleintIndex03;
     private SimpleStringProperty cleintIndex04;    
+    private SimpleStringProperty cleintIndex05;    
     
     public ClientInfoModel(){
         
@@ -23,11 +24,13 @@ public class ClientInfoModel {
     public ClientInfoModel(String cleintIndex01,
             String cleintIndex02,
             String cleintIndex03, 
-            String cleintIndex04) {
+            String cleintIndex04, 
+            String cleintIndex05) {
         this.cleintIndex01 = new SimpleStringProperty(cleintIndex01);
         this.cleintIndex02 = new SimpleStringProperty(cleintIndex02);
         this.cleintIndex03 = new SimpleStringProperty(cleintIndex03);
         this.cleintIndex04 = new SimpleStringProperty(cleintIndex04);
+        this.cleintIndex05 = new SimpleStringProperty(cleintIndex05);
     }
      public String getProdIndex01() {
         return cleintIndex01.get();
@@ -59,6 +62,14 @@ public class ClientInfoModel {
 
     public void setProdIndex04(String cleintIndex04) {
         this.cleintIndex04 = new SimpleStringProperty(cleintIndex04);
+    }
+    
+    public String getProdIndex05() {
+        return cleintIndex05.get();
+    }
+
+    public void setProdIndex05(String cleintIndex05) {
+        this.cleintIndex05 = new SimpleStringProperty(cleintIndex05);
     }
     
 }

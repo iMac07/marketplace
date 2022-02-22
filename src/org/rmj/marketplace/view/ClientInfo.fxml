@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="553.0" prefWidth="1043.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" fx:id="AnchorClient" prefHeight="553.0" prefWidth="1043.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -50,11 +50,11 @@
                                     <Label alignment="CENTER" layoutY="6.0" prefHeight="15.0" prefWidth="304.0" text="Projects List" textFill="WHITE" AnchorPane.topAnchor="10.0" />
                                     <TableView fx:id="tblClients" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                        <columns>
-                                          <TableColumn fx:id="index01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
-                                          <TableColumn fx:id="index02" prefWidth="100.0" resizable="false" sortable="false" text="Customer ID" />
-                                          <TableColumn fx:id="index03" prefWidth="150.0" resizable="false" sortable="false" text="Customer Name" />
-                                          <TableColumn fx:id="index04" prefWidth="100.0" resizable="false" sortable="false" text="Email" />
-                                          <TableColumn fx:id="index041" prefWidth="100.0" resizable="false" sortable="false" text="Contact #" />
+                                          <TableColumn fx:id="clientIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
+                                          <TableColumn fx:id="clientIndex02" prefWidth="100.0" resizable="false" sortable="false" text="Customer ID" />
+                                          <TableColumn fx:id="clientIndex03" prefWidth="150.0" resizable="false" sortable="false" text="Customer Name" />
+                                          <TableColumn fx:id="clientIndex04" prefWidth="100.0" resizable="false" sortable="false" text="Email" />
+                                          <TableColumn fx:id="clientIndex05" prefWidth="100.0" resizable="false" sortable="false" text="Contact #" />
                                        </columns>
                                     </TableView>
                                  </children>
@@ -146,11 +146,11 @@
                                                                      <children>
                                                                         <TableView fx:id="tblOrders" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                            <columns>
-                                                                              <TableColumn fx:id="index011" prefWidth="30.0" resizable="false" sortable="false" text="No." />
-                                                                              <TableColumn fx:id="index021" prefWidth="100.0" resizable="false" sortable="false" text="Order #" />
-                                                                              <TableColumn fx:id="index031" prefWidth="150.0" resizable="false" sortable="false" text="Description" />
-                                                                              <TableColumn fx:id="index0412" prefWidth="100.0" resizable="false" sortable="false" text="Order Date" />
-                                                                              <TableColumn fx:id="index0411" prefWidth="100.0" resizable="false" sortable="false" text="Status" />
+                                                                              <TableColumn fx:id="orderIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
+                                                                              <TableColumn fx:id="orderIndex02" prefWidth="100.0" resizable="false" sortable="false" text="Order #" />
+                                                                              <TableColumn fx:id="orderIndex03" prefWidth="150.0" resizable="false" sortable="false" text="Description" />
+                                                                              <TableColumn fx:id="orderIndex04" prefWidth="100.0" resizable="false" sortable="false" text="Order Date" />
+                                                                              <TableColumn fx:id="orderIndex05" prefWidth="100.0" resizable="false" sortable="false" text="Status" />
                                                                            </columns>
                                                                            <columnResizePolicy>
                                                                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

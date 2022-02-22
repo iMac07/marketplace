@@ -5,29 +5,18 @@
  */
 package org.rmj.marketplace.controller;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 import org.rmj.marketplace.model.ScreenInterface;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import org.rmj.marketplace.model.OrderModel;
-import org.rmj.marketplace.model.Util;
 import org.rmj.appdriver.GRider;
 
 /**
@@ -72,6 +61,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private ObservableList<OrderModel> data = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
 //        Util util = new Util();
 //        orderIndex01.setCellValueFactory(new PropertyValueFactory<>("photo"));
 //        //empImage.setPrefWidth(100);

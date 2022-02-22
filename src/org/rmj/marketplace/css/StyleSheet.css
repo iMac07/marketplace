@@ -253,28 +253,68 @@
  ******************************************************************************/
 
 .chart-line-symbol {
-    -fx-background-color: #009688, white;
+    /*-fx-background-color: #009999, white;*/
+    -fx-background-color: orange, white;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 5px;
     -fx-padding: 5px;
 }
 .chart-series-line {
-    -fx-stroke: #009688;
+    /*-fx-stroke: #009999;*/
+    -fx-stroke: orange;
     -fx-stroke-width: 3px;
 }
-.default-color0.chart-line-symbol { -fx-background-color: #009688, white; }
-.default-color1.chart-line-symbol { -fx-background-color: #009688, white; }
-.default-color2.chart-line-symbol { -fx-background-color: #009688, white; }
-.default-color3.chart-line-symbol { -fx-background-color: #009688, white; }
-.default-color4.chart-line-symbol { -fx-background-color: #009688, white; }
-.default-color5.chart-line-symbol { -fx-background-color: #009688, white; }
-.default-color6.chart-line-symbol { -fx-background-color: #009688, white; }
-.default-color7.chart-line-symbol { -fx-background-color: #009688, white; }
-.default-color0.chart-series-line { -fx-stroke: #009688; }
-.default-color1.chart-series-line { -fx-stroke: #009688; }
-.default-color2.chart-series-line { -fx-stroke: #009688; }
-.default-color3.chart-series-line { -fx-stroke: #009688; }
-.default-color4.chart-series-line { -fx-stroke: #009688; }
-.default-color5.chart-series-line { -fx-stroke: #009688; }
-.default-color6.chart-series-line { -fx-stroke: #009688; }
-.default-color7.chart-series-line { -fx-stroke: #009688; }
+.default-color0.chart-line-symbol { -fx-background-color: orange; }
+.default-color1.chart-line-symbol { -fx-background-color: orange; }
+.default-color2.chart-line-symbol { -fx-background-color: orange; }
+.default-color3.chart-line-symbol { -fx-background-color: orange; }
+.default-color4.chart-line-symbol { -fx-background-color: orange; }
+.default-color5.chart-line-symbol { -fx-background-color: orange; }
+.default-color6.chart-line-symbol { -fx-background-color: orange; }
+.default-color7.chart-line-symbol { -fx-background-color: orange; }
+.default-color0.chart-series-line { -fx-stroke: orange; }
+.default-color1.chart-series-line { -fx-stroke: orange; }
+.default-color2.chart-series-line { -fx-stroke: orange; }
+.default-color3.chart-series-line { -fx-stroke: orange; }
+.default-color4.chart-series-line { -fx-stroke: orange; }
+.default-color5.chart-series-line { -fx-stroke: orange; }
+.default-color6.chart-series-line { -fx-stroke: orange; }
+.default-color7.chart-series-line { -fx-stroke: orange; }
+
+.tooltip {
+    -fx-show-delay: 100ms;
+}
+.dash-sale{
+    -fx-background-color:  #9C27B0;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+.dash-order{
+    -fx-background-color:  #008080;
+    -fx-border-radius: 5px;   
+    -fx-background-radius: 5px;    
+}
+.dash-product{
+    -fx-background-color:  #336699;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;   
+}
+.dash-client{
+    -fx-background-color:  #46a049;
+    -fx-border-radius: 5px;   
+    -fx-background-radius: 5px;   
+}
+
+.dash-sale:hover{
+    -fx-background-color: #c043d6;
+}
+.dash-order:hover{
+    -fx-background-color: #00b3b3;
+}
+.dash-product:hover{
+    -fx-background-color: #4080bf;
+}
+
+.dash-client:hover{
+    -fx-background-color: #5fb962;
+}
