@@ -31,6 +31,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
      * Initializes the controller class.
      */
     private GRider oApp;
+    
     @FXML
     private AnchorPane searchBar;
     @FXML
@@ -113,6 +114,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private CheckBox Check26;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         // TODO
     }    
 

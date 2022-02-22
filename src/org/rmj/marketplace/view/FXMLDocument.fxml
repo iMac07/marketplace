@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="MainAnchor" prefHeight="576.0" prefWidth="1050.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.rmj.marketplace.controller.FXMLDocumentController">
+<AnchorPane id="AnchorPane" fx:id="MainAnchor" prefHeight="576.0" prefWidth="1050.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -154,9 +154,9 @@
                   </StackPane>
                </center>
                <left>
-                  <AnchorPane BorderPane.alignment="CENTER">
+                  <AnchorPane style="-fx-background-color: #bfbfbf;" BorderPane.alignment="CENTER">
                      <children>
-                        <VBox fx:id="nav_bar" prefWidth="190.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox fx:id="nav_bar" prefWidth="190.0" styleClass="sidebar">
                            <children>
                               <ToggleButton fx:id="btnDashboard" graphicTextGap="15.0" mnemonicParsing="false" onAction="#switchDashboard" prefHeight="45.0" prefWidth="190.0" styleClass="side-button" text="Dashboard">
                                  <graphic>

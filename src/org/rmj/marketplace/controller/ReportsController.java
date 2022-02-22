@@ -14,17 +14,18 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -33,7 +34,6 @@ import net.sf.jasperreports.swing.JRViewer;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.marketplace.model.OrderModel;
-import org.rmj.marketplace.model.ProductModel;
 import org.rmj.marketplace.model.ScreenInterface;
 
 /**
@@ -62,6 +62,8 @@ public class ReportsController implements Initializable, ScreenInterface{
     private DatePicker dpFrom;
     @FXML
     private DatePicker dpThru;
+    @FXML
+    private VBox vbProgress;
     
     /**
      * Initializes the controller class.
@@ -75,6 +77,7 @@ public class ReportsController implements Initializable, ScreenInterface{
         
        
         btnGenerate.setOnAction(e -> {
+            showProgress();
             String sourceFileName = 
           "D://GGC_Java_Systems/reports/sample_order_report.jasper";
          String printFileName = null;
@@ -137,13 +140,12 @@ public class ReportsController implements Initializable, ScreenInterface{
         return  CommonUtils.NumberFormat((Number) ((Math.random() * (max - min)) + (max/2)) , "#,##0.00");
     }
     private void showReport(){
+       
         SwingNode swingNode = new SwingNode();
         JRViewer jrViewer =  new JRViewer(jasperPrint);
         jrViewer.setOpaque(true);
         jrViewer.setVisible(true);
 //        jrViewer.setZoomRatio((float) 0.9655);
-        
-        
         swingNode.setContent(jrViewer);
         swingNode.setVisible(true);
         
@@ -153,7 +155,7 @@ public class ReportsController implements Initializable, ScreenInterface{
         reportPane.setRightAnchor(swingNode,0.0);
         reportPane.getChildren().add(swingNode);
         
-        
+        hideProgress();
     }    
     private void initToggleGroup(){
         rbGroup = new ToggleGroup();
@@ -197,4 +199,21 @@ public class ReportsController implements Initializable, ScreenInterface{
         oApp = foValue;
     }
     
+    
+    private void showProgress(){
+        vbProgress.getChildren().clear();
+        vbProgress.setAlignment(Pos.CENTER);
+        ProgressIndicator pi = new ProgressIndicator();
+        pi.setOpacity(1.0);
+        pi.setStyle(" -fx-progress-color: #0086b3;");
+
+        VBox box = new VBox(pi);
+        box.setAlignment(Pos.CENTER);
+
+        // Grey Background
+        vbProgress.getChildren().add(box);
+    }
+    private void hideProgress(){
+        vbProgress.getChildren().clear();
+    }
 }

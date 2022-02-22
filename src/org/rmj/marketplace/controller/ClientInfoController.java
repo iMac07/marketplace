@@ -18,7 +18,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.rmj.marketplace.model.OrderModel;
@@ -66,15 +65,17 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     @FXML
     private TableView tblClients;
     @FXML
-    private TableColumn<OrderModel, Image> clientsIndex01;
+    private TableColumn<ClientInfoModel, String> clientIndex01;
     @FXML
-    private TableColumn clientsIndex02;
+    private TableColumn clientIndex02;
     @FXML
-    private TableColumn clientsIndex03;
+    private TableColumn clientIndex03;
     @FXML
-    private TableColumn clientsIndex04;
+    private TableColumn clientIndex04;
     @FXML
-    private AnchorPane MainOrderProcessing;
+    private TableColumn clientIndex05;
+    @FXML
+    private AnchorPane AnchorClient;
     
     
     private final ObservableList<OrderModel> order_data = FXCollections.observableArrayList();
@@ -83,8 +84,6 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     @FXML
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-           
-      
         initClientGrid();
         // TODO
     }    
@@ -109,11 +108,11 @@ public class ClientInfoController implements Initializable, ScreenInterface {
         orderIndex04.setStyle("-fx-alignment: CENTER-LEFT;");
         orderIndex05.setStyle("-fx-alignment: CENTER-LEFT;");
         
-        orderIndex01.setCellValueFactory(new PropertyValueFactory<>("cleintIndex01"));
-        orderIndex02.setCellValueFactory(new PropertyValueFactory<>("cleintIndex02"));
-        orderIndex03.setCellValueFactory(new PropertyValueFactory<>("cleintIndex03"));
-        orderIndex04.setCellValueFactory(new PropertyValueFactory<>("cleintIndex04"));
-        orderIndex05.setCellValueFactory(new PropertyValueFactory<>("cleintIndex05"));
+        orderIndex01.setCellValueFactory(new PropertyValueFactory<>("orderIndex01"));
+        orderIndex02.setCellValueFactory(new PropertyValueFactory<>("orderIndex02"));
+        orderIndex03.setCellValueFactory(new PropertyValueFactory<>("orderIndex03"));
+        orderIndex04.setCellValueFactory(new PropertyValueFactory<>("orderIndex04"));
+        orderIndex05.setCellValueFactory(new PropertyValueFactory<>("orderIndex05"));
         tblOrders.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblOrders.lookup("TableHeaderRow");
             header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -125,15 +124,17 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     }
     
     public void initOrderGrid() { 
-        clientsIndex01.setStyle("-fx-alignment: CENTER-LEFT;");
-        clientsIndex02.setStyle("-fx-alignment: CENTER-LEFT;");
-        clientsIndex03.setStyle("-fx-alignment: CENTER-LEFT;");
-        clientsIndex04.setStyle("-fx-alignment: CENTER-LEFT;");
+        clientIndex01.setStyle("-fx-alignment: CENTER-LEFT;");
+        clientIndex02.setStyle("-fx-alignment: CENTER-LEFT;");
+        clientIndex03.setStyle("-fx-alignment: CENTER-LEFT;");
+        clientIndex04.setStyle("-fx-alignment: CENTER-LEFT;");
+        clientIndex05.setStyle("-fx-alignment: CENTER-LEFT;");
         
-        clientsIndex01.setCellValueFactory(new PropertyValueFactory<>("cleintIndex01"));
-        clientsIndex02.setCellValueFactory(new PropertyValueFactory<>("cleintIndex02"));
-        clientsIndex03.setCellValueFactory(new PropertyValueFactory<>("cleintIndex03"));
-        clientsIndex04.setCellValueFactory(new PropertyValueFactory<>("cleintIndex04"));
+        clientIndex01.setCellValueFactory(new PropertyValueFactory<>("cleintIndex01"));
+        clientIndex02.setCellValueFactory(new PropertyValueFactory<>("cleintIndex02"));
+        clientIndex03.setCellValueFactory(new PropertyValueFactory<>("cleintIndex03"));
+        clientIndex04.setCellValueFactory(new PropertyValueFactory<>("cleintIndex04"));
+        clientIndex05.setCellValueFactory(new PropertyValueFactory<>("cleintIndex05"));
         tblClients.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblClients.lookup("TableHeaderRow");
             header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
