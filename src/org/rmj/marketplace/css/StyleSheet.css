@@ -178,6 +178,11 @@
         white;
    -fx-text-fill: black;
 }
+.text-area:focused {
+    -fx-background-color:
+        orange,
+        white;
+}
 .text-area .scroll-pane {
     -fx-hbar-policy: never;
     -fx-vbar-policy: never;
@@ -185,7 +190,7 @@
 }
 .text-field {
     -fx-font-size: 10pt;
-    -fx-min-height: 24;
+    -fx-min-height: 26;
     -fx-opacity: 1.0;
     -fx-background-color:
         grey,
@@ -194,12 +199,37 @@
 }
 
 .text-field:focused {
-    -fx-min-height: 24;
+    -fx-min-height: 26;
     -fx-background-color:
         orange,
         white;
 }
+.menu-button {
+    -fx-font-size: 10pt;
+    -fx-min-height: 26;
+    -fx-opacity: 1.0;
+    -fx-background-color:
+        grey,
+        white;
+    -fx-textflow: wrap;
+}
 
+.menu-button:focused {
+    -fx-min-height: 26;
+    -fx-background-color:
+        orange,
+        white;
+}
+.check-menu-item
+{
+    -fx-mark-color: #F88222 ;
+    -fx-background-color: white;
+}
+.check-menu-item:focused
+{
+    -fx-focused-mark-color: white ;
+    -fx-background-color: #F88222;
+}
 /*******************************************************************************
  *                                                                             *
  * SCROLL PANE CSS                                                                     *

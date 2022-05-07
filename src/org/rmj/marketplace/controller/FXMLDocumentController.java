@@ -114,6 +114,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     public void initialize(URL url, ResourceBundle rb) {
         
         getTime();
+//        setScene(loadAnimate("/org/rmj/marketplace/view/Dashboard.fxml"));
         setScene(loadAnimate("/org/rmj/marketplace/view/MainDashboard.fxml"));
         openNav = new TranslateTransition(Duration.millis(100), nav_bar);
         openNav.setToX(nav_bar.getTranslateX()-nav_bar.getWidth());
@@ -212,6 +213,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     @FXML
     private void switchDashboard(ActionEvent event) throws IOException {
         setNavButtonsSelected(0);
+//        setScene(loadAnimate("/org/rmj/marketplace/view/Dashboard.fxml"));
         setScene(loadAnimate("/org/rmj/marketplace/view/MainDashboard.fxml"));
     }
     @FXML
@@ -242,6 +244,8 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         switch (fsValue){
             case "/org/rmj/marketplace/view/MainDashboard.fxml":
                 return (ScreenInterface) new MainDashboardController();
+            case "/org/rmj/marketplace/view/Dashboard.fxml":
+                return (ScreenInterface) new DashboardController();
              case "/org/rmj/marketplace/view/ItemManagement.fxml":
                 return (ScreenInterface) new ItemManagementController();
              case "/org/rmj/marketplace/view/OrderProcessing.fxml":

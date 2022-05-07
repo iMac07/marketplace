@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+
 package org.rmj.marketplace.controller;
 
 import com.jfoenix.controls.JFXDatePicker;
@@ -107,9 +104,9 @@ public class ListingDateTimeController implements Initializable, ScreenInterface
                     MsgBox.showOk("Please fill out all the information (all fields are required)!!!");
                 }else{
                     if(title.equalsIgnoreCase("Start")){
-                        ItemManagementController.setListingStart(dpListingDate.getValue().toString() + " " +tpListingTime.getValue().toString());
+                        ItemManagementController.setListingStart(dpListingDate.getValue().toString() + " " +tpListingTime.getValue().toString() + ":00");
                     }else {
-                        ItemManagementController.setListingEnd(dpListingDate.getValue().toString() + " " +tpListingTime.getValue().toString());
+                        ItemManagementController.setListingEnd(dpListingDate.getValue().toString() + " " +tpListingTime.getValue().toString() + ":00");
 
                     }
                     CommonUtils.closeStage(btnSave);
