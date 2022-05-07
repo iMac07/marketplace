@@ -5,22 +5,29 @@
  */
 package org.rmj.marketplace.controller;
 
+import com.jfoenix.controls.JFXTextArea;
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
-import java.awt.event.MouseListener;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import org.rmj.marketplace.model.ScreenInterface;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.time.DateTimeException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,21 +35,33 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.beans.value.*;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.SelectionMode;
+import javafx.util.StringConverter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -54,6 +73,7 @@ import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.marketplace.base.LTransaction;
 import org.rmj.marketplace.base.ProductListing;
+import org.rmj.marketplace.model.ImageModel;
 import org.rmj.marketplace.model.ItemDescriptionModel;
 import org.rmj.marketplace.model.ProductModel;
 
@@ -75,11 +95,15 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private int pnEditMode;
     private int pnRow = -1;
     private int dtailRow = -1;
+    private int imgRow = -1;
+    private int statRow = -1;
     public static String listingStart;
     public static String listingEnd;
     private double xOffset = 0;
     private double yOffset = 0;
+    private  FileChooser fileChooser;
    
+    private Desktop desktop = Desktop.getDesktop();
     private boolean pbLoaded = false;
     @FXML
     private AnchorPane searchBar;
@@ -103,6 +127,17 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private TableColumn<?, ?> prodIndex03;
     @FXML
     private TableColumn<?, ?> prodIndex04;
+    
+    @FXML
+    private ImageView imgProduct;
+    @FXML
+    private ImageView imgDefault;
+    @FXML
+    private TableView tblProdImage;
+    @FXML
+    private TableColumn<?, ?> imageIndex01;
+    @FXML
+    private TableColumn<?, ?> imageIndex02;
     @FXML
     private HBox hbButtons;
     @FXML
@@ -129,6 +164,16 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private Button btnListingEnd;
     @FXML
     private Button btnListingStart;
+    @FXML
+    private Button btnRefresh;
+//    @FXML
+//    private Button btnImgBrowse;
+    @FXML
+    private Button btnAddImg;
+    @FXML
+    private Button btnRemoveImg;
+    @FXML
+    private Button btnImgMoveUp;
     @FXML
     private TextField txtField01;
     @FXML
@@ -194,9 +239,33 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     @FXML
     private CheckBox Check26; 
     @FXML
+    private MenuButton menuStatus;
+    @FXML
+    private CheckMenuItem itemStat01;
+    @FXML
+    private CheckMenuItem itemStat02;
+    @FXML
+    private CheckMenuItem itemStat03;
+    @FXML
+    private CheckMenuItem itemStat04;
+    @FXML
+    private CheckMenuItem[] itemArr;
+    @FXML
     private AnchorPane AnchorItemManagement; 
     private final ObservableList<ProductModel> data = FXCollections.observableArrayList();
     private final ObservableList<ItemDescriptionModel> dataDesc = FXCollections.observableArrayList();
+    
+    private final ObservableList<ImageModel> img_data = FXCollections.observableArrayList();
+    private FilteredList<ProductModel> filteredData;
+    
+//    private final ObservableList<String> stats = FXCollections.observableArrayList();
+     
+    private ObservableList<String> stats = FXCollections.observableArrayList(
+        "OPEN",
+        "CLOSED",
+        "POSTED",
+        "CANCELLED"
+    );
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -216,8 +285,10 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         
         oTrans = new ProductListing(oApp, oApp.getBranchCode(), false);
         oTrans.setListener(oListener);
-        oTrans.setTranStat(0);
+        oTrans.setTranStat(12340);
         oTrans.setWithUI(true);
+        
+        fileChooser = new FileChooser();
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnNew.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);
@@ -230,16 +301,36 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         btnSearch.setOnAction(this::cmdButton_Click);
         btnListingStart.setOnAction(this::cmdButton_Click);
         btnListingEnd.setOnAction(this::cmdButton_Click);
-        
+        btnRefresh.setOnAction(this::cmdButton_Click);
+//        btnImgBrowse.setOnAction(this::cmdButton_Click);
+        btnAddImg.setOnAction(this::cmdButton_Click);
+        btnRemoveImg.setOnAction(this::cmdButton_Click);
+        btnImgMoveUp.setOnAction(this::cmdButton_Click);
         txtField21.setOnKeyPressed(this::txtField_KeyPressed); 
-        txtSeeks98.setOnKeyPressed(this::txtField_KeyPressed); 
-        
-       
+        txtField03.setOnKeyPressed(this::txtField_KeyPressed); 
+        itemArr = new CheckMenuItem[]{itemStat01,itemStat02,itemStat03,itemStat04};
+        itemArr[0].setOnAction(this::item_EventHandler);
+        itemArr[1].setOnAction(this::item_EventHandler);
+        itemArr[2].setOnAction(this::item_EventHandler);
+        itemArr[3].setOnAction(this::item_EventHandler);
         pnEditMode = EditMode.UNKNOWN;
         
         initButton(pnEditMode);
         pbLoaded = true;
         loadProducts();
+        itemArr[0].setSelected(true);
+        itemArr[1].setSelected(true);
+        itemArr[2].setSelected(true);
+        loadChoiceBox();
+        
+        if(img_data.isEmpty()){
+            imgDefault.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+            imgProduct.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+        }else{
+            Image image = new Image(img_data.get(0).getImgIndex02());
+            imgProduct.setImage(image);
+            imgDefault.setImage(image);
+        }
         
     }    
 
@@ -263,11 +354,33 @@ public class ItemManagementController implements Initializable, ScreenInterface 
 //        txtField11.setText(listingEnd);
         listingEnd = val;
     }
+    private void loadChoiceBox(){
+        for(int x = itemArr.length - 1; x >= 0;x--){
+            if(itemArr[x].isSelected()){
+                menuStatus.setText(itemArr[x].getText());
+            }
+        }
+        if(!itemArr[0].isSelected() && 
+                !itemArr[1].isSelected() && 
+                !itemArr[2].isSelected() && 
+                !itemArr[3].isSelected()){
+            itemArr[0].setSelected(true);
+            menuStatus.setText(itemArr[0].getText());
+        }
+//        if (item.isSelected()){
+//            menuStatus.setText
+//             (item.getText());
+//        }else{
+//           
+//        }
+//        cbStatus.setItems(stats);
+//        comboStatus.setItems(stats);
+//        cbStatus.getSelectionModel().select(statRow);
+    }
     private void loadMaster()  {
         try {
-        txtSeeks98.setText((String) oTrans.getMaster(1));
+//        txtSeeks98.setText((String) oTrans.getMaster(1));
         txtSeeks99.setText((String) oTrans.getMaster(16));
-        
         txtField01.setText((String) oTrans.getMaster(1));
         txtField21.requestFocus();
   
@@ -281,35 +394,51 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             data.clear();
             if (oTrans.LoadList("", false)){//true if by barcode; false if by description
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
+                    
+                    String listingStart = "";
+                    String listingEnd = "";
+                    if(oTrans.getDetail(lnCtr, "dListStrt") != null){
+                        listingStart = oTrans.getDetail(lnCtr, "dListStrt").toString();
+                    }
+                    if(oTrans.getDetail(lnCtr, "dListEndx") != null){
+                        listingEnd = oTrans.getDetail(lnCtr, "dListStrt").toString();
+                    }
                     data.add(new ProductModel(String.valueOf(lnCtr),
                             (String) oTrans.getDetail(lnCtr, "sListngID"),
                             (String) oTrans.getDetail(lnCtr, "xBarCodex"),
                             (String) oTrans.getDetail(lnCtr, "sBriefDsc"),
-                            (String) oTrans.getDetail(lnCtr, "xDescript"),
+                            (String) oTrans.getDetail(lnCtr, "sDescript"),
                             oTrans.getDetail(lnCtr, "nTotalQty").toString(),
                             oTrans.getDetail(lnCtr, "nQtyOnHnd").toString(),
                             oTrans.getDetail(lnCtr, "nResvOrdr").toString(),
                             oTrans.getDetail(lnCtr, "nSoldQtyx").toString(),
                             oTrans.getDetail(lnCtr, "nUnitPrce").toString(),
-                            (String) oTrans.getDetail(lnCtr, "dListStrt"),
-                            (String) oTrans.getDetail(lnCtr, "dListEndx "),
+                            listingStart,
+                            listingEnd,
                             (String) oTrans.getDetail(lnCtr, "dInactive"),
                             (String) oTrans.getDetail(lnCtr, "dActivate"),
                             (String) oTrans.getDetail(lnCtr, "xBrandNme"),
                             (String) oTrans.getDetail(lnCtr, "xModelNme"),
                             (String) oTrans.getDetail(lnCtr, "xColorNme"),
-                            (String) oTrans.getDetail(lnCtr, "xCategrNm")
+                            (String) oTrans.getDetail(lnCtr, "xCategrNm"),
+                            (String) oTrans.getDetail(lnCtr, "sImagesxx")
                     ));
+                  
                 }
                 initGrid();
                 
                 tblproductdetail_column();
             } else {
-                MsgBox.showOk(oTrans.getMessage());
+//                MsgBox.showOk(oTrans.getMessage());
             }    
         } catch (SQLException ex) {
-            Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            System.out.println("SQLException" + ex.getMessage());
+        } catch (NullPointerException ex) {
+            System.out.println("NullPointerException" + ex.getMessage());
+        } catch (DateTimeException ex) {
+//            MsgBox.showOk(ex.getMessage());
+            System.out.println("DateTimeException" + ex.getMessage());
+        } 
     }
     private void loadDetail() throws SQLException{
             //load to grid the incentives.
@@ -333,18 +462,14 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         txtField24.setText((String)oTrans.getMaster(24));
         txtField25.setText((String)oTrans.getMaster(25));
         txtField26.setText((String)oTrans.getMaster(26));
-        txtField10.setText((String)oTrans.getMaster(10));
-        txtField11.setText((String)oTrans.getMaster(11));
+//        txtField10.setText(oTrans.getMaster(10).toString());
+//        txtField11.setText(oTrans.getMaster(11).toString());
         txtField18.setText((String)oTrans.getMaster(19));
         txtField19.setText((String)oTrans.getMaster(18));
         
         
     }
     private void clearFields(){
-       
-        
-//        
-        
         txtField01.setText("");
         txtField21.setText("");
         txtField03.setText("");
@@ -366,11 +491,15 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         txtSeeks99.setText("");
         listingEnd = "";
         listingStart = "";
+        imgDefault.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+        imgProduct.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
         dataDesc.clear();
+        img_data.clear();
     }
     private void resetTrans(){
         oTrans = new ProductListing(oApp, oApp.getBranchCode(), false);
         oTrans.setListener(oListener);
+        oTrans.setTranStat(12340);
         oTrans.setWithUI(true);
         pnEditMode = EditMode.UNKNOWN;
         loadProducts();
@@ -417,18 +546,20 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                     break;
                 case "btnSave": 
                      try {
-                         
-                         if (oTrans.SaveTransaction()){
+                        if (oTrans.SaveTransaction()){
                             clearFields();
                             resetTrans();
                         } else {
                            MsgBox.showOk(oTrans.getMessage());
                         }
                         
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                            MsgBox.showOk(e.getMessage());
-                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        MsgBox.showOk("SQLException " + e.getMessage());
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                        MsgBox.showOk("NullPointerException " + e.getMessage());
+                    }
                     break;
                 case "btnAddDesc": 
                      try {
@@ -439,6 +570,9 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                                 dataDesc.add(new ItemDescriptionModel(String.valueOf(dataDesc.size()), txtField04.getText(), false));
 
                                 generateDescripton();
+                                
+                                txtField04.clear();
+                                txtField04.requestFocus();
 //                                initGridDetail();
                             } else {
                                 MsgBox.showOk(oTrans.getMessage());
@@ -457,6 +591,8 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                         if (oTrans.delDescription(dtailRow)){
                            
                             generateDescripton();
+                            txtField04.clear();
+                            txtField04.requestFocus();
                         } else 
                           MsgBox.showOk(oTrans.getMessage());
                     break;
@@ -476,11 +612,93 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                         generateDescripton();
                     }
                     break;
+                case "btnAddImg":
+                    configureFileChooser(fileChooser);                               
+                    File imgFile = 
+                        fileChooser.showOpenDialog(AnchorItemManagement.getScene().getWindow());
+                    System.out.println(imgFile.toURI().toString());
+        //                    img_data.clear();
+                    if (imgFile != null) {
+//                        int index = img_data.size() + 1;
+                        if (oTrans.addImage(imgFile.toURI().toString())){
+                            pnEditMode = oTrans.getEditMode();
+                            img_data.add(new ImageModel(String.valueOf(img_data.size()), imgFile.toURI().toString()));
+
+                            generateImages();
+
+//                                initGridDetail();
+                        } else {
+                            MsgBox.showOk(oTrans.getMessage());
+                        }
+//                        for (File file : list) {
+                            
+        //                            openFile(file);
+//                            boolean imgIsExist = false;
+//                            for(int x = 0; x < img_data.size(); x++){
+//                                if(img_data.get(x).getImgIndex02().equalsIgnoreCase(file.toURI().toString())){
+//                                    imgIsExist = true;
+//                                }
+//
+//                            }
+//                            if(!imgIsExist){
+//                                if (oTrans.addImage(file.toURI().toString())){
+//                                    pnEditMode = oTrans.getEditMode();
+//                                    img_data.add(new ImageModel(String.valueOf(img_data.size()), file.toURI().toString()));
+//
+//                                    generateImages();
+//
+////                                initGridDetail();
+//                                } else {
+//                                    MsgBox.showOk(oTrans.getMessage());
+//                                }
+////                                ImageModel imgModel = new ImageModel(String.valueOf(index), file.toURI().toString());
+////                                img_data.add(imgModel);
+//                            }
+//                            index++;
+//                        }
+                    }
+                    break;
+                case "btnRemoveImg":
+//                    img_data.remove(imgRow);
+                    if (oTrans.delImage(imgRow)){
+
+                           generateImages();
+//                           txtField04.clear();
+//                           txtField04.requestFocus();
+                       } else 
+                         MsgBox.showOk(oTrans.getMessage());
+                    break;
+                case "btnImgMoveUp":
+                    if(oTrans.setImagePriority(imgRow, true)){ 
+                        tblProdImage.getSelectionModel().select(imgRow);
+                        imgRow--;
+                        pnEditMode = oTrans.getEditMode(); 
+                        generateImages();
+                    }
+                    break;
+//                case "btnImgMoveDown":
+//                    if(oTrans.setDescriptPriority(dtailRow, false)){ 
+//                        tblProdDesc.getSelectionModel().select(dtailRow);
+//                        dtailRow++;
+//                        pnEditMode = oTrans.getEditMode(); 
+//                        generateDescripton();
+//                    }
+//                    break;
                 case "btnUpdate":
-                        if (oTrans.UpdateTransaction()){
-                            pnEditMode = oTrans.getEditMode(); 
-                        } else 
-                          MsgBox.showOk(oTrans.getMessage());
+                    if (oTrans.OpenTransaction(txtField01.getText())){
+                          if (oTrans.UpdateTransaction()){
+                                pnEditMode = oTrans.getEditMode(); 
+//                            loadProducts();
+                        } else {
+                            MsgBox.showOk(oTrans.getMessage());
+                        }
+                    } else {
+                        MsgBox.showOk(oTrans.getMessage());
+                    }
+//                        if (oTrans.UpdateTransaction()){
+//                            pnEditMode = oTrans.getEditMode(); 
+//                        } else 
+//                          MsgBox.showOk(oTrans.getMessage());
                     break;
                 case "btnCancel":
                     if (ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to disregard changes?") == true){  
@@ -500,6 +718,13 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                     }else{
                         loadListingDate("End");
                         txtField11.setText(listingEnd);
+                    }
+                    break;
+               case "btnRefresh":
+                    {
+                        txtSeeks98.clear();
+                        txtSeeks99.clear();
+                        loadProducts();
                     }
                     break;
                 case "btnClose":
@@ -532,7 +757,6 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             
             fxmlLoader.setController(loControl);
             
-            //load the main interface
             Parent parent = fxmlLoader.load();
                 
             parent.setOnMousePressed((MouseEvent event) -> {
@@ -544,7 +768,6 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 stage.setY(event.getScreenY() - yOffset);
             });
             
-            //set the main interface as the scene
             Scene scene = new Scene(parent);
             stage.setScene(scene);
             stage.initStyle(StageStyle.TRANSPARENT);
@@ -552,8 +775,6 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             stage.setTitle(title);
             stage.showAndWait();
             
-//            loadDetail();
-//            loadIncentives();
         } catch (IOException e) {
             e.printStackTrace();
             MsgBox.showOk(e.getMessage());
@@ -572,14 +793,22 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         
         btnMoveUp.setDisable(!lbShow);
         btnMoveDown.setDisable(!lbShow);
+        btnImgMoveUp.setDisable(!lbShow);
+//        btnImgMoveDown.setDisable(!lbShow);
+//        btnImgBrowse.setDisable(!lbShow);
+//        tblProdImage.setDisable(!lbShow);
+        imgProduct.setDisable(!lbShow);
         btnAddDesc.setDisable(!lbShow);
         btnRemoveDesc.setDisable(!lbShow);
         btnSave.setManaged(lbShow); 
        
+        btnAddImg.setDisable(!lbShow);
+        btnRemoveImg.setDisable(!lbShow);
 //        btnBrowse.setVisible(!lbShow);
 //        
         txtField21.setDisable(!lbShow);
         txtField03.setDisable(!lbShow);
+        txtField04.setDisable(!lbShow);
         txtField05.setDisable(!lbShow);
         txtField06.setDisable(!lbShow);
         txtField07.setDisable(!lbShow);
@@ -587,7 +816,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         txtField09.setDisable(!lbShow);
         btnListingStart.setDisable(!lbShow);
         btnListingEnd.setDisable(!lbShow);
-        txtField23  .setDisable(!lbShow);
+        txtField23.setDisable(!lbShow);
         txtField24.setDisable(!lbShow);
         txtField25.setDisable(!lbShow);
         txtSeeks98.setDisable(lbShow);
@@ -597,22 +826,28 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             btnBrowse.setManaged(false);
             btnNew.setManaged(false);
             btnUpdate.setManaged(false); 
-            EventHandler<MouseEvent> mouseEventHandler =new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    System.out.println("Mouse event handler has been called.");
-                }
-            };
-            txtField10.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventHandler);
-//            txtField10.setOnAction(e -> {
-//                System.out.println("Clicked txtField10");
-//              
-//            });
-            txtField11.setOnMouseClicked((MouseEvent e) -> {
-                System.out.println("Clicked txtField11");
-            });
         }
     }
+    private void autoSearch(TextField txtField){
+        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
+        txtField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(products-> {
+                    // If filter text is empty, display all persons.
+                if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                }
+                // Compare first name and last name of every person with filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+                if(lnIndex == 98){
+                    return (products.getProdIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.
+
+                }else{
+                    return (products.getProdIndex03().toLowerCase().contains(lowerCaseFilter)|| products.getProdIndex15().toLowerCase().contains(lowerCaseFilter)
+                            || products.getProdIndex16().toLowerCase().contains(lowerCaseFilter)); // Does not match.
+                }
+            });
+        });
+    } 
     private void initGrid() {
         prodIndex01.setStyle("-fx-alignment: CENTER;");
         prodIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
@@ -630,9 +865,18 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 header.setReordering(false);
             });
         });
-        tblProducts.setItems(data);
-        tblProducts.getSelectionModel().select(pnRow + 1);
-        tblProducts.autosize();
+        filteredData = new FilteredList<>(data, b -> true);
+        autoSearch(txtSeeks98);
+        autoSearch(txtSeeks99);
+        // 3. Wrap the FilteredList in a SortedList. 
+        SortedList<ProductModel> sortedData = new SortedList<>(filteredData);
+
+        // 4. Bind the SortedList comparator to the TableView comparator.
+        // 	  Otherwise, sorting the TableView would have no effect.
+        sortedData.comparatorProperty().bind(tblProducts.comparatorProperty());
+
+        // 5. Add sorted (and filtered) data to the table.
+        tblProducts.setItems(sortedData);
     }
     private void initGridDetail(){
         
@@ -654,29 +898,75 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     }
     @FXML
     private void tblProducts_Clicked(MouseEvent event) {
-        pnRow = tblProducts.getSelectionModel().getSelectedIndex() + 1;
-        if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
-            MsgBox.showOk("Are you sure you want to disregard changes???");
-        }else{
-            getSelectedItems();
+        if(!tblProducts.getItems().isEmpty()){
+            pnRow = tblProducts.getSelectionModel().getSelectedIndex();
+            if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
+                MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
+            }else{
+                txtField04.clear();
+                getSelectedItems();
+                tblProducts.setOnKeyReleased((KeyEvent t)-> {
+                    KeyCode key = t.getCode();
+                    switch (key){
+                        case DOWN:
+                            if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
+                                MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
+                            }else{
+                                pnRow = tblProducts.getSelectionModel().getSelectedIndex();
+                                if (pnRow == tblProducts.getItems().size()) {
+                                    pnRow = tblProducts.getItems().size();
+                                    getSelectedItems();
+                                }else {
+        //                            int y = 1;
+        //                            pnRow = pnRow + y;
+                                    getSelectedItems();
+                                }
+                            }
+                            
+                            break;
+                        case UP:
+                            if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
+                                MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
+                            }else{
+                                int pnRows = 0;
+                                int x = 1;
+                                pnRows = tblProducts.getSelectionModel().getSelectedIndex();
+                                pnRow = pnRows; 
+                                getSelectedItems();
+                            }
+                            break;
+                        default:
+                            return; 
+                    }
+                });
+            }
         }
     }
     @FXML
     private void tblProdDesc_Clicked(MouseEvent event) {
-        dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
-        txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
-        System.out.println(dtailRow);
-    }
-     private void getSelectedItems(){
-          try {
-            //load to grid the incentives.
-            txtField01.setText((String)oTrans.getDetail(pnRow, "sListngID"));
-            txtField21.setText((String)oTrans.getDetail(pnRow, "xBarCodex"));
-            txtField03.setText((String)oTrans.getDetail(pnRow, "sBriefDsc"));
-            if(!oTrans.getDetail(pnRow, "sDescript").toString().trim().isEmpty()){
+        try{
+            if(!tblProdDesc.getItems().isEmpty()){
+                dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
+                if(dtailRow < 0 ){
+                    dtailRow++;
+                }
+                txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+                tblProdDesc.getSelectionModel().select(dtailRow);
+            }
+        }catch(NullPointerException ex){
+            System.out.println(ex);
+        }
+    } 
+    private void getSelectedItems(){
+        try {
+
+            txtField01.setText(filteredData.get(pnRow).getProdIndex02());
+            txtField21.setText(filteredData.get(pnRow).getProdIndex03());
+            txtField03.setText(filteredData.get(pnRow).getProdIndex04());
+            if(!filteredData.get(pnRow).getProdIndex05().trim().isEmpty()){
                 dataDesc.clear();
                 JSONParser parser = new JSONParser();
-                JSONArray jsonArray = (JSONArray) parser.parse((String) oTrans.getDetail(pnRow, "sDescript").toString().replaceAll("'","\""));
+                JSONArray jsonArray = (JSONArray) parser.parse(filteredData.get(pnRow).getProdIndex05().replaceAll("'","\""));
 
 
                 for(int i=0; i<jsonArray.size();i++) {
@@ -687,27 +977,47 @@ public class ItemManagementController implements Initializable, ScreenInterface 
 
                 if(!dataDesc.isEmpty()){
                     initGridDetail();
-                    txtField04.setText(dataDesc.get(0).getDetailIndex02());
+  //                    txtField04.setText(dataDesc.get(0).getDetailIndex02());
                 }
             }
-            txtField05.setText(priceWithOutDecimal(Integer.valueOf(oTrans.getDetail(pnRow, "nTotalQty").toString())));
-            txtField06.setText(priceWithOutDecimal(Integer.valueOf(oTrans.getDetail(pnRow, "nQtyOnHnd").toString())));
-            txtField07.setText(priceWithOutDecimal(Integer.valueOf(oTrans.getDetail(pnRow, "nResvOrdr").toString())));
-            txtField08.setText(priceWithOutDecimal(Integer.valueOf(oTrans.getDetail(pnRow, "nSoldQtyx").toString())));
-            txtField09.setText(priceWithDecimal(Double.valueOf(oTrans.getDetail(pnRow, "nUnitPrce").toString())));
+            img_data.clear();
+            if(!filteredData.get(pnRow).getProdIndex19().trim().isEmpty()){
+                JSONParser parser = new JSONParser();
+                JSONArray jsonArray = (JSONArray) parser.parse(filteredData.get(pnRow).getProdIndex19().replaceAll("'","\""));
 
-            txtField23.setText((String)oTrans.getDetail(pnRow, "xBrandNme"));
-            txtField24.setText((String)oTrans.getDetail(pnRow, "xModelNme"));
-            txtField25.setText((String)oTrans.getDetail(pnRow, "xColorNme"));
-            txtField26.setText((String)oTrans.getDetail(pnRow, "xCategrNm"));
-            txtField10.setText((String)oTrans.getDetail(pnRow, "dListStrt"));
-            txtField11.setText((String)oTrans.getDetail(pnRow, "dListEndx "));
-            txtField18.setText((String)oTrans.getDetail(pnRow, "dInactive"));
-            txtField19.setText((String)oTrans.getDetail(pnRow, "dActivate"));
-        } catch (SQLException ex) {
-            MsgBox.showOk(ex.getMessage());
-        } catch (ParseException ex) {
-            Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
+
+                for(int i=0; i<jsonArray.size();i++) {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    img_data.add(new ImageModel(String.valueOf(i+1),
+                            (String)jsonObject.get("sImageURL")));
+                }
+                
+                if(!img_data.isEmpty()){
+                    
+                    tblProdImage.setDisable(false);
+                    imgRow = 0;
+                    initImageGrid();
+                }else{
+                     tblProdImage.setDisable(true);
+                }
+            }
+            txtField05.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex06())));
+            txtField06.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex07())));
+            txtField07.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex08())));
+            txtField08.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex09())));
+            txtField09.setText(priceWithDecimal(Double.valueOf(filteredData.get(pnRow).getProdIndex10())));
+
+            txtField23.setText(filteredData.get(pnRow).getProdIndex15());
+            txtField24.setText(filteredData.get(pnRow).getProdIndex16());
+            txtField25.setText(filteredData.get(pnRow).getProdIndex17());
+            txtField26.setText(filteredData.get(pnRow).getProdIndex18());
+            txtField10.setText(filteredData.get(pnRow).getProdIndex11());
+            txtField11.setText(filteredData.get(pnRow).getProdIndex12());
+            txtField18.setText(filteredData.get(pnRow).getProdIndex13());
+            txtField19.setText(filteredData.get(pnRow).getProdIndex14());
+            
+        }catch (ParseException ex) {
+            MsgBox.showOk("error");
         } 
     }
     private void generateDescripton(){
@@ -737,6 +1047,34 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void generateImages(){
+        try {
+            
+            img_data.clear();
+            if(oTrans.getMaster("sImagesxx") != null){
+                JSONParser parser = new JSONParser();
+                JSONArray jsonArray = (JSONArray) parser.parse((String) oTrans.getMaster("sImagesxx").toString().replaceAll("'","\""));
+
+
+                for(int i=0; i<jsonArray.size();i++) {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        img_data.add(new ImageModel(String.valueOf(i+1),
+                                (String)jsonObject.get("sImageURL")));
+                }
+
+                if(!img_data.isEmpty()){
+                   
+                    tblProdImage.setDisable(false);
+                    initImageGrid();
+                }else{
+                     tblProdImage.setDisable(true);
+                }
+            }
+        } catch (SQLException | ParseException ex) {
+                System.out.println(ex.getMessage());
         }
     }
     private void unloadForm(){
@@ -770,17 +1108,22 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         }
         return null;
     }
+    private void item_EventHandler(ActionEvent e){
+        CheckMenuItem check_menu = (CheckMenuItem)e.getSource();
+        int lnIndex = Integer.parseInt(check_menu.getId().substring(9, 10));
+        loadChoiceBox();
+    }
     private void txtField_KeyPressed(KeyEvent event){
         TextField txtField = (TextField)event.getSource();        
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
-        System.out.println(lnIndex);
+        
         try{
            switch (event.getCode()){
             case F3:
             case ENTER:
                 switch (lnIndex){
                     case 3: /*Search Description*/
-                        if (oTrans.searchItem(txtField04.getText(), false,false)){
+                        if (oTrans.searchItem(txtField03.getText(), false,false)){
                                 pnEditMode = oTrans.getEditMode();
                             } else 
                                 MsgBox.showOk(oTrans.getMessage());
@@ -808,28 +1151,94 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         }
         
     }
-    
-    private void onMouseClick(MouseEvent event) {
-        TextField txtField = (TextField)event.getSource();        
-        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
-//        try{
-            switch (lnIndex){
-                case 10: /*Search Description*/
-                     MsgBox.showOk("10 " + txtField.getId());
-                    break;
-                case 11: /*Search Barcode*/
-                     MsgBox.showOk("11 " + txtField.getId());
-                    break;
-            }
-//        }catch(SQLException e){
-//                MsgBox.showOk(e.getMessage());
-//        }
-    }
     public void tblproductdetail_column(){
          detailIndex01.prefWidthProperty().bind(tblProdDesc.widthProperty().multiply(0.035));
          detailIndex02.prefWidthProperty().bind(tblProdDesc.widthProperty().multiply(0.273));
           
     }
 
+    private void initImageGrid() {
+        imageIndex01.setStyle("-fx-alignment: CENTER;");
+        imageIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        imageIndex01.setCellValueFactory(new PropertyValueFactory<>("imgIndex01"));
+        imageIndex02.setCellValueFactory(new PropertyValueFactory<>("imgIndex02"));
+       
+        tblProdImage.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
+            TableHeaderRow header = (TableHeaderRow) tblProdImage.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                header.setReordering(false);
+            });
+        });
+        tblProdImage.setItems(img_data);
+        tblProdImage.getSelectionModel().select(imgRow);
+        tblProdImage.autosize();
+        loadImage(imgRow);
+    }
+    
+    private static void configureFileChooser(
+        final FileChooser fileChooser) {      
+            fileChooser.setTitle("View Pictures");
+            fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+            );        
+            fileChooser.getExtensionFilters().clear();
+            fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.*"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png")
+            );
+    }
+ 
+    private void openFile(File file) {
+        try {
+            desktop.open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(
+                Level.SEVERE, null, ex
+            );
+        }
+    }
+    @FXML
+    private void tblProdImage_Clicked(MouseEvent event) {
+        if(!tblProdImage.getItems().isEmpty()){
+            imgRow = tblProdImage.getSelectionModel().getSelectedIndex();
+        
+            loadImage(imgRow);
+            tblProdImage.setOnKeyReleased((KeyEvent t)-> {
+                KeyCode key = t.getCode();
+                switch (key){
+                    case DOWN:
+                        imgRow = tblProdImage.getSelectionModel().getSelectedIndex();
+                        if (imgRow == tblProdImage.getItems().size()) {
+                            imgRow = tblProdImage.getItems().size();
+                            loadImage(imgRow);
+                        }else {
+    //                            int y = 1;
+    //                            pnRow = pnRow + y;
+                            loadImage(imgRow);
+                        }
+                        break;
+                    case UP:
+                        int pnRows = 0;
+                        int x = 1;
+                        pnRows = tblProdImage.getSelectionModel().getSelectedIndex();
+                            imgRow = pnRows; 
+                            loadImage(imgRow);
+                        break;
+                    default:
+                        break; 
+                }
+            });
+        }
+        
+    }
+    private void loadImage(int row){
+        if(row < 0 ){
+            row++;
+        }
+        Image image = new Image(img_data.get(row).getImgIndex02());
+        imgProduct.setImage(image);
+        imgDefault.setImage(image);
+    }
 }
 

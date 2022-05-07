@@ -29,7 +29,9 @@ public class ProductModel {
     private SimpleStringProperty prodIndex15;  
     private SimpleStringProperty prodIndex16;  
     private SimpleStringProperty prodIndex17;    
-    private SimpleStringProperty prodIndex18;  
+    private SimpleStringProperty prodIndex18;   
+    private SimpleStringProperty prodIndex19;  
+
 
     public ProductModel(){
         
@@ -42,7 +44,7 @@ public class ProductModel {
             String prodIndex12, String prodIndex13,
             String prodIndex14, String prodIndex15,
             String prodIndex16, String prodIndex17,
-            String prodIndex18) {
+            String prodIndex18,String prodIndex19) {
         this.prodIndex01 = new SimpleStringProperty(prodIndex01);
         this.prodIndex02 = new SimpleStringProperty(prodIndex02);
         this.prodIndex03 = new SimpleStringProperty(prodIndex03);
@@ -61,6 +63,7 @@ public class ProductModel {
         this.prodIndex16 = new SimpleStringProperty(prodIndex16);
         this.prodIndex17 = new SimpleStringProperty(prodIndex17);
         this.prodIndex18 = new SimpleStringProperty(prodIndex18);
+        this.prodIndex19 = new SimpleStringProperty(prodIndex19);
     }
     
     public String getProdIndex01() {
@@ -133,5 +136,9 @@ public class ProductModel {
     
     public String getProdIndex18() {
         return prodIndex18.get();
+    }
+    
+    public String getProdIndex19() {
+        return prodIndex19.get();
     }
 }
