@@ -5,9 +5,9 @@
  */
 package org.rmj.marketplace.controller;
 
-import com.jfoenix.controls.JFXTextArea;
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import org.rmj.marketplace.model.ScreenInterface;
@@ -15,19 +15,15 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.DateTimeException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,11 +31,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -56,12 +50,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.beans.value.*;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.SelectionMode;
-import javafx.util.StringConverter;
+import javax.imageio.ImageIO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -77,11 +68,6 @@ import org.rmj.marketplace.model.ImageModel;
 import org.rmj.marketplace.model.ItemDescriptionModel;
 import org.rmj.marketplace.model.ProductModel;
 
-/**
- * FXML Controller class
- *
- * @author user
- */
 public class ItemManagementController implements Initializable, ScreenInterface {
     private final String pxeModuleName = "Item Management";
 
@@ -102,6 +88,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private double xOffset = 0;
     private double yOffset = 0;
     private  FileChooser fileChooser;
+    private String imagePath = "D:/Guanzon/MarketPlaceImages";
    
     private Desktop desktop = Desktop.getDesktop();
     private boolean pbLoaded = false;
@@ -289,6 +276,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         oTrans.setWithUI(true);
         
         fileChooser = new FileChooser();
+        generateDirectory();
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnNew.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);
@@ -616,57 +604,40 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                     configureFileChooser(fileChooser);                               
                     File imgFile = 
                         fileChooser.showOpenDialog(AnchorItemManagement.getScene().getWindow());
-                    System.out.println(imgFile.toURI().toString());
-        //                    img_data.clear();
                     if (imgFile != null) {
-//                        int index = img_data.size() + 1;
-                        if (oTrans.addImage(imgFile.toURI().toString())){
+                        BufferedImage image = ImageIO.read(new File(imgFile.getAbsolutePath()));
+                        File imgFilePath =  new File(imagePath, imgFile.getName());
+                        if (imgFilePath.exists() && imgFilePath.isFile() && imgFilePath.canWrite()) {
+                            imgFilePath.delete();//delete existing image file
+                        }
+                        ImageIO.write(image , "jpg",imgFilePath);
+                        if (oTrans.addImage(imgFilePath.toURI().toString())){
                             pnEditMode = oTrans.getEditMode();
-                            img_data.add(new ImageModel(String.valueOf(img_data.size()), imgFile.toURI().toString()));
+                            img_data.add(new ImageModel(String.valueOf(img_data.size()), imgFilePath.toURI().toString()));
 
                             generateImages();
 
-//                                initGridDetail();
                         } else {
                             MsgBox.showOk(oTrans.getMessage());
                         }
-//                        for (File file : list) {
-                            
-        //                            openFile(file);
-//                            boolean imgIsExist = false;
-//                            for(int x = 0; x < img_data.size(); x++){
-//                                if(img_data.get(x).getImgIndex02().equalsIgnoreCase(file.toURI().toString())){
-//                                    imgIsExist = true;
-//                                }
-//
-//                            }
-//                            if(!imgIsExist){
-//                                if (oTrans.addImage(file.toURI().toString())){
-//                                    pnEditMode = oTrans.getEditMode();
-//                                    img_data.add(new ImageModel(String.valueOf(img_data.size()), file.toURI().toString()));
-//
-//                                    generateImages();
-//
-////                                initGridDetail();
-//                                } else {
-//                                    MsgBox.showOk(oTrans.getMessage());
-//                                }
-////                                ImageModel imgModel = new ImageModel(String.valueOf(index), file.toURI().toString());
-////                                img_data.add(imgModel);
-//                            }
-//                            index++;
+//                       
 //                        }
                     }
                     break;
                 case "btnRemoveImg":
-//                    img_data.remove(imgRow);
-                    if (oTrans.delImage(imgRow)){
-
+                    System.out.println(img_data.size());
+                    if(img_data.size() > 0){
+                        btnRemoveImg.setDisable(false);
+                        if (oTrans.delImage(imgRow)){
                            generateImages();
 //                           txtField04.clear();
 //                           txtField04.requestFocus();
-                       } else 
-                         MsgBox.showOk(oTrans.getMessage());
+                        } else 
+                          MsgBox.showOk(oTrans.getMessage());
+                    }else{
+                        btnRemoveImg.setDisable(true);
+                    }
+                    
                     break;
                 case "btnImgMoveUp":
                     if(oTrans.setImagePriority(imgRow, true)){ 
@@ -677,9 +648,9 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                     }
                     break;
 //                case "btnImgMoveDown":
-//                    if(oTrans.setDescriptPriority(dtailRow, false)){ 
-//                        tblProdDesc.getSelectionModel().select(dtailRow);
-//                        dtailRow++;
+//                    if(oTrans.setDescriptPriority(imgRow, false)){ 
+//                        tblProdImage.getSelectionModel().select(dtailRow);
+//                        imgRow++;
 //                        pnEditMode = oTrans.getEditMode(); 
 //                        generateDescripton();
 //                    }
@@ -740,6 +711,8 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             MsgBox.showOk(e.getMessage());
         } catch (ParseException ex) {
             Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
     
@@ -794,6 +767,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         btnMoveUp.setDisable(!lbShow);
         btnMoveDown.setDisable(!lbShow);
         btnImgMoveUp.setDisable(!lbShow);
+        tblProducts.setDisable(lbShow);
 //        btnImgMoveDown.setDisable(!lbShow);
 //        btnImgBrowse.setDisable(!lbShow);
 //        tblProdImage.setDisable(!lbShow);
@@ -900,58 +874,82 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private void tblProducts_Clicked(MouseEvent event) {
         if(!tblProducts.getItems().isEmpty()){
             pnRow = tblProducts.getSelectionModel().getSelectedIndex();
-            if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
-                MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
-            }else{
-                txtField04.clear();
-                getSelectedItems();
-                tblProducts.setOnKeyReleased((KeyEvent t)-> {
-                    KeyCode key = t.getCode();
-                    switch (key){
-                        case DOWN:
-                            if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
-                                MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
-                            }else{
-                                pnRow = tblProducts.getSelectionModel().getSelectedIndex();
-                                if (pnRow == tblProducts.getItems().size()) {
-                                    pnRow = tblProducts.getItems().size();
-                                    getSelectedItems();
-                                }else {
-        //                            int y = 1;
-        //                            pnRow = pnRow + y;
-                                    getSelectedItems();
-                                }
-                            }
-                            
-                            break;
-                        case UP:
-                            if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
-                                MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
-                            }else{
-                                int pnRows = 0;
-                                int x = 1;
-                                pnRows = tblProducts.getSelectionModel().getSelectedIndex();
-                                pnRow = pnRows; 
+            txtField04.clear();
+            getSelectedItems();
+            tblProducts.setOnKeyReleased((KeyEvent t)-> {
+                KeyCode key = t.getCode();
+                switch (key){
+                    case DOWN:
+                        if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
+                            MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
+                        }else{
+                            pnRow = tblProducts.getSelectionModel().getSelectedIndex();
+                            if (pnRow == tblProducts.getItems().size()) {
+                                pnRow = tblProducts.getItems().size();
+                                getSelectedItems();
+                            }else {
+    //                            int y = 1;
+    //                            pnRow = pnRow + y;
                                 getSelectedItems();
                             }
-                            break;
-                        default:
-                            return; 
-                    }
-                });
-            }
+                        }
+
+                        break;
+                    case UP:
+                        if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
+                            MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
+                        }else{
+                            int pnRows = 0;
+                            int x = 1;
+                            pnRows = tblProducts.getSelectionModel().getSelectedIndex();
+                            pnRow = pnRows; 
+                            getSelectedItems();
+                        }
+                        break;
+                    default:
+                        return; 
+                }
+            });
         }
     }
     @FXML
     private void tblProdDesc_Clicked(MouseEvent event) {
         try{
             if(!tblProdDesc.getItems().isEmpty()){
-                dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
-                if(dtailRow < 0 ){
-                    dtailRow++;
-                }
-                txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
-                tblProdDesc.getSelectionModel().select(dtailRow);
+            dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
+            
+            txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+            tblProdDesc.getSelectionModel().select(dtailRow);
+            tblProdDesc.setOnKeyReleased((KeyEvent t)-> {
+                KeyCode key = t.getCode();
+                    switch (key){
+                        case DOWN:
+                            dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
+                            if (dtailRow == tblProdDesc.getItems().size()) {
+                                dtailRow = tblProdDesc.getItems().size();
+
+                                txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+                                tblProdDesc.getSelectionModel().select(dtailRow);
+                            }else {
+    //                            int y = 1;
+    //                            pnRow = pnRow + y;
+
+                                txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+                                tblProdDesc.getSelectionModel().select(dtailRow);
+                            }
+                            break;
+                        case UP:
+                            int pnRows = 0;
+                            int x = 1;
+                            pnRows = tblProdDesc.getSelectionModel().getSelectedIndex();
+                            dtailRow = pnRows; 
+                            txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+                            tblProdDesc.getSelectionModel().select(dtailRow);
+                            break;
+                        default:
+                            return; 
+                    }
+                });
             }
         }catch(NullPointerException ex){
             System.out.println(ex);
@@ -1035,13 +1033,14 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             }
 
             if(!dataDesc.isEmpty()){
-                initGridDetail();
                  txtField04.setText(dataDesc.get(0).getDetailIndex02());
                  tblProdDesc.setDisable(false);
             }else{
                  txtField04.setText("");
                  tblProdDesc.setDisable(true);
             }
+            
+            initGridDetail();
             
         } catch (SQLException ex) {
             Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
@@ -1064,14 +1063,15 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                         img_data.add(new ImageModel(String.valueOf(i+1),
                                 (String)jsonObject.get("sImageURL")));
                 }
-
-                if(!img_data.isEmpty()){
-                   
-                    tblProdImage.setDisable(false);
-                    initImageGrid();
-                }else{
-                     tblProdImage.setDisable(true);
-                }
+               
+                
+            }
+            if(!img_data.isEmpty()){
+                tblProdImage.setDisable(false);
+                initImageGrid();
+            }else{
+                tblProdImage.setDisable(true);
+                initImageGrid();
             }
         } catch (SQLException | ParseException ex) {
                 System.out.println(ex.getMessage());
@@ -1236,9 +1236,24 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         if(row < 0 ){
             row++;
         }
-        Image image = new Image(img_data.get(row).getImgIndex02());
-        imgProduct.setImage(image);
-        imgDefault.setImage(image);
+         if(img_data.size() > 0){
+            Image image = new Image(img_data.get(row).getImgIndex02());
+            imgProduct.setImage(image);
+            imgDefault.setImage(image);
+        }else{
+            imgDefault.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+            imgProduct.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+        }
+    }
+    private void generateDirectory(){
+        File dir = new File(imagePath);
+        if (!dir.exists()){
+            if (dir.mkdirs()) {
+                System.out.println("Multiple directories are created!");
+            } else {
+                System.out.println("Failed to create multiple directories!");
+            }
+        }
     }
 }
 

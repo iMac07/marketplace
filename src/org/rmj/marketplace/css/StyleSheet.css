@@ -183,6 +183,15 @@
         orange,
         white;
 }
+.text-area:disabled {
+    -fx-opacity: 1;
+    -fx-resize: auto;
+    -fx-opacity: 1.0;
+    -fx-background-color:
+        grey,
+        white;
+   -fx-text-fill: black;
+}
 .text-area .scroll-pane {
     -fx-hbar-policy: never;
     -fx-vbar-policy: never;
@@ -204,6 +213,16 @@
         orange,
         white;
 }
+.text-field:disabled {
+    -fx-font-size: 10pt;
+    -fx-min-height: 26;
+    -fx-opacity: 1.0;
+    -fx-background-color:
+        grey,
+        white;
+    -fx-textflow: wrap;
+}
+
 .menu-button {
     -fx-font-size: 10pt;
     -fx-min-height: 26;

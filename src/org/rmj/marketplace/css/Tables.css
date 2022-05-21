@@ -1,9 +1,19 @@
 .table-view{
+    -fx-opacity: 1;
    -fx-background-color: transparent;
 }
-
 .table-view:focused{
     -fx-background-color: transparent;
+}
+
+.table-view .table-row-cell:disabled{
+    -fx-opacity: 1;
+}
+
+.table-view .column-header-background .label:disabled{
+    -fx-opacity: 1;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
 }
 .table-row-cell:empty {
     -fx-background-color: white;
