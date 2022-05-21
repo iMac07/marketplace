@@ -141,7 +141,7 @@
                                                                   <Label layoutX="247.0" layoutY="369.0" text="Date Inactive :" GridPane.columnIndex="5" GridPane.rowIndex="13" />
                                                                   <TextField fx:id="txtField19" disable="true" editable="false" focusTraversable="false" layoutX="338.0" layoutY="365.0" minHeight="-Infinity" GridPane.columnIndex="6" GridPane.rowIndex="13" />
                                                                   <Label layoutX="20.0" layoutY="369.0" text="Qty on Hand :" GridPane.rowIndex="10" />
-                                                                  <ImageView fx:id="imgDefault" fitHeight="240.0" fitWidth="200.0" nodeOrientation="INHERIT" pickOnBounds="true" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="4" GridPane.valignment="BASELINE" GridPane.vgrow="ALWAYS">
+                                                                  <ImageView fx:id="imgDefault" fitHeight="200.0" fitWidth="200.0" nodeOrientation="INHERIT" pickOnBounds="true" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="4" GridPane.valignment="BASELINE" GridPane.vgrow="ALWAYS">
                                                                      <image>
                                                                         <Image url="@../images/no-image-available_1.png" />
                                                                      </image>
@@ -283,7 +283,7 @@
                                                                   <RowConstraints minHeight="30.0" />
                                                                </rowConstraints>
                                                                <children>
-                                                                  <ImageView fx:id="imgProduct" fitHeight="200.0" fitWidth="200.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="4" GridPane.valignment="BASELINE" GridPane.vgrow="ALWAYS">
+                                                                  <ImageView fx:id="imgProduct" fitHeight="200.0" fitWidth="200.0" nodeOrientation="INHERIT" pickOnBounds="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="4" GridPane.valignment="BASELINE" GridPane.vgrow="ALWAYS">
                                                                      <image>
                                                                         <Image url="@../images/iphone.jpg" />
                                                                      </image>
