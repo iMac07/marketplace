@@ -18,6 +18,10 @@
 .table-row-cell:empty {
     -fx-background-color: white;
 }
+.table-row-cell:hover {
+    -fx-background-color: #93f9b911;
+    -fx-text-background-color: orange;
+}
  
 .table-row-cell:empty .table-cell {
     -fx-border-width: 0px;
@@ -39,7 +43,7 @@
 
 .table-view .table-cell{
     -fx-text-fill: black;
-    -fx-font-size: 11px;
+    -fx-font-size: 13px;
     -fx-font-weight: 300;
     -fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
 }
@@ -47,7 +51,7 @@
     -fx-background-color: -fx-table-cell-border-color, #D0D3D4;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em; /* 0 */
-    -fx-cell-size: 20px;
+    -fx-cell-size: 25px;
 }
 .table-row-cell:selected {
     -fx-background-color: #B3B6B7;
