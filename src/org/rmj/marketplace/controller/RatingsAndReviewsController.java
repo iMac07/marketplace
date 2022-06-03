@@ -109,7 +109,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     @FXML
     private Pagination pagination1;
 
-    private static final int ROWS_PER_PAGE = 1;
+    private static final int ROWS_PER_PAGE = 30;
     private FilteredList<RatingsReviewModel> filteredData;
 
     private final ObservableList<RatingsReviewModel> data_ratings = FXCollections.observableArrayList();
@@ -201,16 +201,9 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                             oTrans.getDetail(lnCtr, "dTimeStmp").toString(),
                             (String) oTrans.getDetail(lnCtr, "sImagesxx"),
                             (String) oTrans.getDetail(lnCtr, "sCompnyNm")));
-                  System.out.println("sReadxxxx. --> " +  (String) oTrans.getDetail(lnCtr, 11));
-                    
-                    
+                  System.out.println("sReadxxxx. --> " +  (String) oTrans.getDetail(lnCtr, 11));    
                 }
-                if ("1".equals(recdstat) ) {
-                        initGrid();
-                    } else {
-                        initGrid1();
-                    }
-                
+                loadTab();
             } 
         } catch (SQLException ex) {
             System.out.println("SQLException" + ex.getMessage());
@@ -351,23 +344,27 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         }
         if(lnIndex == 99){  
         }
-        if ("1".equals(recdstat) ) {
-            int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0 / ROWS_PER_PAGE));
-            pagination.setPageCount(totalPage);
-            pagination.setCurrentPageIndex(0);
-            changeTableView(0, ROWS_PER_PAGE);
-            pagination.currentPageIndexProperty().addListener(
-                    (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
-        } else {
-           int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0 / ROWS_PER_PAGE));
-            pagination1.setPageCount(totalPage);
-            pagination1.setCurrentPageIndex(0);
-            changeTableView(0, ROWS_PER_PAGE);
-            pagination1.currentPageIndexProperty().addListener(
-                    (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
-        }
+        loadTab();
        
     } 
+     
+    private void loadTab(){
+        if ("1".equals(recdstat) ) {
+                int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0 / ROWS_PER_PAGE));
+                pagination.setPageCount(totalPage);
+                pagination.setCurrentPageIndex(0);
+                changeTableView(0, ROWS_PER_PAGE);
+                pagination.currentPageIndexProperty().addListener(
+                        (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+            } else {
+               int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0 / ROWS_PER_PAGE));
+                pagination1.setPageCount(totalPage);
+                pagination1.setCurrentPageIndex(0);
+                changeTableView(0, ROWS_PER_PAGE);
+                pagination1.currentPageIndexProperty().addListener(
+                        (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+            }
+    }
     
     private void changeTableView(int index, int limit) {
         int fromIndex = index * limit;
