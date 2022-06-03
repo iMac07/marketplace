@@ -178,25 +178,21 @@
         white;
    -fx-text-fill: black;
 }
-.text-area:focused {
-    -fx-background-color:
-        orange,
-        white;
-}
-.text-area:disabled {
-    -fx-opacity: 1;
-    -fx-resize: auto;
-    -fx-opacity: 1.0;
-    -fx-background-color:
-        grey,
-        white;
-   -fx-text-fill: black;
-}
+
 .text-area .scroll-pane {
     -fx-hbar-policy: never;
     -fx-vbar-policy: never;
     -fx-focus-color: transparent;
+    -fx-background-color: transparent;
+    -fx-opacity: 1.0;
+}.text-area .scroll-pane:disabled {
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
+    -fx-focus-color: transparent;
+    -fx-background-color: transparent;
+    -fx-opacity: 1.0;
 }
+
 .text-field {
     -fx-font-size: 10pt;
     -fx-min-height: 26;
@@ -207,13 +203,13 @@
     -fx-textflow: wrap;
 }
 
-.text-field:focused {
+.text-field, .text-area:focused {
     -fx-min-height: 26;
     -fx-background-color:
         orange,
         white;
 }
-.text-field:disabled {
+.text-field, .text-area:disabled {
     -fx-font-size: 10pt;
     -fx-min-height: 26;
     -fx-opacity: 1.0;
@@ -366,4 +362,67 @@
 
 .dash-client:hover{
     -fx-background-color: #5fb962;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * LISTVIEW CSS                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+
+.list-view {
+    -fx-border-image-width: 0;
+    -fx-opacity: 1;
+}
+
+.list-view .label:disabled {
+    -fx-opacity: 1;
+}
+.list-view > .virtual-flow > .corner {
+    -fx-background-color: transparent;
+}
+.list-cell {
+    -fx-cell-size: 50 ;
+    -fx-animated: true;
+    -fx-padding: 1px;
+    -fx-opacity: 1;
+    -fx-text-fill: black;
+}
+.list-cell:filled:selected:focused:disabled, 
+.list-cell:filled:selected:disabled {
+    -fx-opacity: 1;
+}
+
+/*.list-cell:hover{
+    -fx-background-color: #dbdbdb;
+}*/
+
+
+#statusList {
+    -fx-box-border: transparent;
+}
+
+#userList {
+    -fx-box-border: transparent;
+}
+
+#listHbox {
+    -fx-background-color: #d5d5d5;
+    -fx-padding: 0.2;
+    -fx-spacing: -2;
+}
+#listHbox:disabled {
+    -fx-background-color: #d5d5d5;
+    -fx-padding: 0.2;
+    -fx-spacing: -2;
+    -fx-opacity: 1;
+    
+}
+
+#onlineUsersHbox {
+    -fx-border-color: #d5d5d5;
+    -fx-border-width: 1px;
+    -fx-padding: 0.2;
+    -fx-spacing: -2;
 }

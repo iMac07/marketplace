@@ -4,7 +4,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -17,10 +18,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="1043.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="1043.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -47,13 +47,14 @@
                            <left>
                               <AnchorPane style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
                                  <children>
-                                    <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TabPane fx:id="tabPaneSelection" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <tabs>
                                           <Tab fx:id="tabAcknowledge" text="Acknowledge Reviews">
                                              <content>
                                                 <AnchorPane>
                                                    <children>
-                                                      <TableView fx:id="tblAcknowledge" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                      <Pagination fx:id="pagination" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                      <TableView fx:id="tblAcknowledge" layoutX="10.0" layoutY="10.0" onMouseClicked="#tblAcknowledge_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                                          <columns>
                                                             <TableColumn fx:id="acknowledgeIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
                                                             <TableColumn fx:id="acknowledgeIndex02" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
@@ -72,7 +73,8 @@
                                              <content>
                                                 <AnchorPane>
                                                    <children>
-                                                      <TableView fx:id="tblUnAcknowledge" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                      <Pagination fx:id="pagination1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                      <TableView fx:id="tblUnAcknowledge" onMouseClicked="#tblUnAcknowledge_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                                          <columns>
                                                             <TableColumn fx:id="unAcknowledgeIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
                                                             <TableColumn fx:id="unAcknowledgeIndex02" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
@@ -108,7 +110,7 @@
                                        <top>
                                           <AnchorPane fx:id="searchBar1" BorderPane.alignment="CENTER">
                                              <children>
-                                                <Label prefHeight="40.0" prefWidth="200.0" text="Customer Name" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Label fx:id="lblCustomerName" prefHeight="40.0" prefWidth="200.0" text="Customer Name" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <padding>
                                                       <Insets bottom="5.0" left="10.0" />
                                                    </padding>
@@ -126,14 +128,14 @@
                                        <bottom>
                                           <AnchorPane BorderPane.alignment="CENTER">
                                              <children>
-                                                <TextField fx:id="txtfield01" promptText="Type message..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="0.0">
+                                                <TextField fx:id="txtField01" promptText="Type message..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="0.0">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
                                                 </TextField>
-                                                <Button fx:id="btnSend" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="30.0" prefWidth="60.0" text="Button" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Button fx:id="btnSend" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="30.0" prefWidth="60.0" styleClass="button_process" text="Button" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <graphic>
-                                                      <FontAwesomeIconView fill="#f88222" glyphName="SEND" />
+                                                      <FontAwesomeIconView fill="#f88222" glyphName="SEND" size="18" />
                                                    </graphic>
                                                 </Button>
                                              </children>
@@ -144,16 +146,16 @@
                                        </bottom>
                                        <center>
                                           <AnchorPane style="-fx-border-radius: 5; -fx-border-color: #a6a6a6;" BorderPane.alignment="CENTER">
-                                             <children>
-                                                <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="scroll-pane-item-management" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <content>
-                                                      <VBox prefHeight="309.0" prefWidth="350.0" style="-fx-border-color: transparent;" />
-                                                   </content>
-                                                </ScrollPane>
-                                             </children>
                                              <BorderPane.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" />
                                              </BorderPane.margin>
+                                             <children>
+                                                <ListView fx:id="lvMessageBody" disable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </ListView>
+                                             </children>
                                           </AnchorPane>
                                        </center>
                                     </BorderPane>
@@ -185,7 +187,7 @@
                                                 <Insets bottom="5.0" left="20.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="txtSeeks02" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="143.0" promptText="Search: F3" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                                          <TextField fx:id="txtSeeks10" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="143.0" promptText="Search: F3" GridPane.columnIndex="1" GridPane.columnSpan="2">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
@@ -201,7 +203,7 @@
                                                 <Insets left="20.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="txtSeeks03" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="315.0" promptText="Search: F3" GridPane.columnIndex="4">
+                                          <TextField fx:id="txtSeeks11" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="315.0" promptText="Search: F3" GridPane.columnIndex="4">
                                              <font>
                                                 <Font size="13.0" />
                                              </font>

@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/User/Guanzon/github/marketplace/src/org/rmj/marketplace/controller/ItemManagementController.java</file>
-            <file>file:/C:/Users/User/Guanzon/github/marketplace/src/org/rmj/marketplace/model/ProductModel.java</file>
-            <file>file:/C:/Users/User/Guanzon/github/marketplace/src/org/rmj/marketplace/model/ImageModel.java</file>
-            <file>file:/C:/Users/User/Guanzon/github/marketplace/src/org/rmj/marketplace/controller/ListingDateTimeController.java</file>
+            <file>file:/D:/Guanzon/github/marketplace/src/org/rmj/marketplace/controller/FAQController.java</file>
+            <file>file:/D:/Guanzon/github/marketplace/src/org/rmj/marketplace/controller/RatingsAndReviewsController.java</file>
+            <file>file:/D:/Guanzon/github/marketplace/src/org/rmj/marketplace/controller/ClientInfoController.java</file>
+            <file>file:/D:/Guanzon/github/marketplace/src/org/rmj/marketplace/controller/MainDashboardController.java</file>
+            <file>file:/D:/Guanzon/github/marketplace/src/org/rmj/marketplace/model/FAQuestionsModel.java</file>
+            <file>file:/D:/Guanzon/github/marketplace/src/org/rmj/marketplace/view/ClientInfo.fxml</file>
         </group>
     </open-files>
 </project-private>

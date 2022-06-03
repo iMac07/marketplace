@@ -9,11 +9,15 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -40,6 +44,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.rmj.marketplace.model.ScreenInterface;
 import org.rmj.appdriver.GRider;
+import org.rmj.appdriver.SQLUtil;
 
 /**
  *
@@ -114,6 +119,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     public void initialize(URL url, ResourceBundle rb) {
         
         getTime();
+//        getEmployee();
 //        setScene(loadAnimate("/org/rmj/marketplace/view/Dashboard.fxml"));
         setScene(loadAnimate("/org/rmj/marketplace/view/MainDashboard.fxml"));
         openNav = new TranslateTransition(Duration.millis(100), nav_bar);
@@ -277,6 +283,7 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         fxmlLoader.setLocation(fxObj.getClass().getResource(fsFormName));
         fxmlLoader.setController(fxObj);      
    
+        System.out.println(getController(fsFormName));
         AnchorPane root;
         try {
             root = (AnchorPane) fxmlLoader.load();
@@ -348,6 +355,23 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
             objTimer.getKeyFrames().add(new KeyFrame(new Duration(100)));
         } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException e) {
             e.printStackTrace();
+        }
+    }
+    public void getEmployee(){
+        ResultSet name;
+        String lsQuery = "SELECT b.sCompnyNm " +
+                            " FROM xxxSysUser a" +
+                            " LEFT JOIN Client_Master b" +  
+                                " ON a.sEmployNo  = b.sClientID" +
+                            " WHERE a.sUserIDxx = " + SQLUtil.toSQL(oApp.getUserID());
+        name = oApp.executeQuery(lsQuery);
+        try {
+            if(name.next()){
+                AppUser.setText(name.getString("sCompnyNm") + " || " + oApp.getBranchName());
+                System.setProperty("user.name", name.getString("sCompnyNm"));   
+            }             
+        } catch (SQLException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
