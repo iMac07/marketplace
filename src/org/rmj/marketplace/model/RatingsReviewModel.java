@@ -56,6 +56,22 @@ public class RatingsReviewModel {
         this.acknowledgeIndex17 = new SimpleStringProperty(acknowledgeIndex17);
         this.acknowledgeIndex18 = new SimpleStringProperty(acknowledgeIndex18);
     }
+     public RatingsReviewModel(String acknowledgeIndex01, String acknowledgeIndex02, String acknowledgeIndex03, 
+            String acknowledgeIndex04,String acknowledgeIndex05,String acknowledgeIndex06,
+            String acknowledgeIndex07,String acknowledgeIndex08,String acknowledgeIndex09,
+            String acknowledgeIndex10,String acknowledgeIndex11){
+        this.acknowledgeIndex01 = new SimpleStringProperty(acknowledgeIndex01);
+        this.acknowledgeIndex02 = new SimpleStringProperty(acknowledgeIndex02);
+        this.acknowledgeIndex03 = new SimpleStringProperty(acknowledgeIndex03);
+        this.acknowledgeIndex04 = new SimpleStringProperty(acknowledgeIndex04);
+        this.acknowledgeIndex05 = new SimpleStringProperty(acknowledgeIndex05);
+        this.acknowledgeIndex06 = new SimpleStringProperty(acknowledgeIndex06);
+        this.acknowledgeIndex07 = new SimpleStringProperty(acknowledgeIndex07);
+        this.acknowledgeIndex08 = new SimpleStringProperty(acknowledgeIndex09);
+        this.acknowledgeIndex09 = new SimpleStringProperty(acknowledgeIndex09);
+        this.acknowledgeIndex10 = new SimpleStringProperty(acknowledgeIndex10);
+        this.acknowledgeIndex11 = new SimpleStringProperty(acknowledgeIndex11);
+    }
     public String getAcknowledgeIndex01() {
         return acknowledgeIndex01.get();
     }

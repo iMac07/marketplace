@@ -183,7 +183,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
             data_ratings.clear();
             if (oTrans.LoadList("", true)){//true if by barcode; false if by description
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
-                    data_ratings.add(new RatingsReviewModel(String.valueOf(lnCtr),
+                     data_ratings.add(new RatingsReviewModel(String.valueOf(lnCtr),
                             (String) oTrans.getDetail(lnCtr, "sListngID"),
                             oTrans.getDetail(lnCtr, "nEntryNox").toString(),
                             oTrans.getDetail(lnCtr, "nRatingxx").toString(),
@@ -193,18 +193,18 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                             oTrans.getDetail(lnCtr, "sCreatedx").toString(),
                             oTrans.getDetail(lnCtr, "dCreatedx").toString(),
                             oTrans.getDetail(lnCtr, "sRepliedx").toString(),
-                            (String) oTrans.getDetail(lnCtr, "dRepliedx"),
-                            (String) oTrans.getDetail(lnCtr, "cReadxxxx"),
-                            (String) oTrans.getDetail(lnCtr, "dReadxxxx"),
+                            oTrans.getDetail(lnCtr, "dRepliedx").toString(),
+                            oTrans.getDetail(lnCtr, "cReadxxxx").toString(),
+                            oTrans.getDetail(lnCtr, "dReadxxxx").toString(),
                             (String) oTrans.getDetail(lnCtr, "sReadxxxx"),
-                            (String) oTrans.getDetail(lnCtr, "cRecdStat"),
+                            oTrans.getDetail(lnCtr, "cRecdStat").toString(),
                             oTrans.getDetail(lnCtr, "dTimeStmp").toString(),
                             (String) oTrans.getDetail(lnCtr, "sImagesxx"),
-                            (String) oTrans.getDetail(lnCtr, "sCompnyNm")));
-                  System.out.println("sReadxxxx. --> " +  (String) oTrans.getDetail(lnCtr, 11));    
+                            (String) oTrans.getDetail(lnCtr, "sCompnyNm")
+                    ));
                 }
                 loadTab();
-            } 
+            }
         } catch (SQLException ex) {
             System.out.println("SQLException" + ex.getMessage());
         } catch (NullPointerException ex) {
@@ -371,15 +371,15 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         int toIndex = Math.min(fromIndex + limit, data_ratings.size());
         
         if ("1".equals(recdstat) ) {
-            int minIndex = Math.min(toIndex, filteredData.size());
+            int minIndex = Math.min(toIndex, data_ratings.size());
             SortedList<RatingsReviewModel> sortedData = new SortedList<>(
-                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+                    FXCollections.observableArrayList(data_ratings.subList(Math.min(fromIndex, minIndex), minIndex)));
             sortedData.comparatorProperty().bind(tblAcknowledge.comparatorProperty());
             tblAcknowledge.setItems(sortedData);
         } else {
-             int minIndex = Math.min(toIndex, filteredData.size());
+             int minIndex = Math.min(toIndex, data_ratings.size());
             SortedList<RatingsReviewModel> sortedData = new SortedList<>(
-                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+                    FXCollections.observableArrayList(data_ratings.subList(Math.min(fromIndex, minIndex), minIndex)));
             sortedData.comparatorProperty().bind(tblUnAcknowledge.comparatorProperty());
             tblUnAcknowledge.setItems(sortedData);
         }
