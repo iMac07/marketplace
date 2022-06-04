@@ -103,14 +103,14 @@ public class ReportsController implements Initializable, ScreenInterface{
             double n = rand.nextDouble();
             
             int nn = rand.nextInt(10);
-            OrderModel models = new OrderModel(String.valueOf(x),
-                            serial,
-                            barcode,
-                            model,
-                            color,
-                            String.valueOf(nn + 1),
-                            nextDoubleBetween4(100.0d,999.0d));
-            pmodel.add(models);
+//            OrderModel models = new OrderModel(String.valueOf(x),
+//                            serial,
+//                            barcode,
+//                            model,
+//                            color,
+//                            String.valueOf(nn + 1),
+//                            nextDoubleBetween4(100.0d,999.0d));
+//            pmodel.add(models);
         }
         
     
