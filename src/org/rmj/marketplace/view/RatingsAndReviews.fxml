@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="1043.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="1043.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -59,6 +59,7 @@
                                                             <TableColumn fx:id="acknowledgeIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
                                                             <TableColumn fx:id="acknowledgeIndex02" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
                                                             <TableColumn fx:id="acknowledgeIndex03" prefWidth="120.0" resizable="false" sortable="false" text="Date" />
+                                                            <TableColumn fx:id="acknowledgeIndex05" prefWidth="100.0" resizable="false" sortable="false" text="Ratings" />
                                                             <TableColumn fx:id="acknowledgeIndex04" prefWidth="300.0" resizable="false" sortable="false" text="Review" />
                                                          </columns>
                                                          <columnResizePolicy>
@@ -79,6 +80,7 @@
                                                             <TableColumn fx:id="unAcknowledgeIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
                                                             <TableColumn fx:id="unAcknowledgeIndex02" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
                                                             <TableColumn fx:id="unAcknowledgeIndex03" prefWidth="120.0" resizable="false" sortable="false" text="Date" />
+                                                            <TableColumn fx:id="unAcknowledgeIndex05" prefWidth="100.0" resizable="false" sortable="false" text="Ratings" />
                                                             <TableColumn fx:id="unAcknowledgeIndex04" prefWidth="300.0" resizable="false" sortable="false" text="Review" />
                                                          </columns>
                                                       </TableView>
