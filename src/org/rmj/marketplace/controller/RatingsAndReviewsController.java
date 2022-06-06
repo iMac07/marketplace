@@ -10,6 +10,7 @@ import org.rmj.marketplace.model.ScreenInterface;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.DateTimeException;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,6 +44,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agent.MsgBox;
+import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.marketplace.base.LTransaction;
 import org.rmj.marketplace.base.ProductReviews;
@@ -65,6 +67,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     private int pnEditMode;
     private final String style = "";
     private String category;
+    private int pagecounter;
     
     @FXML
     private Button btnSend;
@@ -76,6 +79,10 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     private Tab tabAcknowledge;
     @FXML
     private Tab tabUnAcknowledge;
+    @FXML
+    private TableColumn acknowledgeIndex05;
+    @FXML
+    private TableColumn unAcknowledgeIndex05;
     @FXML
     private TableView tblAcknowledge;
     @FXML
@@ -109,7 +116,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     @FXML
     private Pagination pagination1;
 
-    private static final int ROWS_PER_PAGE = 30;
+    private static final int ROWS_PER_PAGE = 10;
     private FilteredList<RatingsReviewModel> filteredData;
 
     private final ObservableList<RatingsReviewModel> data_ratings = FXCollections.observableArrayList();
@@ -191,7 +198,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                             oTrans.getDetail(lnCtr, "sReplyxxx").toString(),
                             oTrans.getDetail(lnCtr, "nPriority").toString(),
                             oTrans.getDetail(lnCtr, "sCreatedx").toString(),
-                            oTrans.getDetail(lnCtr, "dCreatedx").toString(),
+                            (CommonUtils.xsDateMedium((Date) oTrans.getDetail(lnCtr, "dCreatedx"))),
                             oTrans.getDetail(lnCtr, "sRepliedx").toString(),
                             oTrans.getDetail(lnCtr, "dRepliedx").toString(),
                             oTrans.getDetail(lnCtr, "cReadxxxx").toString(),
@@ -262,13 +269,15 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         acknowledgeIndex01.setStyle("-fx-alignment: CENTER;");
         acknowledgeIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         acknowledgeIndex03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        acknowledgeIndex05.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         acknowledgeIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
        
         acknowledgeIndex01.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex01"));
         acknowledgeIndex02.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex18"));
         acknowledgeIndex03.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex08"));
+        acknowledgeIndex05.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex04"));
         acknowledgeIndex04.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex05"));
-      
+        
         tblAcknowledge.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblAcknowledge.lookup("TableHeaderRow");
             header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -293,11 +302,13 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         unAcknowledgeIndex01.setStyle("-fx-alignment: CENTER;" + style);
         unAcknowledgeIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;"+ style);
         unAcknowledgeIndex03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;"+ style);
+        unAcknowledgeIndex05.setStyle("-fx-alignment: CENTER;-fx-padding: 0 0 0 5;"+ style);
         unAcknowledgeIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;"+ style);
         
         unAcknowledgeIndex01.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex01"));
         unAcknowledgeIndex02.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex18"));
         unAcknowledgeIndex03.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex08"));
+        unAcknowledgeIndex05.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex04"));
         unAcknowledgeIndex04.setCellValueFactory(new PropertyValueFactory<>("acknowledgeIndex05"));
       
         tblUnAcknowledge.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
@@ -345,17 +356,17 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         if(lnIndex == 99){  
         }
         loadTab();
-       
     } 
      
     private void loadTab(){
         if ("1".equals(recdstat) ) {
-                int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0 / ROWS_PER_PAGE));
+                int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0  / ROWS_PER_PAGE));
                 pagination.setPageCount(totalPage);
                 pagination.setCurrentPageIndex(0);
                 changeTableView(0, ROWS_PER_PAGE);
                 pagination.currentPageIndexProperty().addListener(
                         (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+                
             } else {
                int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0 / ROWS_PER_PAGE));
                 pagination1.setPageCount(totalPage);
@@ -363,23 +374,23 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                 changeTableView(0, ROWS_PER_PAGE);
                 pagination1.currentPageIndexProperty().addListener(
                         (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+               
             }
     }
-    
     private void changeTableView(int index, int limit) {
         int fromIndex = index * limit;
         int toIndex = Math.min(fromIndex + limit, data_ratings.size());
         
         if ("1".equals(recdstat) ) {
-            int minIndex = Math.min(toIndex, data_ratings.size());
+            int minIndex = Math.min(toIndex, filteredData.size());
             SortedList<RatingsReviewModel> sortedData = new SortedList<>(
-                    FXCollections.observableArrayList(data_ratings.subList(Math.min(fromIndex, minIndex), minIndex)));
+                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
             sortedData.comparatorProperty().bind(tblAcknowledge.comparatorProperty());
             tblAcknowledge.setItems(sortedData);
         } else {
-             int minIndex = Math.min(toIndex, data_ratings.size());
+             int minIndex = Math.min(toIndex, filteredData.size());
             SortedList<RatingsReviewModel> sortedData = new SortedList<>(
-                    FXCollections.observableArrayList(data_ratings.subList(Math.min(fromIndex, minIndex), minIndex)));
+                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
             sortedData.comparatorProperty().bind(tblUnAcknowledge.comparatorProperty());
             tblUnAcknowledge.setItems(sortedData);
         }
@@ -390,16 +401,20 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         
         if(event.getClickCount()<=1){
             if(!tblUnAcknowledge.getItems().isEmpty()){
+            
             pnRow = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
+            pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+            System.out.println(pagecounter);
             try {
-                if (oTrans.OpenTransaction(data_ratings.get(pnRow).getAcknowledgeIndex02(),data_ratings.get(pnRow).getAcknowledgeIndex03())){
+                if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                     pnEditMode = oTrans.getEditMode();
                     if (oTrans.UpdateTransaction()){
                         pnEditMode = oTrans.getEditMode();
-                        
+                         System.out.println(pagecounter);
                         if(oTrans.ReadReview()){
                             loadProducts();
                         }
+                        
                         loadDetail();
                     } else {
                         MsgBox.showOk(oTrans.getMessage());
@@ -414,11 +429,10 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                         switch (key){
                             case DOWN:
                                 pnRow = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
-
-                               
+                                pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
                                 if (pnRow == tblUnAcknowledge.getItems().size()) {
                                     pnRow = tblUnAcknowledge.getItems().size();
-                                    if (oTrans.OpenTransaction(data_ratings.get(pnRow).getAcknowledgeIndex02(),data_ratings.get(pnRow).getAcknowledgeIndex03())){
+                                    if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
                                             if(oTrans.ReadReview()){
@@ -434,7 +448,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                                     }
 
                                 }else {
-                                    if (oTrans.OpenTransaction(data_ratings.get(pnRow).getAcknowledgeIndex02(),data_ratings.get(pnRow).getAcknowledgeIndex03())){
+                                    if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
                         
@@ -456,8 +470,8 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                                 int x = 1;
                                 pnRows = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
                                 pnRow = pnRows;
-                               
-                                if (oTrans.OpenTransaction(data_ratings.get(pnRow).getAcknowledgeIndex02(),data_ratings.get(pnRow).getAcknowledgeIndex03())){
+                                pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+                                if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                                     if (oTrans.UpdateTransaction()){
                                         pnEditMode = oTrans.getEditMode();
                         
@@ -485,8 +499,6 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                }
            }
         }
-        
-        
     }
     @FXML
     private void tblAcknowledge_Clicked(MouseEvent event) {
@@ -494,9 +506,9 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         if(event.getClickCount()<=1){
             if(!tblAcknowledge.getItems().isEmpty()){
             pnRow = tblAcknowledge.getSelectionModel().getSelectedIndex();
-            try {
-              
-                if (oTrans.OpenTransaction(data_ratings.get(pnRow).getAcknowledgeIndex02(),data_ratings.get(pnRow).getAcknowledgeIndex03())){
+            pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+            try {            
+                if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                     pnEditMode = oTrans.getEditMode();
                     if (oTrans.UpdateTransaction()){
                         pnEditMode = oTrans.getEditMode();
@@ -588,22 +600,20 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                    Logger.getLogger(RatingsAndReviewsController.class.getName()).log(Level.SEVERE, null, ex);
                }
            }
-        }
-        
-        
+        }   
     }
     public void loadDetail(){
 //        taMessages.setText(data.get(pnRow).getAcknowledgeIndex05()); 
-        lblCustomerName.setText(data_ratings.get(pnRow).getAcknowledgeIndex18());
+        lblCustomerName.setText(data_ratings.get(pagecounter).getAcknowledgeIndex18());
         
         lvMessageBody.getItems().clear();
         pnEditMode = EditMode.UPDATE;
         addToChat();
-        if(!data_ratings.get(pnRow).getAcknowledgeIndex06().trim().isEmpty()){
+        if(!data_ratings.get(pagecounter).getAcknowledgeIndex06().trim().isEmpty()){
            addToReply();
         }
         
-        boolean isReply = (Integer.parseInt(data_ratings.get(pnRow).getAcknowledgeIndex15())>0);
+        boolean isReply = (Integer.parseInt(data_ratings.get(pagecounter).getAcknowledgeIndex15())>0);
 
         txtField01.setDisable(isReply);
         btnSend.setDisable(isReply);
@@ -613,7 +623,8 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     public synchronized void addToChat() {
         
         BubbledLabel bl6 = new BubbledLabel();
-        bl6.setText(data_ratings.get(pnRow).getAcknowledgeIndex05());
+        lblCustomerName.setText(data_ratings.get(pagecounter).getAcknowledgeIndex18());
+        bl6.setText(data_ratings.get(pagecounter).getAcknowledgeIndex05());
         bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,null, null)));
         HBox x = new HBox();
         bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
@@ -671,7 +682,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
 //        t.start();
 //        
         BubbledLabel bl6 = new BubbledLabel();
-        bl6.setText(data_ratings.get(pnRow).getAcknowledgeIndex06());
+        bl6.setText(data_ratings.get(pagecounter).getAcknowledgeIndex06());
 
         bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 null, null)));
@@ -683,6 +694,5 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         x.getChildren().add(bl6);
         lvMessageBody.getItems().add(x);
     }
-   
     
 }
