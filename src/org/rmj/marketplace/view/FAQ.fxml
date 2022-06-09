@@ -44,36 +44,36 @@
                      <children>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <left>
-                              <AnchorPane style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
+                              <AnchorPane prefHeight="392.0" prefWidth="766.0" style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
                                  <children>
-                                    <TabPane fx:id="tabPaneSelection" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TabPane fx:id="tabPaneSelection" layoutX="2.0" layoutY="3.0" prefHeight="388.0" prefWidth="806.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
                                       <tabs>
                                         <Tab fx:id="tabReplied" text="Replied Questions">
                                           <content>
                                             <AnchorPane>
                                                    <children>
-                                                      <TableView fx:id="tblbReplied" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                      <TableView fx:id="tblReplied" onMouseClicked="#tblReplied_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                                          <columns>
                                                             <TableColumn fx:id="repliedIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
-                                                            <TableColumn fx:id="repliedIndex02" prefWidth="120.0" resizable="false" sortable="false" text="Customer ID" />
-                                                            <TableColumn fx:id="repliedIndex03" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
-                                                            <TableColumn fx:id="repliedIndex04" prefWidth="300.0" resizable="false" sortable="false" text="Questions" />
+                                                            <TableColumn fx:id="repliedIndex02" prefWidth="120.0" resizable="false" sortable="false" text="Product Name" />
+                                                            <TableColumn fx:id="repliedIndex03" prefWidth="216.0" resizable="false" sortable="false" text="Customer Name" />
+                                                            <TableColumn fx:id="repliedIndex04" prefWidth="384.0" resizable="false" sortable="false" text="Questions" />
                                                          </columns>
                                                       </TableView>
                                                    </children>
                                                 </AnchorPane>
                                           </content>
                                         </Tab>
-                                        <Tab fx:id="tabUnreplied" text="Unreplied Questions">
+                                        <Tab fx:id="tabUnReplied" text="Unreplied Questions">
                                           <content>
                                             <AnchorPane>
                                                    <children>
-                                                      <TableView fx:id="tblbUnreplied" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                      <TableView fx:id="tblUnReplied" onMouseClicked="#tblUnReplied_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                                          <columns>
-                                                            <TableColumn fx:id="unrepliedIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
-                                                            <TableColumn fx:id="unrepliedIndex02" prefWidth="120.0" resizable="false" sortable="false" text="Customer ID" />
-                                                            <TableColumn fx:id="unrepliedIndex03" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
-                                                            <TableColumn fx:id="unrepliedIndex04" prefWidth="300.0" resizable="false" sortable="false" text="Questions" />
+                                                            <TableColumn fx:id="tblunRepliedIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
+                                                            <TableColumn fx:id="tblunRepliedIndex02" prefWidth="120.0" resizable="false" sortable="false" text="Product Name" />
+                                                            <TableColumn fx:id="tblunRepliedIndex03" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
+                                                            <TableColumn fx:id="tblunRepliedIndex04" prefWidth="300.0" resizable="false" sortable="false" text="Questions" />
                                                          </columns>
                                                       </TableView>
                                                    </children>
@@ -95,14 +95,14 @@
                               </AnchorPane>
                            </left>
                            <center>
-                              <StackPane prefHeight="462.0" BorderPane.alignment="CENTER">
+                              <StackPane prefHeight="402.0" prefWidth="275.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <BorderPane style="-fx-border-radius: 5; -fx-border-color: orange;">
+                                    <BorderPane prefHeight="392.0" prefWidth="273.0" style="-fx-border-radius: 5; -fx-border-color: orange;">
                                        <StackPane.margin>
                                           <Insets bottom="5.0" left="5.0" top="5.0" />
                                        </StackPane.margin>
                                        <top>
-                                          <AnchorPane fx:id="searchBar1" prefHeight="40.0" prefWidth="896.0" BorderPane.alignment="CENTER">
+                                          <AnchorPane fx:id="searchBar1" prefHeight="40.0" prefWidth="275.0" BorderPane.alignment="CENTER">
                                              <children>
                                                 <Label fx:id="lblCustomerName" prefHeight="40.0" prefWidth="200.0" text="Customer Name" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <padding>
@@ -120,24 +120,24 @@
                                           </AnchorPane>
                                        </top>
                                        <center>
-                                          <AnchorPane style="-fx-border-radius: 5; -fx-border-color: #a6a6a6;" BorderPane.alignment="CENTER">
+                                          <AnchorPane prefHeight="305.0" prefWidth="208.0" style="-fx-border-radius: 5; -fx-border-color: #a6a6a6;" BorderPane.alignment="CENTER">
                                              <BorderPane.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" />
                                              </BorderPane.margin>
                                              <children>
-                                                <ListView fx:id="lvMessageBody" layoutX="-1.0" prefHeight="301.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <ListView fx:id="lvMessageBody" layoutX="3.0" layoutY="3.0" prefHeight="302.0" prefWidth="256.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
                                        </center>
                                        <bottom>
-                                          <AnchorPane BorderPane.alignment="CENTER">
+                                          <AnchorPane prefHeight="30.0" prefWidth="229.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <TextField fx:id="txtField01" promptText="Type message..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="0.0">
+                                                <TextField fx:id="txtField01" prefHeight="30.0" prefWidth="204.0" promptText="Type message..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="56.0" AnchorPane.topAnchor="0.0">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
                                                 </TextField>
-                                                <Button fx:id="btnSend" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefWidth="60.0" text="Button" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <Button fx:id="btnSend" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="30.0" prefWidth="56.0" text="Button" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <graphic>
                                                       <FontAwesomeIconView fill="#f88222" glyphName="SEND" />
                                                    </graphic>
@@ -157,19 +157,19 @@
                                  <children>
                                     <GridPane layoutX="2.0" layoutY="12.0" prefWidth="852.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="3.0">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="104.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="134.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="47.0" minWidth="2.0" prefWidth="47.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="130.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="220.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="37.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="110.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="124.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="58.0" minWidth="2.0" prefWidth="58.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="129.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="219.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="10.0" prefWidth="28.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="186.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Label prefHeight="17.0" prefWidth="121.0" text="Customer ID">
+                                          <Label prefHeight="17.0" prefWidth="121.0" text="Product Name">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
