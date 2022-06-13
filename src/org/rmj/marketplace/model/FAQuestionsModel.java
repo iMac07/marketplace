@@ -28,6 +28,7 @@ public class FAQuestionsModel {
     private SimpleStringProperty RepliedIndex15;  
     private SimpleStringProperty RepliedIndex16;    
     private SimpleStringProperty RepliedIndex17;    
+    private SimpleStringProperty RepliedIndex18; 
       
 
 
@@ -36,7 +37,7 @@ public class FAQuestionsModel {
             String RepliedIndex07,String RepliedIndex08,String RepliedIndex09,
             String RepliedIndex10,String RepliedIndex11,String RepliedIndex12,
             String RepliedIndex13,String RepliedIndex14,String RepliedIndex15,
-            String RepliedIndex16,String RepliedIndex17){
+            String RepliedIndex16,String RepliedIndex17,String RepliedIndex18){
         this.RepliedIndex01 = new SimpleStringProperty(RepliedIndex01);
         this.RepliedIndex02 = new SimpleStringProperty(RepliedIndex02);
         this.RepliedIndex03 = new SimpleStringProperty(RepliedIndex03);
@@ -54,6 +55,7 @@ public class FAQuestionsModel {
         this.RepliedIndex15 = new SimpleStringProperty(RepliedIndex15);
         this.RepliedIndex16 = new SimpleStringProperty(RepliedIndex16);
         this.RepliedIndex17 = new SimpleStringProperty(RepliedIndex17);
+        this.RepliedIndex18 = new SimpleStringProperty(RepliedIndex18);
     }
     public String getRepliedIndex01() {
         return RepliedIndex01.get();
@@ -121,6 +123,10 @@ public class FAQuestionsModel {
 
     public String getRepliedIndex17() {
         return RepliedIndex17.get();
+    }
+
+    public String getRepliedIndex18() {
+        return RepliedIndex18.get();
     }
 
 }
