@@ -23,9 +23,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -38,7 +40,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agent.MsgBox;
 import org.rmj.appdriver.constants.EditMode;
@@ -62,7 +66,10 @@ public class FAQController implements Initializable, ScreenInterface {
     private int pnRow = -1;
     private int pnEditMode;
     private final String style = "";
-    
+    private String category;
+    private int pagecounter;
+    private int message ;
+
     
     @FXML
     private Button btnSend;
@@ -74,6 +81,10 @@ public class FAQController implements Initializable, ScreenInterface {
     private Tab tabReplied;
     @FXML
     private Tab tabUnReplied;
+    @FXML
+    private Pagination pagination;
+    @FXML
+    private Pagination pagination1;
     @FXML
     private TableView tblReplied;
     @FXML
@@ -103,11 +114,15 @@ public class FAQController implements Initializable, ScreenInterface {
     @FXML
     private TextField txtSeeks11;
 
-    
+    private static final int ROWS_PER_PAGE = 30;
+  
     private FilteredList<FAQuestionsModel> filteredData;
 
     private final ObservableList<FAQuestionsModel> data_faq = FXCollections.observableArrayList();
      
+    private void setCategory(String val){
+        this.category = val;
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -128,6 +143,7 @@ public class FAQController implements Initializable, ScreenInterface {
         initGrid();
         initGrid1();
         pnEditMode = EditMode.UNKNOWN;
+        pagination.setPageFactory(this::createPage); 
         btnSend.setOnAction(this::cmdButton_Click);
         
         tabPaneSelection.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
@@ -149,6 +165,18 @@ public class FAQController implements Initializable, ScreenInterface {
             }
         });
     }    
+    private Node createPage(int pageIndex) {
+        int fromIndex = pageIndex * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, data_faq.size());
+        if ("1".equals(recdstat) ) {
+            tblReplied.setItems(FXCollections.observableArrayList(data_faq.subList(fromIndex, toIndex)));
+            return tblReplied;
+        } else {
+            tblUnReplied.setItems(FXCollections.observableArrayList(data_faq.subList(fromIndex, toIndex)));
+            return tblUnReplied;
+        }
+}
+       
 
     
     @Override
@@ -179,18 +207,13 @@ public class FAQController implements Initializable, ScreenInterface {
                             (String) oTrans.getDetail(lnCtr, "cRecdStat"),
                             oTrans.getDetail(lnCtr, "dTimeStmp").toString(),
                             (String) oTrans.getDetail(lnCtr, "sImagesxx"),
-                            (String) oTrans.getDetail(lnCtr, "sCompnyNm")));
-                  System.out.println("sReadxxxx. --> " +  (String) oTrans.getDetail(lnCtr, 11));
-                    
-                    
+                            (String) oTrans.getDetail(lnCtr, "sCompnyNm"),
+                            (String) oTrans.getDetail(lnCtr, "xModelNme")));
+     
+                   
                 }
-                if ("1".equals(recdstat) ) {
-                        initGrid();
-                    } else {
-                        initGrid1();
-                    }
-                
-            } 
+                loadTab();
+            }
         } catch (SQLException ex) {
             System.out.println("SQLException" + ex.getMessage());
         } catch (NullPointerException ex) {
@@ -251,7 +274,7 @@ public class FAQController implements Initializable, ScreenInterface {
         repliedIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
        
         repliedIndex01.setCellValueFactory(new PropertyValueFactory<>("repliedIndex01"));
-        repliedIndex02.setCellValueFactory(new PropertyValueFactory<>("repliedIndex07"));
+        repliedIndex02.setCellValueFactory(new PropertyValueFactory<>("repliedIndex18"));
         repliedIndex03.setCellValueFactory(new PropertyValueFactory<>("repliedIndex17"));
         repliedIndex04.setCellValueFactory(new PropertyValueFactory<>("repliedIndex04"));
       
@@ -282,7 +305,7 @@ public class FAQController implements Initializable, ScreenInterface {
         tblunRepliedIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;"+ style);
         
         tblunRepliedIndex01.setCellValueFactory(new PropertyValueFactory<>("repliedIndex01"));
-        tblunRepliedIndex02.setCellValueFactory(new PropertyValueFactory<>("repliedIndex07"));
+        tblunRepliedIndex02.setCellValueFactory(new PropertyValueFactory<>("repliedIndex18"));
         tblunRepliedIndex03.setCellValueFactory(new PropertyValueFactory<>("repliedIndex17"));
         tblunRepliedIndex04.setCellValueFactory(new PropertyValueFactory<>("repliedIndex04"));
       
@@ -319,28 +342,70 @@ public class FAQController implements Initializable, ScreenInterface {
                 // Compare first name and last name of every person with filter text.
                 String lowerCaseFilter = newValue.toLowerCase();
                 if(lnIndex == 10){
-                    return (clients.getRepliedIndex06().toLowerCase().contains(lowerCaseFilter)); // Does not match.
+                    return (clients.getRepliedIndex18().toLowerCase().contains(lowerCaseFilter)); // Does not match.
 
                 }else {
                     return (clients.getRepliedIndex17().toLowerCase().contains(lowerCaseFilter)); // Does not match.
                 }
             });
+            changeTableView(0, ROWS_PER_PAGE);
         });
-        if(lnIndex == 98){
-
-        }if(lnIndex == 99){
-
+        if(lnIndex == 98){  
         }
+        if(lnIndex == 99){  
+        }
+        loadTab();
+       
+    } 
+    private void loadTab(){
+        if ("1".equals(recdstat) ) {
+                int totalPage = (int) (Math.ceil(data_faq.size() * 1.0 / ROWS_PER_PAGE));
+                pagination.setPageCount(totalPage);
+                pagination.setCurrentPageIndex(0);
+                changeTableView(0, ROWS_PER_PAGE);
+                pagination.currentPageIndexProperty().addListener(
+                        (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+            } else {
+               int totalPage = (int) (Math.ceil(data_faq.size() * 1.0 / ROWS_PER_PAGE));
+                pagination1.setPageCount(totalPage);
+                pagination1.setCurrentPageIndex(0);
+                changeTableView(0, ROWS_PER_PAGE);
+                pagination1.currentPageIndexProperty().addListener(
+                        (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+            }
     } 
     
+    private void changeTableView(int index, int limit) {
+        int fromIndex = index * limit;
+        int toIndex = Math.min(fromIndex + limit, data_faq.size());
+        
+        if ("1".equals(recdstat) ) {
+            int minIndex = Math.min(toIndex, filteredData.size());
+            SortedList<FAQuestionsModel> sortedData = new SortedList<>(
+                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+            sortedData.comparatorProperty().bind(tblReplied.comparatorProperty());
+            tblReplied.setItems(sortedData);
+        } else {
+             int minIndex = Math.min(toIndex, filteredData.size());
+            SortedList<FAQuestionsModel> sortedData = new SortedList<>(
+                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+            sortedData.comparatorProperty().bind(tblUnReplied.comparatorProperty());
+            tblUnReplied.setItems(sortedData);
+        }
+        
+    }
+
     @FXML
     private void tblUnReplied_Clicked(MouseEvent event) {
         
         if(event.getClickCount()<=1){
             if(!tblUnReplied.getItems().isEmpty()){
+
             pnRow = tblUnReplied.getSelectionModel().getSelectedIndex();
+            pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+            System.out.println(pagecounter);
             try {
-                if (oTrans.OpenTransaction(data_faq.get(pnRow).getRepliedIndex02(),data_faq.get(pnRow).getRepliedIndex03())){
+                if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                     pnEditMode = oTrans.getEditMode();
                     if (oTrans.UpdateTransaction()){
                         pnEditMode = oTrans.getEditMode();
@@ -362,11 +427,11 @@ public class FAQController implements Initializable, ScreenInterface {
                         switch (key){
                             case DOWN:
                                 pnRow = tblUnReplied.getSelectionModel().getSelectedIndex();
-
+                                pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
                                
-                                if (pnRow == tblUnReplied.getItems().size()) {
-                                    pnRow = tblUnReplied.getItems().size();
-                                    if (oTrans.OpenTransaction(data_faq.get(pnRow).getRepliedIndex02(),data_faq.get(pnRow).getRepliedIndex03())){
+                                if (pagecounter == tblUnReplied.getItems().size()) {
+                                    pagecounter = tblUnReplied.getItems().size();
+                                    if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
                                             if(oTrans.ReadReview()){
@@ -382,7 +447,7 @@ public class FAQController implements Initializable, ScreenInterface {
                                     }
 
                                 }else {
-                                    if (oTrans.OpenTransaction(data_faq.get(pnRow).getRepliedIndex02(),data_faq.get(pnRow).getRepliedIndex03())){
+                                    if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
                         
@@ -405,7 +470,7 @@ public class FAQController implements Initializable, ScreenInterface {
                                 pnRows = tblUnReplied.getSelectionModel().getSelectedIndex();
                                 pnRow = pnRows;
                                
-                                if (oTrans.OpenTransaction(data_faq.get(pnRow).getRepliedIndex02(),data_faq.get(pnRow).getRepliedIndex03())){
+                                if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                                     if (oTrans.UpdateTransaction()){
                                         pnEditMode = oTrans.getEditMode();
                         
@@ -441,10 +506,13 @@ public class FAQController implements Initializable, ScreenInterface {
         
         if(event.getClickCount()<=1){
             if(!tblReplied.getItems().isEmpty()){
+
             pnRow = tblReplied.getSelectionModel().getSelectedIndex();
+            pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
+            System.out.println(pagecounter);
             try {
               
-                if (oTrans.OpenTransaction(data_faq.get(pnRow).getRepliedIndex02(),data_faq.get(pnRow).getRepliedIndex03())){
+                if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                     pnEditMode = oTrans.getEditMode();
                     if (oTrans.UpdateTransaction()){
                         pnEditMode = oTrans.getEditMode();
@@ -466,11 +534,11 @@ public class FAQController implements Initializable, ScreenInterface {
                         switch (key){
                             case DOWN:
                                 pnRow = tblReplied.getSelectionModel().getSelectedIndex();
-
+                                pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
                                
-                                if (pnRow == tblReplied.getItems().size()) {
-                                    pnRow = tblReplied.getItems().size();
-                                    if (oTrans.OpenTransaction(data_faq.get(pnRow).getRepliedIndex02(),data_faq.get(pnRow).getRepliedIndex03())){
+                                if (pagecounter == tblReplied.getItems().size()) {
+                                    pagecounter = tblReplied.getItems().size();
+                                    if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
                                             if(oTrans.ReadReview()){
@@ -486,7 +554,7 @@ public class FAQController implements Initializable, ScreenInterface {
                                     }
 
                                 }else {
-                                    if (oTrans.OpenTransaction(data_faq.get(pnRow).getRepliedIndex02(),data_faq.get(pnRow).getRepliedIndex03())){
+                                    if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
                         
@@ -506,10 +574,11 @@ public class FAQController implements Initializable, ScreenInterface {
                             case UP:
                                 int pnRows = 0;
                                 int x = 1;
+                                pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
                                 pnRows = tblReplied.getSelectionModel().getSelectedIndex();
                                 pnRow = pnRows;
                                
-                                if (oTrans.OpenTransaction(data_faq.get(pnRow).getRepliedIndex02(),data_faq.get(pnRow).getRepliedIndex03())){
+                                if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                                     if (oTrans.UpdateTransaction()){
                                         pnEditMode = oTrans.getEditMode();
                         
@@ -542,16 +611,16 @@ public class FAQController implements Initializable, ScreenInterface {
     }
     public void loadDetail(){
 //        taMessages.setText(data.get(pnRow).getRepliedIndex04()); 
-        lblCustomerName.setText(data_faq.get(pnRow).getRepliedIndex17());
+        lblCustomerName.setText(data_faq.get(pagecounter).getRepliedIndex17());
         
         lvMessageBody.getItems().clear();
         pnEditMode = EditMode.UPDATE;
         addToChat();
-        if(!data_faq.get(pnRow).getRepliedIndex04().trim().isEmpty()){
+        if(!data_faq.get(pagecounter).getRepliedIndex04().trim().isEmpty()){
            addToReply();
         }
         
-        boolean isReply = (Integer.parseInt(data_faq.get(pnRow).getRepliedIndex14())>0);
+        boolean isReply = (Integer.parseInt(data_faq.get(pagecounter).getRepliedIndex14())>0);
 
         txtField01.setDisable(isReply);
         btnSend.setDisable(isReply);
@@ -559,67 +628,40 @@ public class FAQController implements Initializable, ScreenInterface {
         
     }
     public synchronized void addToChat() {
-        
+        message = filteredData.get(pnRow).getRepliedIndex04().length() + 25  ;
         BubbledLabel bl6 = new BubbledLabel();
-        bl6.setText(data_faq.get(pnRow).getRepliedIndex04());
+        if  ((txtSeeks11.getText().isEmpty()) && (txtSeeks10.getText().isEmpty())) {
+              lblCustomerName.setText(data_faq.get(pagecounter).getRepliedIndex17());  
+              bl6.setText(data_faq.get(pagecounter).getRepliedIndex04());
+              bl6.setText(data_faq.get(pagecounter).getRepliedIndex04());
+            } else {
+              lblCustomerName.setText(filteredData.get(pnRow).getRepliedIndex17());
+              bl6.setText(filteredData.get(pnRow).getRepliedIndex04());
+              bl6.setText(filteredData.get(pnRow).getRepliedIndex04());
+        }
         bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,null, null)));
-        HBox x = new HBox();
+        VBox x = new VBox();
         bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
         x.getChildren().add(bl6);
         x.setStyle("-fx-opacity:1.0");
         lvMessageBody.getItems().add(x);
-//        Task<HBox> othersMessages = new Task<HBox>() {
-//            @Override
-//            public HBox call() throws Exception {
-//                
-//                BubbledLabel bl6 = new BubbledLabel();
-//                bl6.setText(data.get(pnRow).getRepliedIndex04());
-//                bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,null, null)));
-//                HBox x = new HBox();
-//                bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
-//                x.getChildren().add(bl6);
-//                x.setStyle("-fx-opacity:1.0");
-//                
-//                return x;
-//            }
-//        };
-//
-//        othersMessages.setOnSucceeded(event -> {
-//            lvMessageBody.getItems().add(othersMessages.getValue());
-//        });
-//
-//        Thread t = new Thread(othersMessages);
-//        t.setDaemon(true);
-//        t.start();
+        
+        x.setAlignment(Pos.CENTER_LEFT);
+        bl6.setWrapText(true);
+        x.setPrefHeight(message);   
+
+        //bl6.wrapTextProperty();
+        
     }
-    public synchronized void addToReply() {
-//        Task<HBox> yourMessages = new Task<HBox>() {
-//            @Override
-//            public HBox call() throws Exception {
-//               
-//                BubbledLabel bl6 = new BubbledLabel();
-//                bl6.setText(data.get(pnRow).getRepliedIndex06());
-//                
-//                bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
-//                        null, null)));
-//                HBox x = new HBox();
-//                x.setMaxWidth(lvMessageBody.getWidth() - 30);
-//                x.setAlignment(Pos.TOP_RIGHT);
-//                x.setStyle("-fx-opacity:1.0");
-//                bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_CENTER);
-//                x.getChildren().add(bl6);
-//
-//                return x;
-//            }
-//        };
-//        yourMessages.setOnSucceeded(event -> lvMessageBody.getItems().add(yourMessages.getValue()));
-//
-//        Thread t = new Thread(yourMessages);
-//        t.setDaemon(true);
-//        t.start();
-//        
+    public synchronized void addToReply() { 
+
+        message = filteredData.get(pnRow).getRepliedIndex05().length() + 25  ;
         BubbledLabel bl6 = new BubbledLabel();
-        bl6.setText(data_faq.get(pnRow).getRepliedIndex05());
+        if  (txtSeeks11.getText().isEmpty()) {
+               bl6.setText(data_faq.get(pagecounter).getRepliedIndex05());
+            } else {
+               bl6.setText(filteredData.get(pnRow).getRepliedIndex05());
+        }
 
         bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 null, null)));
@@ -627,9 +669,16 @@ public class FAQController implements Initializable, ScreenInterface {
         x.setMaxWidth(lvMessageBody.getWidth() - 30);
         x.setAlignment(Pos.TOP_RIGHT);
         x.setStyle("-fx-opacity:1.0");
-        bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_CENTER);
+        
+        bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_BOTTOM);
         x.getChildren().add(bl6);
         lvMessageBody.getItems().add(x);
+        x.setAlignment(Pos.BOTTOM_RIGHT);
+
+        x.setPrefHeight(message);
+//        lvMessageBody.setFixedCellSize(message);
+        bl6.setWrapText(true);
+
     }
    
     

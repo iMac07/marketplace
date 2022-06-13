@@ -268,7 +268,8 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
                 return (ScreenInterface) new FAQController();
              case "/org/rmj/marketplace/view/Reports.fxml":
                 return (ScreenInterface) new ReportsController();
-            
+             case "/org/rmj/marketplace/view/OrderPaymentTagging.fxml":
+                return (ScreenInterface) new OrderPaymentTaggingController();
             default:
                 return null;
         }
