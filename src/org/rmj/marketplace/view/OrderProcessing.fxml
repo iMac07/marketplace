@@ -316,11 +316,11 @@
                                                                   <TableView fx:id="tblPaymenttype" layoutX="6.0" layoutY="31.0" onMouseClicked="#tblPaymenttype_Click" prefHeight="120.0" prefWidth="528.0" stylesheets="@../css/TableWithImage.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
                                                                     <columns>
                                                                       <TableColumn fx:id="paymentIndex01" prefWidth="26.0" text="No" />
-                                                                      <TableColumn fx:id="paymentIndex02" prefWidth="160.0" text="Reference No" />
-                                                                        <TableColumn fx:id="paymentIndex03" prefWidth="96.0" text="Reference Code" />
-                                                                        <TableColumn fx:id="paymentIndex04" minWidth="3.0" prefWidth="91.0" text="Amount" />
-                                                                        <TableColumn fx:id="paymentIndex05" prefWidth="92.0" text="Source Code" />
-                                                                        <TableColumn fx:id="paymentIndex06" minWidth="0.0" prefWidth="62.0" text="Status" />
+                                                                      <TableColumn fx:id="paymentIndex02" prefWidth="160.0" text="Transaction No" />
+                                                                        <TableColumn fx:id="paymentIndex03" prefWidth="96.0" text="Date" />
+                                                                        <TableColumn fx:id="paymentIndex04" minWidth="3.0" prefWidth="91.0" text="Refer Code" />
+                                                                        <TableColumn fx:id="paymentIndex05" prefWidth="92.0" text="Reference No" />
+                                                                        <TableColumn fx:id="paymentIndex06" minWidth="0.0" prefWidth="62.0" text="Amount" />
                                                                     </columns>
                                                                   </TableView>
                                                                   <GridPane layoutX="12.0" layoutY="3.0" prefHeight="28.0" prefWidth="521.0">

@@ -7,8 +7,6 @@ package org.rmj.marketplace.controller;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import org.rmj.marketplace.model.ScreenInterface;
 import java.net.URL;
@@ -18,7 +16,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -37,16 +34,9 @@ import org.rmj.marketplace.model.OrderModel;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agent.MsgBox;
 import org.rmj.appdriver.constants.EditMode;
-import org.rmj.marketplace.base.LTransaction;
-import org.rmj.marketplace.base.ProductReviews;
 import org.rmj.marketplace.base.SalesOrder;
-import static org.rmj.marketplace.controller.ItemManagementController.priceWithDecimal;
 import org.rmj.marketplace.model.OrderDetailModel;
-import java.time.LocalDateTime;  // Import the LocalDateTime class
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -58,19 +48,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import javax.imageio.ImageIO;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
-import static org.rmj.marketplace.controller.ItemManagementController.listingEnd;
-import static org.rmj.marketplace.controller.ItemManagementController.listingStart;
-import org.rmj.marketplace.model.ImageModel;
-import org.rmj.marketplace.model.ItemDescriptionModel;
+import org.rmj.marketplace.base.LResult;
 import org.rmj.marketplace.model.OrderPaymentTaggingModel;
-import org.rmj.marketplace.model.RatingsReviewModel;
+
 
 /**
  * FXML Controller class
@@ -81,11 +66,13 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     
     private GRider oApp;
     private SalesOrder oTrans;
-    private LTransaction  oListener;
+    private LResult oListener;
     private boolean pbLoaded = false;
     private int pnRow = -1;
     private int pnRow1 = -1;
+    private int oldPnRow = -1;
     private int pnEditMode;
+    private String oldTransNox = "";
     
     double xOffset = 0;
     double yOffset = 0;
@@ -283,8 +270,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private Label lblStatus;
     @FXML
     private TextField txtSeeks01;
-    private double total = 0.0;
-
+       
     private ObservableList<OrderModel> data = FXCollections.observableArrayList();
     private ObservableList<OrderDetailModel> data1 = FXCollections.observableArrayList();
     private ObservableList<OrderDetailModel> data2 = FXCollections.observableArrayList();
@@ -296,13 +282,28 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        oListener = new LTransaction() {
+    oListener = new LResult() {
              @Override
-             public void MasterRetreive(int fnIndex, Object foValue) {
-                 System.out.println("fnIndex = " + fnIndex);
-                 System.out.println("foValue = " + (String) foValue);
+             public void OnSave(String message) {
+                System.out.println("OnSave = " + message);
+                oTrans = new SalesOrder(oApp, oApp.getBranchCode(), false);
+                oTrans.setListener(oListener);
+                oTrans.setTranStat(10234);
+                oTrans.setWithUI(true);
+                pbLoaded = true;
+                 loadOrders();
+                 pnRow1 = -1;
+                 loadOrderDetail(oldTransNox);
+                 tblClients.getSelectionModel().select(oldPnRow);
              }
-         };
+             @Override
+             public void OnCancel(String message) {
+                 pnRow1 = -1;
+                 loadOrderDetail(oldTransNox);
+                System.out.println("OnCancel = " + message);
+             }
+       
+        };
         oTrans = new SalesOrder(oApp, oApp.getBranchCode(), false);
         oTrans.setListener(oListener);
         oTrans.setTranStat(10234);
@@ -318,6 +319,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     public void setGRider(GRider foValue) {
         oApp = foValue; //To change body of generated methods, choose Tools | Torderlates.
     }
+
     @FXML
     private void tblClients_Clicked(MouseEvent event) {
         
@@ -334,7 +336,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             label04.setText(filteredData.get(pnRow).getOrderIndex12());
             label05.setText(filteredData.get(pnRow).getOrderIndex04());
             label01.setText(filteredData.get(pnRow).getOrderIndex13());
-           
+            oldPnRow = pnRow;
              loadOrderDetail(filteredData.get(pnRow).getOrderIndex02());
         }    
 
@@ -407,6 +409,9 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         int lnCtr;
         try {
             data1.clear();
+            oldTransNox = transNox;
+            System.out.println(oldTransNox);
+            System.out.println(oldPnRow);
             if (oTrans.OpenTransaction(transNox)){//true if by barcode; false if by description
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
 
@@ -428,27 +433,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 initGrid1();
                 loadMaster(); 
                 loadPaymentTagging();  
-                IssuedOrderDetail();
-        
-//            data3.clear();
-//                 for (lnCtr = 1; lnCtr <= oTrans.getPaymentItemCount(); lnCtr++){
-//                    data3.add(new OrderPaymentTaggingModel(String.valueOf(lnCtr),
-//                            (String) oTrans.getPayment(lnCtr, "sTransNox"),
-//                            (String) oTrans.getPayment(lnCtr, "dTransact"),
-//                            (String) oTrans.getPayment(lnCtr, "sReferNox"),
-//                            (String) oTrans.getPayment(lnCtr, "sRemarksx"),
-//                            (String) oTrans.getPayment(lnCtr, "sSourceCd"),                            
-//                            (String) oTrans.getPayment(lnCtr, "sSourceNo"),
-//                            (String) oTrans.getPayment(lnCtr, "cTranStat")
-//                            
-//
-//                           
-//                    ));
-//                  
-//                }
-//                initGrid3(); 
-
-        
+                IssuedOrderDetail();  
                 
             }  else{
                 MsgBox.showOk(oTrans.getMessage());
@@ -506,14 +491,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                     data3.add(new OrderPaymentTaggingModel(String.valueOf(lnCtr),
                             (String) oTrans.getPayment(lnCtr, "sTransNox"),
                             (String) oTrans.getPayment(lnCtr, "dTransact"),
+                            (String) oTrans.getPayment(lnCtr, "sReferCde"),
                             (String) oTrans.getPayment(lnCtr, "sReferNox"),
-                            (String) oTrans.getPayment(lnCtr, "sRemarksx"),
-                            (String) oTrans.getPayment(lnCtr, "sSourceCd"),                            
+                            (String) oTrans.getPayment(lnCtr, "nAmountxx"),                            
                             (String) oTrans.getPayment(lnCtr, "sSourceNo"),
-                            (String) oTrans.getPayment(lnCtr, "cTranStat")
-                            
-
-                           
+                            (String) oTrans.getPayment(lnCtr, "cTranStat")               
+                          
                     ));
                   
                 }
@@ -556,6 +539,9 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 header.setReordering(false);
             });
         });
+           if(oldPnRow >= 0){
+           tblClients.getSelectionModel().select(oldPnRow);
+       }
         
     }
     private void initGrid1() {
@@ -630,8 +616,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         paymentIndex02.setCellValueFactory(new PropertyValueFactory<>("paymentIndex02"));
         paymentIndex03.setCellValueFactory(new PropertyValueFactory<>("paymentIndex03"));
         paymentIndex04.setCellValueFactory(new PropertyValueFactory<>("paymentIndex04"));
-        paymentIndex05.setCellValueFactory(new PropertyValueFactory<>("paymentIndex06"));
-        paymentIndex06.setCellValueFactory(new PropertyValueFactory<>("paymentIndex07"));
+        paymentIndex05.setCellValueFactory(new PropertyValueFactory<>("paymentIndex05"));
+        paymentIndex06.setCellValueFactory(new PropertyValueFactory<>("paymentIndex06"));
         
    
 
@@ -645,22 +631,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         });
  
     }
-@FXML
-    private void tblPaymenttype_Click (MouseEvent event) {
-        try {
-            
-            pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
-            //OrderPaymentTaggingModel optag = (OrderPaymentTaggingModel) tblPaymenttype.getItems().get(pnRow);
-           // loadPaymentDetail((String) oTrans.getPayment(pnRow + 1, "sTransNox"), pnRow + 1); 
-             loadPaymentDetail(data3.get(pnRow1 ).getPaymentIndex02(), pnRow1 ); 
-          //  if(ti.getIncindex02().contains("Deduction")){
-                
-          //      AddDeductionController.setData(optag;
-           //     loadDeductionDetail(pnRow + 1 - (oTrans.getIncentiveCount())); 
-                
-           // } else{
-            //    loadPaymentDetail((String) oTrans.getIncentiveInfo(pnRow + 1, "sInctveCD"), pnRow + 1); 
-           // }
+            @FXML
+            private void tblPaymenttype_Click (MouseEvent event) {
+                    try {
+                        pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
+                        System.out.println("pnRow1 = " + pnRow1);
+                         loadPaymentDetail(data3.get(pnRow1).getPaymentIndex02(), pnRow1 ); 
             
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -721,46 +697,50 @@ public class OrderProcessingController implements Initializable, ScreenInterface
        private void loadPaymentDetail(String fsCode, int fnRow) throws SQLException{
         try {
             Stage stage = new Stage();
-            
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/org/rmj/marketplace/view/OrderPaymentTagging.fxml"));
+            if(oTrans.UpdateTransaction()){
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/org/rmj/marketplace/view/OrderPaymentTagging.fxml"));
 
-            OrderPaymentTaggingController loControl = new OrderPaymentTaggingController();
-            loControl.setGRider(oApp);
-            loControl.setSalesOrder(oTrans);
-            loControl.setPaymentCode(fsCode);
-            loControl.setTableRow(fnRow);
+                OrderPaymentTaggingController loControl = new OrderPaymentTaggingController();
+                loControl.setGRider(oApp);
+                loControl.setSalesOrder(oTrans);
+                loControl.setPaymentCode(fsCode);
+                loControl.setListener(oListener);
+                loControl.setEditMode(EditMode.UPDATE);
+                loControl.setTableRow(fnRow + 1);
+
+                fxmlLoader.setController(loControl);
+
+                //load the main interface
+                Parent parent = fxmlLoader.load();
+
+                parent.setOnMousePressed(new EventHandler<MouseEvent>() {
+                   @Override
+                    public void handle(MouseEvent event) {
+                        xOffset = event.getSceneX();
+                        yOffset = event.getSceneY();
+                    }
+                });
+                parent.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        stage.setX(event.getScreenX() - xOffset);
+                        stage.setY(event.getScreenY() - yOffset);
+                    }
+               });
+
+                //set the main interface as the scene
+                Scene scene = new Scene(parent);
+                stage.setScene(scene);
+                stage.initStyle(StageStyle.TRANSPARENT);
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setTitle("");
+                stage.showAndWait();
+            }
             
-            fxmlLoader.setController(loControl);
             
-            //load the main interface
-            Parent parent = fxmlLoader.load();
-                
-            parent.setOnMousePressed(new EventHandler<MouseEvent>() {
-               @Override
-                public void handle(MouseEvent event) {
-                    xOffset = event.getSceneX();
-                    yOffset = event.getSceneY();
-                }
-            });
-            parent.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    stage.setX(event.getScreenX() - xOffset);
-                    stage.setY(event.getScreenY() - yOffset);
-                }
-           });
-            
-            //set the main interface as the scene
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.initStyle(StageStyle.TRANSPARENT);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("");
-            stage.showAndWait();
-            
-           // loadDetail();
-          //  loadIncentives();
+            loadOrders();
+           
         } catch (IOException e) {
             e.printStackTrace();
         //    ShowMessageFX.Warning(getStage(),e.getMessage(), "Warning", null);
