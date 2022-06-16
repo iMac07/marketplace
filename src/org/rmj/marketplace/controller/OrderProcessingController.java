@@ -183,6 +183,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 
     @FXML
     private TableColumn paymentIndex06;
+    
     @FXML
     private AnchorPane searchBar11;
 
@@ -361,12 +362,11 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         }else{
             lblStatus.setVisible(false);
         }
-        lblOrder01.setText(lblStatus.getText());
-                    
-        lblOrder02.setText(lblStatus.getText());
+        lblOrder02.setText(lblStatus.getText());                    
+        //lblOrder01.setText(oTrans.getDetail(0, "sReferNox").toString());
    }
 
-
+ 
     private void loadOrders(){
         int lnCtr;
         try {
@@ -428,7 +428,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                             (String) oTrans.getDetail(lnCtr, "sReferNox"),
                             oTrans.getDetail(lnCtr, "nIssuedxx").toString()
                     ));
-                  
+                lblOrder01.setText(oTrans.getDetail(lnCtr, "sReferNox").toString());  
                 }
                 initGrid1();
                 loadMaster(); 
@@ -490,10 +490,10 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                  for (lnCtr = 1; lnCtr <= oTrans.getPaymentItemCount(); lnCtr++){
                     data3.add(new OrderPaymentTaggingModel(String.valueOf(lnCtr),
                             (String) oTrans.getPayment(lnCtr, "sTransNox"),
-                            (String) oTrans.getPayment(lnCtr, "dTransact"),
+                            (dateToWord1(oTrans.getPayment(lnCtr, "dTransact").toString())),
                             (String) oTrans.getPayment(lnCtr, "sReferCde"),
                             (String) oTrans.getPayment(lnCtr, "sReferNox"),
-                            (String) oTrans.getPayment(lnCtr, "nAmountxx"),                            
+                            priceWithDecimal(Double.valueOf(oTrans.getPayment(lnCtr, "nAmountxx").toString())),                           
                             (String) oTrans.getPayment(lnCtr, "sSourceNo"),
                             (String) oTrans.getPayment(lnCtr, "cTranStat")               
                           
@@ -618,29 +618,28 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         paymentIndex04.setCellValueFactory(new PropertyValueFactory<>("paymentIndex04"));
         paymentIndex05.setCellValueFactory(new PropertyValueFactory<>("paymentIndex05"));
         paymentIndex06.setCellValueFactory(new PropertyValueFactory<>("paymentIndex06"));
-        
+
    
 
         // 5. Add sorted (and filtered) data to the table.
-       tblPaymenttype.setItems(data3);
         tblPaymenttype.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblPaymenttype.lookup("TableHeaderRow");
             header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                 header.setReordering(false);
             });
         });
+       tblPaymenttype.setItems(data3);
  
     }
-            @FXML
-            private void tblPaymenttype_Click (MouseEvent event) {
-                    try {
+        @FXML
+        private void tblPaymenttype_Click (MouseEvent event) {
+            try {
                         pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
-                        System.out.println("pnRow1 = " + pnRow1);
-                         loadPaymentDetail(data3.get(pnRow1).getPaymentIndex02(), pnRow1 ); 
-            
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            ShowMessageFX.Warning(getStage(),ex.getMessage(), "Warning", null);
+                        loadPaymentDetail(data3.get(pnRow1).getPaymentIndex02(), pnRow1); 
+                        
+            } catch (SQLException ex) {
+              ex.printStackTrace();
+              ShowMessageFX.Warning(getStage(),ex.getMessage(), "Warning", null);
         }
     }
     private void initButton(int fnValue){
@@ -689,22 +688,40 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             return null;
         }
     }
-//    private void unloadForm(){
- //       StackPane myBox = (StackPane) AnchorMain.getParent();
-  //      myBox.getChildren().clear();
-  //      myBox.getChildren().add(getScene("MainScreenBG.fxml"));
-  //  }
-       private void loadPaymentDetail(String fsCode, int fnRow) throws SQLException{
+public static String dateToWord1 (String dtransact) {
+       
+        SimpleDateFormat dateParser1 = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+//            Date date = dateParser.parse("2022-04-29 16:59:13");
+//            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
+//             String str_date="2012-08-11+05:30";
+//           
+            Date date = new Date();
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            date = (Date)formatter.parse(dtransact);  
+            SimpleDateFormat fmt = new SimpleDateFormat("MMM dd, yyyy");
+            String todayStr = fmt.format(date);
+            
+            return todayStr;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+       private void loadPaymentDetail(String psCode, int fnRow) throws SQLException{
         try {
             Stage stage = new Stage();
             if(oTrans.UpdateTransaction()){
+
+
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/org/rmj/marketplace/view/OrderPaymentTagging.fxml"));
 
                 OrderPaymentTaggingController loControl = new OrderPaymentTaggingController();
                 loControl.setGRider(oApp);
                 loControl.setSalesOrder(oTrans);
-                loControl.setPaymentCode(fsCode);
+                loControl.setPaymentCode(psCode);
                 loControl.setListener(oListener);
                 loControl.setEditMode(EditMode.UPDATE);
                 loControl.setTableRow(fnRow + 1);

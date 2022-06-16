@@ -35,7 +35,7 @@ public class OrderPaymentTaggingModel {
 
 
     }
-    public String getPaymentIndex1() {
+    public String getPaymentIndex01() {
         return paymentIndex01.get();
     }
 

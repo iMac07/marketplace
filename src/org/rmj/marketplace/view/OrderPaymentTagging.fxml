@@ -90,7 +90,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="txtField05" layoutX="105.0" layoutY="214.0" prefHeight="50.0" prefWidth="224.0" />
+                  <TextArea fx:id="txtField05" layoutX="105.0" layoutY="214.0" prefHeight="50.0" prefWidth="224.0" wrapText="true" />
                   <TextField fx:id="txtField02" editable="false" layoutX="127.0" layoutY="45.0" prefHeight="25.0" prefWidth="201.0" />
                   <Label layoutX="29.0" layoutY="132.0" text="Amount">
                      <font>
