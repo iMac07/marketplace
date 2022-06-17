@@ -74,7 +74,7 @@
                                  <children>
                                     <BorderPane>
                                        <center>
-                                          <AnchorPane style="-fx-border-radius: 5; -fx-border-color: orange;" BorderPane.alignment="CENTER">
+                                          <AnchorPane prefHeight="513.0" prefWidth="617.0" style="-fx-border-radius: 5; -fx-border-color: orange;" BorderPane.alignment="CENTER">
                                              <opaqueInsets>
                                                 <Insets />
                                              </opaqueInsets>
@@ -82,7 +82,7 @@
                                                 <Insets />
                                              </BorderPane.margin>
                                              <children>
-                                                <ScrollPane fitToWidth="true" layoutX="17.0" layoutY="16.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+                                                <ScrollPane fitToWidth="true" layoutX="25.0" layoutY="29.0" prefHeight="349.0" prefWidth="569.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                                    <content>
                                                       <VBox>
                                                          <children>
@@ -91,15 +91,15 @@
                                                                   <Insets top="5.0" />
                                                                </padding>
                                                                <children>
-                                                                  <GridPane layoutX="2.0" layoutY="22.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                  <GridPane layoutX="2.0" layoutY="10.0" prefWidth="577.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                                                      <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="125.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                                        <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="60.0" minWidth="7.0" prefWidth="13.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="28.0" prefWidth="128.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="111.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="23.0" minWidth="10.0" prefWidth="23.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="153.0" />
+                                                                        <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="69.0" />
+                                                                        <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="146.0" minWidth="7.0" prefWidth="30.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="0.0" prefWidth="111.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.0" minWidth="10.0" prefWidth="60.0" />
                                                                      </columnConstraints>
                                                                      <rowConstraints>
                                                                         <RowConstraints />
@@ -107,7 +107,7 @@
                                                                         <RowConstraints />
                                                                      </rowConstraints>
                                                                      <children>
-                                                                        <Label prefHeight="17.0" prefWidth="121.0" text="Reference No.">
+                                                                        <Label prefHeight="27.0" prefWidth="108.0" text="Order No.">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -115,21 +115,13 @@
                                                                               <Insets bottom="5.0" left="20.0" top="5.0" />
                                                                            </padding>
                                                                         </Label>
-                                                                        <TextField fx:id="txtField01" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                                                                        <TextField fx:id="txtField01" editable="false" prefHeight="30.0" prefWidth="185.0" GridPane.columnIndex="1" GridPane.columnSpan="2" />
                                                                         <Separator prefWidth="200.0" style="-fx-background-color: orange;" GridPane.columnSpan="7" GridPane.rowIndex="1">
                                                                            <GridPane.margin>
                                                                               <Insets top="5.0" />
                                                                            </GridPane.margin>
                                                                         </Separator>
-                                                                        <Label alignment="CENTER_RIGHT" text="Date :" GridPane.columnIndex="4">
-                                                                           <font>
-                                                                              <Font name="System Bold" size="12.0" />
-                                                                           </font>
-                                                                           <padding>
-                                                                              <Insets bottom="5.0" top="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <Label fx:id="label01" prefWidth="197.0" text="Reference No." GridPane.columnIndex="5" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS">
+                                                                        <Label fx:id="label01" prefHeight="27.0" prefWidth="87.0" text="Order Date:" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -137,6 +129,7 @@
                                                                               <Insets bottom="5.0" left="10.0" top="5.0" />
                                                                            </padding>
                                                                         </Label>
+                                                                        <TextField fx:id="txtField02" editable="false" prefHeight="30.0" prefWidth="168.0" GridPane.columnIndex="5" GridPane.columnSpan="2147483647" />
                                                                      </children>
                                                                   </GridPane>
                                                                </children>
@@ -181,22 +174,22 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label02" layoutX="10.0" layoutY="17.0" prefHeight="17.0" prefWidth="279.0" text="SABINIANO, JONATHAN" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                                                        <Label fx:id="label01" layoutX="10.0" layoutY="17.0" prefHeight="17.0" prefWidth="279.0" text="SABINIANO, JONATHAN" GridPane.columnIndex="1" GridPane.columnSpan="3">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label06" layoutX="117.0" layoutY="17.0" prefHeight="44.0" prefWidth="268.0" text="Cawayan Bogtong, Malasiqui, Pangasinan" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="3">
+                                                                        <Label fx:id="label03" layoutX="117.0" layoutY="17.0" prefHeight="44.0" prefWidth="268.0" text="Cawayan Bogtong, Malasiqui, Pangasinan" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="3">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label04" layoutX="117.0" layoutY="47.0" prefHeight="17.0" prefWidth="315.0" text="Malasiqui, Pangasinan, 2421" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1">
+                                                                        <Label fx:id="label02" layoutX="117.0" layoutY="47.0" prefHeight="17.0" prefWidth="315.0" text="Malasiqui, Pangasinan, 2421" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label08" layoutX="117.0" layoutY="77.0" prefHeight="17.0" prefWidth="180.0" text="Sample Remarks" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="4">
+                                                                        <Label fx:id="label04" layoutX="117.0" layoutY="77.0" prefHeight="17.0" prefWidth="180.0" text="Sample Remarks" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="4">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -221,12 +214,12 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label09" prefHeight="35.0" prefWidth="80.0" text="36 Months" GridPane.columnIndex="5" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
+                                                                        <Label fx:id="label05" prefHeight="35.0" prefWidth="80.0" text="COD" GridPane.columnIndex="5" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label05" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="197.0" style="-fx-background-color: #4d5656;" text="₱ 52.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                                                                        <Label fx:id="label07" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="197.0" style="-fx-background-color: #4d5656;" text="₱ 52.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                                                                            <padding>
                                                                               <Insets right="5.0" />
                                                                            </padding>
@@ -234,7 +227,7 @@
                                                                               <Font name="System Bold" size="16.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label03" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="₱ 1,002.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.columnSpan="2147483647">
+                                                                        <Label fx:id="label08" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="₱ 1,002.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.columnSpan="2147483647">
                                                                            <padding>
                                                                               <Insets right="5.0" />
                                                                            </padding>
@@ -243,7 +236,7 @@
                                                                            </font>
                                                                         </Label>
                                                                         <Separator prefWidth="200.0" style="-fx-background-color: orange;" GridPane.columnIndex="3" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-                                                                        <Label fx:id="label07" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="₱ 1,054.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+                                                                        <Label fx:id="label06" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="₱ 1,054.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
                                                                            <padding>
                                                                               <Insets right="5.0" />
                                                                            </padding>
@@ -283,29 +276,29 @@
                                                                               <Font name="System Bold" size="14.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label layoutX="398.0" layoutY="17.0" prefHeight="14.0" prefWidth="196.0" text="CREATED" GridPane.columnIndex="4">
+                                                                        <Label fx:id="lblOrder02" layoutX="398.0" layoutY="17.0" prefHeight="14.0" prefWidth="196.0" text="CREATED" GridPane.columnIndex="4">
                                                                            <font>
                                                                               <Font name="System Bold" size="14.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label layoutX="398.0" layoutY="17.0" prefHeight="14.0" prefWidth="196.0" text="27797" GridPane.columnIndex="1">
+                                                                        <Label fx:id="lblOrder01" layoutX="398.0" layoutY="17.0" prefHeight="14.0" prefWidth="196.0" text="27797" GridPane.columnIndex="1">
                                                                            <font>
                                                                               <Font name="System Bold" size="14.0" />
                                                                            </font>
                                                                         </Label>
                                                                      </children>
                                                                   </GridPane>
-                                                                  <TableView fx:id="tblorders" focusTraversable="false" layoutX="10.0" prefHeight="200.0" stylesheets="@../css/TableWithImage.css" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="-5.0" AnchorPane.topAnchor="28.0">
+                                                                  <TableView fx:id="tblOrders" focusTraversable="false" layoutX="10.0" prefHeight="200.0" prefWidth="531.0" stylesheets="@../css/TableWithImage.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
                                                                      <columns>
-                                                                        <TableColumn fx:id="orderIndex01" editable="false" maxWidth="-1.0" minWidth="30.0" prefWidth="-1.0" sortable="false" text="NO" />
-                                                                        <TableColumn fx:id="orderIndex02" editable="false" maxWidth="-1.0" minWidth="160.0" prefWidth="-1.0" sortable="false" text="BARCODE" />
-                                                                        <TableColumn fx:id="orderIndex03" editable="false" maxWidth="-1.0" minWidth="220.0" prefWidth="-1.0" sortable="false" text="DESCRIPT" />
-                                                                        <TableColumn fx:id="orderIndex04" editable="false" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="BRAND" />
-                                                                        <TableColumn fx:id="orderIndex05" editable="false" maxWidth="-1.0" minWidth="140.0" prefWidth="-1.0" sortable="false" text="MODEL" />
-                                                                        <TableColumn fx:id="orderIndex06" editable="false" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="COLOR" />
-                                                                        <TableColumn fx:id="orderIndex07" editable="false" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="ORDER" />
-                                                                        <TableColumn fx:id="orderIndex08" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="RELEASED" />
-                                                                        <TableColumn fx:id="orderIndex09" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="ISSUED" />
+                                                                        <TableColumn fx:id="orderIndex01" editable="false" maxWidth="-1.0" minWidth="25.0" prefWidth="-1.0" sortable="false" text="NO" />
+                                                                        <TableColumn fx:id="orderIndex02" editable="false" maxWidth="155.0" minWidth="120.0" prefWidth="120.0" sortable="false" text="BARCODE" />
+                                                                        <TableColumn fx:id="orderIndex03" editable="false" maxWidth="317.0" minWidth="140.0" prefWidth="140.0" sortable="false" text="DESCRIPT" />
+                                                                        <TableColumn fx:id="orderIndex04" editable="false" maxWidth="361.0" minWidth="3.0" prefWidth="60.0" sortable="false" text="BRAND" />
+                                                                        <TableColumn fx:id="orderIndex05" editable="false" maxWidth="498.0" minWidth="100.0" prefWidth="100.0" sortable="false" text="MODEL" />
+                                                                        <TableColumn fx:id="orderIndex06" editable="false" maxWidth="114.0" minWidth="50.0" prefWidth="50.0" sortable="false" text="COLOR" />
+                                                                        <TableColumn fx:id="orderIndex07" editable="false" maxWidth="206.0" minWidth="50.0" prefWidth="50.0" sortable="false" text="ORDER" />
+                                                                        <TableColumn fx:id="orderIndex08" editable="false" maxWidth="189.0" minWidth="52.0" prefWidth="52.0" sortable="false" text="RELEASED" />
+                                                                        <TableColumn fx:id="orderIndex09" editable="false" maxWidth="-1.0" minWidth="52.0" prefWidth="52.0" sortable="false" text="ISSUED" />
                                                                      </columns>
                                                                   </TableView>
                                                                </children>
@@ -318,6 +311,37 @@
                                                                   <Insets top="5.0" />
                                                                </VBox.margin>
                                                             </Separator>
+                                                            <AnchorPane prefHeight="141.0" prefWidth="536.0">
+                                                               <children>
+                                                                  <TableView fx:id="tblPaymenttype" layoutX="6.0" layoutY="31.0" onMouseClicked="#tblPaymenttype_Click" prefHeight="120.0" prefWidth="528.0" stylesheets="@../css/TableWithImage.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+                                                                    <columns>
+                                                                      <TableColumn fx:id="paymentIndex01" prefWidth="26.0" text="No" />
+                                                                      <TableColumn fx:id="paymentIndex02" prefWidth="160.0" text="Transaction No" />
+                                                                        <TableColumn fx:id="paymentIndex03" prefWidth="96.0" text="Date" />
+                                                                        <TableColumn fx:id="paymentIndex04" minWidth="3.0" prefWidth="91.0" text="Refer Code" />
+                                                                        <TableColumn fx:id="paymentIndex05" prefWidth="92.0" text="Reference No" />
+                                                                        <TableColumn fx:id="paymentIndex06" minWidth="0.0" prefWidth="62.0" text="Amount" />
+                                                                    </columns>
+                                                                  </TableView>
+                                                                  <GridPane layoutX="12.0" layoutY="3.0" prefHeight="28.0" prefWidth="521.0">
+                                                                    <columnConstraints>
+                                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                     <children>
+                                                                        <Label text="Payment Type:">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="14.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                     </children>
+                                                                  </GridPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                            <Separator prefWidth="200.0" style="-fx-background-color: orange;" />
                                                             <AnchorPane fx:id="searchBar11" layoutX="10.0" layoutY="10.0">
                                                                <padding>
                                                                   <Insets left="10.0" right="10.0" top="5.0" />
@@ -330,14 +354,14 @@
                                                                   </Label>
                                                                </children>
                                                             </AnchorPane>
-                                                            <TableView fx:id="tblorders1" focusTraversable="false" prefHeight="200.0" stylesheets="@../css/TableWithImage.css">
+                                                            <TableView fx:id="tblissueditems" focusTraversable="false" prefHeight="200.0" stylesheets="@../css/TableWithImage.css">
                                                                <columns>
-                                                                  <TableColumn fx:id="orderIndex011" editable="false" prefWidth="30.0" sortable="false" text="NO" />
-                                                                  <TableColumn fx:id="orderIndex021" editable="false" prefWidth="140.0" sortable="false" text="BARCODE" />
-                                                                  <TableColumn fx:id="orderIndex031" editable="false" prefWidth="140.0" sortable="false" text="SERIAL / IMEI" />
-                                                                  <TableColumn fx:id="orderIndex041" editable="false" prefWidth="150.0" sortable="false" text="DESCRIPT" />
-                                                                  <TableColumn fx:id="orderIndex051" editable="false" prefWidth="30.0" sortable="false" text="QTY" />
-                                                                  <TableColumn fx:id="orderIndex061" editable="false" prefWidth="140.0" sortable="false" text="UNIT PRICE TOTAL" />
+                                                                  <TableColumn fx:id="issuedIndex01" editable="false" prefWidth="30.0" sortable="false" text="NO" />
+                                                                  <TableColumn fx:id="issuedIndex02" editable="false" prefWidth="140.0" sortable="false" text="BARCODE" />
+                                                                  <TableColumn fx:id="issuedIndex03" editable="false" prefWidth="140.0" sortable="false" text="SERIAL / IMEI" />
+                                                                  <TableColumn fx:id="issuedIndex04" editable="false" prefWidth="150.0" sortable="false" text="DESCRIPT" />
+                                                                  <TableColumn fx:id="issuedIndex05" editable="false" prefWidth="30.0" sortable="false" text="QTY" />
+                                                                  <TableColumn fx:id="issuedIndex06" editable="false" prefWidth="140.0" sortable="false" text="UNIT PRICE TOTAL" />
                                                                </columns>
                                                                <VBox.margin>
                                                                   <Insets bottom="10.0" />
@@ -368,7 +392,7 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <TextField fx:id="txtField06" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" />
+                                                                        <TextField fx:id="txtFieldDet01" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" />
                                                                         <Label prefHeight="17.0" prefWidth="115.0" text="UNIT PRICE :" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
@@ -379,7 +403,7 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <TextField fx:id="txtField07" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                        <TextField fx:id="txtFieldDet02" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                         <Label text="TOTAL AMOUNT :" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
@@ -390,7 +414,7 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <TextField fx:id="txtField11" disable="true" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                        <TextField fx:id="txtFieldDet03" disable="true" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                                         <Label prefHeight="17.0" prefWidth="105.0" text="QTY :" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
@@ -401,14 +425,14 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <TextField fx:id="txtField14" disable="true" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                        <TextField fx:id="txtFieldDet04" disable="true" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                                         <Label prefHeight="17.0" prefWidth="149.0" text="MODEL :" GridPane.rowIndex="5">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <TextField fx:id="txtField15" disable="true" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                                                        <CheckBox fx:id="Check20" alignment="BOTTOM_LEFT" mnemonicParsing="false" prefHeight="17.0" prefWidth="282.0" text="is Accessories/Giveaways" GridPane.columnIndex="3" GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
+                                                                        <TextField fx:id="txtFieldDet05" disable="true" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="21.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                        <CheckBox fx:id="CheckBoxAG01" alignment="BOTTOM_LEFT" mnemonicParsing="false" prefHeight="17.0" prefWidth="282.0" text="is Accessories/Giveaways" GridPane.columnIndex="3" GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -418,9 +442,9 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                        <TextField fx:id="txtFieldDet06" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                                                         <Separator prefWidth="200.0" style="-fx-background-color: orange;" GridPane.columnIndex="3" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
-                                                                        <Label fx:id="lblSubTotal21" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="1" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                                                        <Label fx:id="lblDetail01" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="1" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                                                            <padding>
                                                                               <Insets right="5.0" />
                                                                            </padding>
@@ -428,7 +452,7 @@
                                                                               <Font name="System Bold" size="16.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="lblSubTotal3" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="₱ 1,054.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                                                        <Label fx:id="lblDetail02" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="₱ 1,054.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                                                            <padding>
                                                                               <Insets right="5.0" />
                                                                            </padding>
@@ -436,7 +460,7 @@
                                                                               <Font name="System Bold" size="16.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="lblSubTotal4" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="₱ 1,054.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                                                                        <Label fx:id="lblDetail03" alignment="CENTER_RIGHT" prefHeight="14.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="₱ 1,054.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.rowIndex="4">
                                                                            <padding>
                                                                               <Insets right="5.0" />
                                                                            </padding>
@@ -454,6 +478,7 @@
                                                                   <Insets bottom="10.0" />
                                                                </VBox.margin>
                                                             </AnchorPane>
+                                                            <Separator prefWidth="200.0" style="-fx-background-color: orange;" />
                                                          </children>
                                                       </VBox>
                                                    </content>
@@ -506,10 +531,10 @@
                                                             <Blend />
                                                          </effect>
                                                          <graphic>
-                                                            <FontAwesomeIconView glyphName="PRINT" size="20" />
+                                                            <FontAwesomeIconView fx:id="btnPrintOrder" glyphName="PRINT" size="20" />
                                                          </graphic>
                                                       </Button>
-                                                      <Button fx:id="btnUpdate11" contentDisplay="TOP" ellipsisString="" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" styleClass="button_process" text="Print Issuance">
+                                                      <Button fx:id="btnPrintIssuance" contentDisplay="TOP" ellipsisString="" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" styleClass="button_process" text="Print Issuance">
                                                          <graphic>
                                                             <FontAwesomeIconView glyphName="PRINT" size="20" />
                                                          </graphic>
@@ -548,11 +573,12 @@
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="185.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="2.0" prefWidth="70.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="211.0" minWidth="10.0" prefWidth="90.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="183.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="70.0" />
-                                          <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="107.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="70.0" />
-                                          <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="104.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="165.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="48.0" />
+                                          <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="193.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="9.0" prefWidth="35.0" />
+                                          <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="70.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="100.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
@@ -574,18 +600,18 @@
                                                 <Insets left="20.0" />
                                              </padding>
                                           </Label>
-                                          <DatePicker GridPane.columnIndex="5" />
-                                          <Label alignment="CENTER" prefHeight="30.0" prefWidth="120.0" text="STATUS" GridPane.columnIndex="7">
+                                          <DatePicker fx:id="DateSeeks01" GridPane.columnIndex="5" />
+                                          <Label fx:id="lblStatus" alignment="CENTER" prefHeight="30.0" prefWidth="165.0" text="STATUS" GridPane.columnIndex="7">
                                              <font>
                                                 <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
-                                          <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="148.0" text="LOAD" GridPane.columnIndex="9">
+                                          <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="185.0" text="LOAD" GridPane.columnIndex="9" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
                                           </Button>
-                                          <TextField fx:id="txtSeeks99" promptText="SEARCH : F3" GridPane.columnIndex="2" />
+                                          <TextField fx:id="txtSeeks01" promptText="SEARCH : F3" GridPane.columnIndex="2" />
                                        </children>
                                     </GridPane>
                                  </children>

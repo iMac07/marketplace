@@ -12,6 +12,8 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class ClientInfoModel {
 
+
+
     private SimpleStringProperty clientIndex01;
     private SimpleStringProperty clientIndex02;  
     private SimpleStringProperty clientIndex03;
@@ -21,7 +23,8 @@ public class ClientInfoModel {
     private SimpleStringProperty clientIndex07;
     private SimpleStringProperty clientIndex08;  
     private SimpleStringProperty clientIndex09; 
-    private SimpleStringProperty clientIndex10; 
+    private SimpleStringProperty clientIndex10;
+    private SimpleStringProperty clientIndex11;  
 
     
     public ClientInfoModel(){
@@ -36,7 +39,8 @@ public class ClientInfoModel {
             String clientIndex07,
             String clientIndex08,
             String clientIndex09,
-            String clientIndex10) {
+            String clientIndex10,
+            String clientIndex11) {
         this.clientIndex01 = new SimpleStringProperty(clientIndex01);
         this.clientIndex02 = new SimpleStringProperty(clientIndex02);
         this.clientIndex03 = new SimpleStringProperty(clientIndex03);
@@ -47,6 +51,7 @@ public class ClientInfoModel {
         this.clientIndex08 = new SimpleStringProperty(clientIndex08);
         this.clientIndex09 = new SimpleStringProperty(clientIndex09);
         this.clientIndex10 = new SimpleStringProperty(clientIndex10);
+        this.clientIndex11 = new SimpleStringProperty(clientIndex11);
     }
     
     public String getClientIndex01() {
@@ -86,6 +91,9 @@ public class ClientInfoModel {
     }
     public String getClientIndex10() {
         return clientIndex10.get();
+    }
+    public String getClientIndex11() {
+        return clientIndex11.get();
     }
 
 }

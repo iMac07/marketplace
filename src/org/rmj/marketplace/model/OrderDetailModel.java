@@ -36,7 +36,7 @@ public class OrderDetailModel {
         this.orderIndex05 = new SimpleStringProperty(orderIndex05);
         this.orderIndex06 = new SimpleStringProperty(orderIndex06);
         this.orderIndex07 = new SimpleStringProperty(orderIndex07);
-        this.orderIndex08 = new SimpleStringProperty(orderIndex09);
+        this.orderIndex08 = new SimpleStringProperty(orderIndex08);
         this.orderIndex09 = new SimpleStringProperty(orderIndex09);
         this.orderIndex10 = new SimpleStringProperty(orderIndex10);
         this.orderIndex11 = new SimpleStringProperty(orderIndex11);

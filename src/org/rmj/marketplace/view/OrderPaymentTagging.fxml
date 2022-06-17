@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="VBoxForm" prefHeight="381.0" prefWidth="348.0" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="30.0" prefWidth="821.0" style="-fx-background-color: #4C4C4C;">
+         <children>
+            <ImageView fitHeight="37.0" fitWidth="327.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/header-accent-wo-text.png" />
+               </image>
+               <cursor>
+
+               </cursor>
+            </ImageView>
+            <Label layoutX="5.0" layoutY="4.0" text="Order Payment Tagging" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="30.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Separator layoutY="26.0" prefHeight="0.0" prefWidth="500.0" style="-fx-background-color: orange" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="3.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="3.0">
+               <image>
+                  <Image url="@../images/icon.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="btnExit" layoutX="796.0" layoutY="4.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="21.0" AnchorPane.rightAnchor="5.0">
+               <font>
+                  <Font name="System Bold" size="8.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView fx:id="glyphExit" glyphName="TIMES" />
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="278.0" prefWidth="348.0" style="-fx-background-color: white;">
+         <children>
+            <AnchorPane layoutX="6.0" layoutY="4.0" prefHeight="271.0" prefWidth="335.0" style="-fx-border-color: orange; -fx-border-radius: 5;">
+               <children>
+                  <Label fx:id="lblHeader" layoutX="105.0" layoutY="9.0" prefHeight="23.0" prefWidth="149.0" style="-fx-background-color: black; -fx-border-radius: 5;" />
+                  <Label fx:id="label" layoutX="8.0" layoutY="11.0" text="Transaction No.">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtField01" layoutX="100.0" layoutY="5.0" prefHeight="17.0" prefWidth="151.0" style="-fx-border-radius: 5;">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Label layoutX="30.0" layoutY="78.0" prefHeight="15.0" prefWidth="85.0" text="Reference No.">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="30.0" layoutY="186.0" prefHeight="15.0" prefWidth="46.0" text="Status">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="32.0" layoutY="232.0" prefHeight="15.0" prefWidth="60.0" text="Remarks">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Label>
+                  <Separator layoutX="8.0" layoutY="167.0" prefHeight="3.0" prefWidth="327.0" style="-fx-background-color: orange;" />
+                  <TextField fx:id="txtField03" editable="false" layoutX="127.0" layoutY="72.0" prefHeight="25.0" prefWidth="201.0" />
+                  <Label layoutX="27.0" layoutY="105.0" prefHeight="15.0" prefWidth="70.0" text="Refer Code">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtField04" editable="false" layoutX="127.0" layoutY="99.0" prefHeight="25.0" prefWidth="201.0" />
+                  <Label layoutX="30.0" layoutY="51.0" prefHeight="15.0" prefWidth="85.0" text="Date">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="txtField05" layoutX="105.0" layoutY="214.0" prefHeight="50.0" prefWidth="224.0" />
+                  <TextField fx:id="txtField02" editable="false" layoutX="127.0" layoutY="45.0" prefHeight="25.0" prefWidth="201.0" />
+                  <Label layoutX="29.0" layoutY="132.0" text="Amount">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtField06" layoutX="127.0" layoutY="126.0" prefHeight="26.0" prefWidth="201.0" />
+                  <ChoiceBox fx:id="status" layoutX="127.0" layoutY="181.0" prefHeight="25.0" prefWidth="201.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="66.0" prefWidth="348.0" style="-fx-background-color: #4C4C4C;">
+         <children>
+            <Button fx:id="btnOk" contentDisplay="TOP" ellipsisString="" layoutX="729.0" layoutY="9.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="OK" AnchorPane.rightAnchor="5.0">
+               <graphic>
+                  <FontAwesomeIconView glyphName="CHECK" size="20" />
+               </graphic>
+               <effect>
+                  <Blend />
+               </effect>
+            </Button>
+            <Button fx:id="btnCancel" contentDisplay="TOP" ellipsisString="" layoutX="195.0" layoutY="9.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" text="CANCEL" textAlignment="JUSTIFY">
+               <graphic>
+                  <FontAwesomeIconView glyphName="CLOSE" size="20" />
+               </graphic>
+               <effect>
+                  <Blend />
+               </effect>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

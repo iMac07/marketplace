@@ -30,13 +30,7 @@ public class OrderModel {
     private SimpleStringProperty orderIndex14;  
     private SimpleStringProperty orderIndex15;    
 
-    public OrderModel(String orderIndex01, String orderIndex02, String orderIndex03, 
-               String orderIndex04){
-        this.orderIndex01 = new SimpleStringProperty(orderIndex01);
-        this.orderIndex02 = new SimpleStringProperty(orderIndex02);
-        this.orderIndex03 = new SimpleStringProperty(orderIndex03);
-        this.orderIndex04 = new SimpleStringProperty(orderIndex04);
-    }
+
     public OrderModel(String orderIndex01, String orderIndex02, String orderIndex03, 
             String orderIndex04,String orderIndex05,String orderIndex06,
             String orderIndex07,String orderIndex08,String orderIndex09,
