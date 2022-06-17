@@ -194,14 +194,14 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn fx:id="orderIndex01" editable="false" maxWidth="-1.0" minWidth="25.0" prefWidth="-1.0" sortable="false" text="NO" />
-                              <TableColumn fx:id="orderIndex02" editable="false" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="BARCODE" />
-                              <TableColumn fx:id="orderIndex03" editable="false" maxWidth="-1.0" minWidth="140.0" prefWidth="-1.0" sortable="false" text="DESCRIPT" />
-                              <TableColumn fx:id="orderIndex04" editable="false" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" sortable="false" text="BRAND/MODEL" />
-                              <TableColumn fx:id="orderIndex05" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="COLOR" />
-                              <TableColumn fx:id="orderIndex06" editable="false" maxWidth="-1.0" minWidth="30.0" prefWidth="-1.0" sortable="false" text="QTY" />
-                              <TableColumn fx:id="orderIndex07" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="UNIT PRICE" />
-                              <TableColumn fx:id="orderIndex08" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="TOTAL AMT." />
+                              <TableColumn fx:id="orderDetIndex01" editable="false" maxWidth="-1.0" minWidth="25.0" prefWidth="-1.0" sortable="false" text="NO" />
+                              <TableColumn fx:id="orderDetIndex02" editable="false" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="BARCODE" />
+                              <TableColumn fx:id="orderDetIndex03" editable="false" maxWidth="-1.0" minWidth="140.0" prefWidth="-1.0" sortable="false" text="DESCRIPT" />
+                              <TableColumn fx:id="orderDetIndex04" editable="false" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" sortable="false" text="BRAND/MODEL" />
+                              <TableColumn fx:id="orderDetIndex05" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="COLOR" />
+                              <TableColumn fx:id="orderDetIndex06" editable="false" maxWidth="-1.0" minWidth="30.0" prefWidth="-1.0" sortable="false" text="QTY" />
+                              <TableColumn fx:id="orderDetIndex07" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="UNIT PRICE" />
+                              <TableColumn fx:id="orderDetIndex08" editable="false" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" sortable="false" text="TOTAL AMT." />
                            </columns>
                         </TableView>
                      </children>

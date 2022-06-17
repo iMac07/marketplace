@@ -41,11 +41,13 @@ import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
@@ -71,119 +73,45 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private int pnRow = -1;
     private int pnRow1 = -1;
     private int oldPnRow = -1;
+        private int pagecounter;
     private int pnEditMode;
     private String oldTransNox = "";
     
     double xOffset = 0;
     double yOffset = 0;
-   @FXML
+    @FXML
     private AnchorPane MainOrderProcessing;
-
+    @FXML
+    private Pagination pagination;
     @FXML
     private TableView tblClients;
-
     @FXML
-    private TableColumn clientsIndex01;
-
-    @FXML
-    private TableColumn clientsIndex02;
-
-    @FXML
-    private TableColumn clientsIndex03;
-
-    @FXML
-    private TableColumn clientsIndex04;
-
+    private TableColumn clientsIndex01,clientsIndex02,clientsIndex03,clientsIndex04;
     @FXML
     private AnchorPane searchBar1;
-
     @FXML
     private TextField txtField01;
-
     @FXML
-    private Label label01;
-
+    private Label label01,label02,label03,label04,
+                    label05,label06,label07,label08,
+                   lblOrder02,lblOrder01,
+                   lblDetail01,lblDetail02,lblDetail03,
+                   lblStatus;
     @FXML
     private TextField txtField02;
-
-    @FXML
-    private Label label03;
-
-    @FXML
-    private Label label02;
-
-    @FXML
-    private Label label04;
-
-    @FXML
-    private Label label05;
-
-    @FXML
-    private Label label07;
-
-    @FXML
-    private Label label08;
-
-    @FXML
-    private Label label06;
-
-    @FXML
-    private Label lblOrder02;
-
-    @FXML
-    private Label lblOrder01;
-
     @FXML
     private TableView tblOrders;
-
     @FXML
-    private TableColumn orderIndex01;
-
-    @FXML
-    private TableColumn orderIndex02;
-
-    @FXML
-    private TableColumn orderIndex03;
-
-    @FXML
-    private TableColumn orderIndex04;
-
-    @FXML
-    private TableColumn orderIndex05;
-
-    @FXML
-    private TableColumn orderIndex06;
-
-    @FXML
-    private TableColumn orderIndex07;
-
-    @FXML
-    private TableColumn orderIndex08;
-
-    @FXML
-    private TableColumn orderIndex09;
-
+    private TableColumn orderIndex01,orderIndex02,orderIndex03,
+                         orderIndex04,orderIndex05,orderIndex06,
+                         orderIndex07,orderIndex08,orderIndex09;
     @FXML
     private TableView tblPaymenttype;
 
     @FXML
-    private TableColumn paymentIndex01;
-
-    @FXML
-    private TableColumn paymentIndex02;
-
-    @FXML
-    private TableColumn paymentIndex03;
-
-    @FXML
-    private TableColumn paymentIndex04;
-
-    @FXML
-    private TableColumn paymentIndex05;
-
-    @FXML
-    private TableColumn paymentIndex06;
-    
+    private TableColumn paymentIndex01,paymentIndex02,paymentIndex03,
+                        paymentIndex04,paymentIndex05,paymentIndex06;
+  
     @FXML
     private AnchorPane searchBar11;
 
@@ -191,92 +119,35 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private TableView tblissueditems;
 
     @FXML
-    private TableColumn issuedIndex01;
-
+    private TableColumn issuedIndex01,issuedIndex02,issuedIndex03,
+                        issuedIndex04,issuedIndex05,issuedIndex06;
     @FXML
-    private TableColumn issuedIndex02;
-
-    @FXML
-    private TableColumn issuedIndex03;
-
-    @FXML
-    private TableColumn issuedIndex04;
-
-    @FXML
-    private TableColumn issuedIndex05;
-
-    @FXML
-    private TableColumn issuedIndex06;
-
-    @FXML
-    private TextField txtFieldDet01;
-
-    @FXML
-    private TextField txtFieldDet02;
-
-    @FXML
-    private TextField txtFieldDet03;
-
-    @FXML
-    private TextField txtFieldDet04;
-
-    @FXML
-    private TextField txtFieldDet05;
-
+    private TextField txtFieldDet01,txtFieldDet02,txtFieldDet03,
+                      txtFieldDet04,txtFieldDet05,txtFieldDet06;
     @FXML
     private CheckBox CheckBoxAG01;
-
-    @FXML
-    private TextField txtFieldDet06;
-
-    @FXML
-    private Label lblDetail01;
-
-    @FXML
-    private Label lblDetail02;
-
-    @FXML
-    private Label lblDetail03;
-
     @FXML
     private HBox hbButtons;
-
     @FXML
-    private Button btnBrowse;
-
-    @FXML
-    private Button btnApproved;
-
-    @FXML
-    private Button btnDisapproved;
-
-    @FXML
-    private Button btnUpdate;
-
-    @FXML
-    private Button btnUpdate1;
-
+    private Button btnBrowse,btnApproved,btnDisapproved,btnUpdate,
+                    btnUpdate1,btnPrintIssuance;
     @FXML
     private FontAwesomeIconView btnPrintOrder;
-
-    @FXML
-    private Button btnPrintIssuance;
-
     @FXML
     private AnchorPane searchBar;
-
     @FXML
     private DatePicker DateSeeks01;
     @FXML
-    private Label lblStatus;
-    @FXML
     private TextField txtSeeks01;
-       
+    
+    private static final int ROWS_PER_PAGE = 30; 
+  
     private ObservableList<OrderModel> data = FXCollections.observableArrayList();
     private ObservableList<OrderDetailModel> data1 = FXCollections.observableArrayList();
     private ObservableList<OrderDetailModel> data2 = FXCollections.observableArrayList();
     private ObservableList<OrderPaymentTaggingModel> data3 = FXCollections.observableArrayList();
     private FilteredList<OrderModel> filteredData;
+    private FilteredList<OrderDetailModel> filteredOrderDetData;
 
     private Stage getStage(){
 	return (Stage) txtField01.getScene().getWindow();
@@ -313,9 +184,17 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         loadOrders();
         btnBrowse.setOnAction(this::cmdButton_Click);
         pnEditMode = EditMode.UNKNOWN;
+        pagination.setPageFactory(this::createPage); 
         
     }    
+   private Node createPage(int pageIndex) {
+        int fromIndex = pageIndex * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, data.size());
+        
+            tblClients.setItems(FXCollections.observableArrayList(data.subList(fromIndex, toIndex)));
+            return tblClients;
 
+}
     @Override
     public void setGRider(GRider foValue) {
         oApp = foValue; //To change body of generated methods, choose Tools | Torderlates.
@@ -326,19 +205,19 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         
         if(event.getClickCount() == 2){
             pnRow = tblClients.getSelectionModel().getSelectedIndex();
-            
-            txtField02.setText(dateToWord(filteredData.get(pnRow).getOrderIndex03()));
-            txtField01.setText(filteredData.get(pnRow).getOrderIndex02());
-            label08.setText(filteredData.get(pnRow).getOrderIndex05());
-            label02.setText(filteredData.get(pnRow).getOrderIndex15());
-            label07.setText(filteredData.get(pnRow).getOrderIndex09());
-            label03.setText(filteredData.get(pnRow).getOrderIndex14());
-            label06.setText(priceWithDecimal(Double.valueOf(filteredData.get(pnRow).getOrderIndex05().replaceAll("[ |₱|,]+", "")) + Double.valueOf(filteredData.get(pnRow).getOrderIndex09().replaceAll("[₱ ,]+", ""))));
-            label04.setText(filteredData.get(pnRow).getOrderIndex12());
-            label05.setText(filteredData.get(pnRow).getOrderIndex04());
-            label01.setText(filteredData.get(pnRow).getOrderIndex13());
-            oldPnRow = pnRow;
-             loadOrderDetail(filteredData.get(pnRow).getOrderIndex02());
+            pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
+            txtField02.setText(dateToWord(filteredData.get(pagecounter).getOrderIndex03()));
+            txtField01.setText(filteredData.get(pagecounter).getOrderIndex02());
+            label08.setText(filteredData.get(pagecounter).getOrderIndex05());
+            label02.setText(filteredData.get(pagecounter).getOrderIndex15());
+            label07.setText(filteredData.get(pagecounter).getOrderIndex09());
+            label03.setText(filteredData.get(pagecounter).getOrderIndex14());
+            label06.setText(priceWithDecimal(Double.valueOf(filteredData.get(pagecounter).getOrderIndex05().replaceAll("[ |₱|,]+", "")) + Double.valueOf(filteredData.get(pnRow).getOrderIndex09().replaceAll("[₱ ,]+", ""))));
+            label04.setText(filteredData.get(pagecounter).getOrderIndex12());
+            label05.setText(filteredData.get(pagecounter).getOrderIndex04());
+            label01.setText(filteredData.get(pagecounter).getOrderIndex13());
+            oldPnRow = pagecounter;
+             loadOrderDetail(filteredData.get(pagecounter).getOrderIndex02());
         }    
 
         
@@ -365,9 +244,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         lblOrder02.setText(lblStatus.getText());                    
         //lblOrder01.setText(oTrans.getDetail(0, "sReferNox").toString());
    }
-
  
-    private void loadOrders(){
+        private void loadOrders(){
         int lnCtr;
         try {
             data.clear();
@@ -388,12 +266,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                             (String) oTrans.getDetail(lnCtr, "sRemarksx"),
                             (String) oTrans.getDetail(lnCtr, "sCompnyNm"),
                             (String) oTrans.getDetail(lnCtr, "sAddressx"),
-                            (String) oTrans.getDetail(lnCtr, "sTownName")
-                    ));
+                            (String) oTrans.getDetail(lnCtr, "sTownName")));
                   
                 }
                 
                 initGrid();
+                loadTab();
                 
             }    
         } catch (SQLException ex) {
@@ -404,6 +282,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 //            MsgBox.showOk(ex.getMessage());
             System.out.println("DateTimeException" + ex.getMessage());
         } 
+
     }
     private void loadOrderDetail(String  transNox){
         int lnCtr;
@@ -433,7 +312,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 initGrid1();
                 loadMaster(); 
                 loadPaymentTagging();  
-                IssuedOrderDetail();  
+                IssuedOrderDetail(filteredData.get(pnRow).getOrderIndex02());  
                 
             }  else{
                 MsgBox.showOk(oTrans.getMessage());
@@ -447,12 +326,14 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             System.out.println("DateTimeException" + ex.getMessage());
         } 
     }
-    private void IssuedOrderDetail(){
-        int lnCtr;
+    private void IssuedOrderDetail(String transNox ){
+                int lnCtr;
         try {
             data2.clear();
-            if (oTrans.OpenTransaction((String)oTrans.getMaster("sTransNox"))){//true if by barcode; false if by description
-                for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
+            oldTransNox = transNox;
+                        if (oTrans.OpenTransaction(transNox)){
+                for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++)
+                     {
                     data2.add(new OrderDetailModel(String.valueOf(lnCtr),
                             (String) oTrans.getDetail(lnCtr, "sTransNox"),
                             (String) oTrans.getDetail(lnCtr, "xBarCodex"),
@@ -592,9 +473,19 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         issuedIndex05.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex06"));
         issuedIndex06.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex07"));
         
-   
+           filteredOrderDetData = new FilteredList<>(data1, b -> true);
+//        autoSearch(txtSeeks98);
+//        autoSearch(txtSeeks99);
+        // 3. Wrap the FilteredList in a SortedList. 
+        SortedList<OrderDetailModel> sortedData = new SortedList<>(filteredOrderDetData);
 
+        // 4. Bind the SortedList comparator to the TableView comparator.
+        // 	  Otherwise, sorting the TableView would have no effect.
+        sortedData.comparatorProperty().bind(tblissueditems.comparatorProperty());
+        
+        
         // 5. Add sorted (and filtered) data to the table.
+
        tblissueditems.setItems(data1);
         tblissueditems.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblissueditems.lookup("TableHeaderRow");
@@ -630,6 +521,28 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         });
        tblPaymenttype.setItems(data3);
  
+    }
+    private void loadTab(){
+
+                int totalPage = (int) (Math.ceil(data.size() * 1.0 / ROWS_PER_PAGE));
+                pagination.setPageCount(totalPage);
+                pagination.setCurrentPageIndex(0);
+                changeTableView(0, ROWS_PER_PAGE);
+                pagination.currentPageIndexProperty().addListener(
+                        (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+            
+    } 
+    private void changeTableView(int index, int limit) {
+        int fromIndex = index * limit;
+        int toIndex = Math.min(fromIndex + limit, data.size());
+        
+
+            int minIndex = Math.min(toIndex, filteredData.size());
+            SortedList<OrderModel> sortedData = new SortedList<>(
+                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+            sortedData.comparatorProperty().bind(tblClients.comparatorProperty());
+            tblClients.setItems(sortedData);
+                
     }
         @FXML
         private void tblPaymenttype_Click (MouseEvent event) {

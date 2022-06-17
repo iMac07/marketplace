@@ -11,83 +11,83 @@ import javafx.beans.property.SimpleStringProperty;
  * @author User
  */
 public class OrderDetailModel {
-    private SimpleStringProperty orderIndex01;   
-    private SimpleStringProperty orderIndex02;  
-    private SimpleStringProperty orderIndex03;  
-    private SimpleStringProperty orderIndex04;    
-    private SimpleStringProperty orderIndex05;   
-    private SimpleStringProperty orderIndex06;  
-    private SimpleStringProperty orderIndex07;  
-    private SimpleStringProperty orderIndex08;    
-    private SimpleStringProperty orderIndex09;   
-    private SimpleStringProperty orderIndex10;  
-    private SimpleStringProperty orderIndex11;  
-    private SimpleStringProperty orderIndex12;   
+    private SimpleStringProperty orderDetIndex01;   
+    private SimpleStringProperty orderDetIndex02;  
+    private SimpleStringProperty orderDetIndex03;  
+    private SimpleStringProperty orderDetIndex04;    
+    private SimpleStringProperty orderDetIndex05;   
+    private SimpleStringProperty orderDetIndex06;  
+    private SimpleStringProperty orderDetIndex07;  
+    private SimpleStringProperty orderDetIndex08;    
+    private SimpleStringProperty orderDetIndex09;   
+    private SimpleStringProperty orderDetIndex10;  
+    private SimpleStringProperty orderDetIndex11;  
+    private SimpleStringProperty orderDetIndex12;   
 
 
-    public OrderDetailModel(String orderIndex01, String orderIndex02, String orderIndex03, 
-            String orderIndex04,String orderIndex05,String orderIndex06,
-            String orderIndex07,String orderIndex08,String orderIndex09,
-            String orderIndex10,String orderIndex11,String orderIndex12){
-        this.orderIndex01 = new SimpleStringProperty(orderIndex01);
-        this.orderIndex02 = new SimpleStringProperty(orderIndex02);
-        this.orderIndex03 = new SimpleStringProperty(orderIndex03);
-        this.orderIndex04 = new SimpleStringProperty(orderIndex04);
-        this.orderIndex05 = new SimpleStringProperty(orderIndex05);
-        this.orderIndex06 = new SimpleStringProperty(orderIndex06);
-        this.orderIndex07 = new SimpleStringProperty(orderIndex07);
-        this.orderIndex08 = new SimpleStringProperty(orderIndex08);
-        this.orderIndex09 = new SimpleStringProperty(orderIndex09);
-        this.orderIndex10 = new SimpleStringProperty(orderIndex10);
-        this.orderIndex11 = new SimpleStringProperty(orderIndex11);
-        this.orderIndex12 = new SimpleStringProperty(orderIndex12);
+    public OrderDetailModel(String orderDetIndex01, String orderDetIndex02, String orderDetIndex03, 
+            String orderDetIndex04,String orderDetIndex05,String orderDetIndex06,
+            String orderDetIndex07,String orderDetIndex08,String orderDetIndex09,
+            String orderDetIndex10,String orderDetIndex11,String orderDetIndex12){
+        this.orderDetIndex01 = new SimpleStringProperty(orderDetIndex01);
+        this.orderDetIndex02 = new SimpleStringProperty(orderDetIndex02);
+        this.orderDetIndex03 = new SimpleStringProperty(orderDetIndex03);
+        this.orderDetIndex04 = new SimpleStringProperty(orderDetIndex04);
+        this.orderDetIndex05 = new SimpleStringProperty(orderDetIndex05);
+        this.orderDetIndex06 = new SimpleStringProperty(orderDetIndex06);
+        this.orderDetIndex07 = new SimpleStringProperty(orderDetIndex07);
+        this.orderDetIndex08 = new SimpleStringProperty(orderDetIndex08);
+        this.orderDetIndex09 = new SimpleStringProperty(orderDetIndex09);
+        this.orderDetIndex10 = new SimpleStringProperty(orderDetIndex10);
+        this.orderDetIndex11 = new SimpleStringProperty(orderDetIndex11);
+        this.orderDetIndex12 = new SimpleStringProperty(orderDetIndex12);
     }
-    public String getOrderIndex01() {
-        return orderIndex01.get();
-    }
-
-    public String getOrderIndex02() {
-        return orderIndex02.get();
+    public String getOrderDetIndex01() {
+        return orderDetIndex01.get();
     }
 
-    public String getOrderIndex03() {
-        return orderIndex03.get();
+    public String getOrderDetIndex02() {
+        return orderDetIndex02.get();
     }
 
-    public String getOrderIndex04() {
-        return orderIndex04.get();
+    public String getOrderDetIndex03() {
+        return orderDetIndex03.get();
     }
 
-    public String getOrderIndex05() {
-        return orderIndex05.get();
+    public String getOrderDetIndex04() {
+        return orderDetIndex04.get();
     }
 
-    public String getOrderIndex06() {
-        return orderIndex06.get();
+    public String getOrderDetIndex05() {
+        return orderDetIndex05.get();
     }
 
-    public String getOrderIndex07() {
-        return orderIndex07.get();
+    public String getOrderDetIndex06() {
+        return orderDetIndex06.get();
     }
 
-    public String getOrderIndex08() {
-        return orderIndex08.get();
+    public String getOrderDetIndex07() {
+        return orderDetIndex07.get();
     }
 
-    public String getOrderIndex09() {
-        return orderIndex09.get();
+    public String getOrderDetIndex08() {
+        return orderDetIndex08.get();
     }
 
-    public String getOrderIndex10() {
-        return orderIndex10.get();
+    public String getOrderDetIndex09() {
+        return orderDetIndex09.get();
     }
 
-    public String getOrderIndex11() {
-        return orderIndex11.get();
+    public String getOrderDetIndex10() {
+        return orderDetIndex10.get();
     }
 
-    public String getOrderIndex12() {
-        return orderIndex12.get();
+    public String getOrderDetIndex11() {
+        return orderDetIndex11.get();
+    }
+
+    public String getOrderDetIndex12() {
+        return orderDetIndex12.get();
     }
 
 }
