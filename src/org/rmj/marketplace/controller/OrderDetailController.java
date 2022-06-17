@@ -90,21 +90,9 @@ public class OrderDetailController implements Initializable, ScreenInterface {
     @FXML
     private TableView<OrderDetailModel> tblOrders;
     @FXML
-    private TableColumn<?, ?> orderIndex01;
-    @FXML
-    private TableColumn<?, ?> orderIndex02;
-    @FXML
-    private TableColumn<?, ?> orderIndex03;
-    @FXML
-    private TableColumn<?, ?> orderIndex04;
-    @FXML
-    private TableColumn<?, ?> orderIndex05;
-    @FXML
-    private TableColumn<?, ?> orderIndex06;
-    @FXML
-    private TableColumn<?, ?> orderIndex07;
-    @FXML
-    private TableColumn<?, ?> orderIndex08;
+    private TableColumn orderDetIndex01,orderDetIndex02,orderDetIndex03,orderDetIndex04,
+                        orderDetIndex05,orderDetIndex06,orderDetIndex07,orderDetIndex08;
+
     @FXML
     private Label lblTotal;
     
@@ -216,23 +204,23 @@ public class OrderDetailController implements Initializable, ScreenInterface {
     
     private void initGrid() {
         
-        orderIndex01.setStyle("-fx-alignment: CENTER;" );
-        orderIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex05.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex06.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex07.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex08.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        orderDetIndex01.setStyle("-fx-alignment: CENTER;" );
+        orderDetIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        orderDetIndex03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        orderDetIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        orderDetIndex05.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        orderDetIndex06.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        orderDetIndex07.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        orderDetIndex08.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         
-        orderIndex01.setCellValueFactory(new PropertyValueFactory<>("orderIndex01"));
-        orderIndex02.setCellValueFactory(new PropertyValueFactory<>("orderIndex02"));
-        orderIndex03.setCellValueFactory(new PropertyValueFactory<>("orderIndex03"));
-        orderIndex04.setCellValueFactory(new PropertyValueFactory<>("orderIndex04"));
-        orderIndex05.setCellValueFactory(new PropertyValueFactory<>("orderIndex05"));
-        orderIndex06.setCellValueFactory(new PropertyValueFactory<>("orderIndex06"));
-        orderIndex07.setCellValueFactory(new PropertyValueFactory<>("orderIndex07"));
-        orderIndex08.setCellValueFactory(new PropertyValueFactory<>("orderIndex08"));
+        orderDetIndex01.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex01"));
+        orderDetIndex02.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex02"));
+        orderDetIndex03.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex03"));
+        orderDetIndex04.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex04"));
+        orderDetIndex05.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex05"));
+        orderDetIndex06.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex06"));
+        orderDetIndex07.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex07"));
+        orderDetIndex08.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex08"));
       
         tblOrders.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblOrders.lookup("TableHeaderRow");

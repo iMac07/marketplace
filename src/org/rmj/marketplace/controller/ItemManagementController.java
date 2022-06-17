@@ -535,6 +535,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 case "btnSave": 
                      try {
                         if (oTrans.SaveTransaction()){
+                            MsgBox.showOk("Product item successfully saved.");
                             clearFields();
                             resetTrans();
                         } else {
@@ -1125,14 +1126,12 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                     case 3: /*Search Description*/
                         if (oTrans.searchItem(txtField03.getText(), false,false)){
                                 pnEditMode = oTrans.getEditMode();
-                            } else 
-                                MsgBox.showOk(oTrans.getMessage());
+                            } 
                         break;
                     case 21: /*Search Barcode*/
                         if (oTrans.searchItem(txtField21.getText(), false, true)){
                                 pnEditMode = oTrans.getEditMode();
-                            } else 
-                                MsgBox.showOk(oTrans.getMessage());
+                            } 
                         break;
                     
                 }

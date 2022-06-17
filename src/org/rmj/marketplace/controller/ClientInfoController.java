@@ -85,11 +85,11 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     @FXML
      private TableView tblClients;
     @FXML
-    private TableColumn<?, ?> clientIndex01;
+    private TableColumn clientIndex01;
     @FXML
-    private TableColumn<?, ?> clientIndex03;
+    private TableColumn clientIndex03;
     @FXML
-    private TableColumn<?, ?> clientIndex02;
+    private TableColumn clientIndex02;
     @FXML
     private TextField txtField01;
     @FXML
@@ -111,15 +111,15 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     @FXML
     private TableView<OrderModel> tblOrders;
     @FXML
-    private TableColumn<?, ?> orderIndex01;
+    private TableColumn orderIndex01;
     @FXML
-    private TableColumn<?, ?> orderIndex02;
+    private TableColumn orderIndex02;
     @FXML
-    private TableColumn<?, ?> orderIndex03;
+    private TableColumn orderIndex03;
     @FXML
-    private TableColumn<?, ?> orderIndex04;
+    private TableColumn orderIndex04;
     @FXML
-    private TableColumn<?, ?> orderIndex05;
+    private TableColumn orderIndex05;
     @FXML
     private AnchorPane searchBar;
     @FXML
