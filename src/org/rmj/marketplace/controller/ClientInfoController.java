@@ -76,6 +76,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     private String category;
     private int oldPnRow = -1;
     private String oldTransNox = "";
+    private String a = "";
     
     @FXML
     private Pagination tblPagination;
@@ -132,7 +133,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     @FXML
     private Pagination pagination;
     
-    private static final int ROWS_PER_PAGE = 10;
+    private static final int ROWS_PER_PAGE = 50;
     
 //    private final TableView<ClientInfoModel> table = createTable();
 //    private final List<ClientInfoModel> data = createData();     
@@ -141,6 +142,8 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     
     private final ObservableList<ClientInfoModel> client_data = FXCollections.observableArrayList();
     private FilteredList<ClientInfoModel> filteredData;
+    
+   
     private void setCategory(String val){
         this.category = val;
     }
@@ -156,9 +159,11 @@ public class ClientInfoController implements Initializable, ScreenInterface {
         oTrans.setWithUI(true);
 //        txtSeeks10.setOnKeyPressed(this::txtField_KeyPressed);
 //        txtSeeks11.setOnKeyPressed(this::txtField_KeyPressed);
-        
+//        a = client_data.get(pnRow).getClientIndex08();
         loadClient();
+        System.out.print(oldTransNox + " initialize");
         loadOrders(oldTransNox);
+        
         pagination.setPageFactory(this::createPage); 
         btnRefresh.setOnAction(this::cmdButton_Click);    
             
@@ -231,10 +236,12 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     
     private void loadOrders(String transNox){
         int lnCtr;
+        System.out.println(oldTransNox + " old0");
+        System.out.println(transNox + " load");
         try {
-            oldTransNox = transNox;
-            System.out.println(oldTransNox + " old");
+            
             order_data.clear();
+            System.out.println(oldTransNox + " old");
             if (oTrans.LoadOrder(transNox)){
                 //true if by barcode; false if by description
                 oTrans.displayMasFields();
@@ -257,6 +264,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
                             System.out.println(oTrans.getOrder(lnCtr, "sTransNox"));
                             System.out.println(oTrans.getOrder(lnCtr, "nTranTotl"));
                 }   
+                oldTransNox = transNox;
                 initOrderGrid();
             } else {//true if by barcode; false if by description
             }    
@@ -317,6 +325,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
             });
         });
         tblOrders.setItems(order_data);
+        
         
 //        filteredData = new FilteredList<>(order_data, b -> true);
 //        autoSearch(txtSeeks10);
@@ -435,7 +444,9 @@ public class ClientInfoController implements Initializable, ScreenInterface {
         }
         txtField07.setText(filteredData.get(pagecounter).getClientIndex07()); 
         txtField08.setText(filteredData.get(pagecounter).getClientIndex09()); 
-        txtField09.setText(filteredData.get(pagecounter).getClientIndex10());      
+        txtField09.setText(filteredData.get(pagecounter).getClientIndex10()); 
+        
+        
     } 
     
     private void cmdButton_Click(ActionEvent event) {
@@ -445,7 +456,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
                case "btnRefresh":
                     {
                         client_data.clear();
-                        loadClient();
+                       
                     }
                     break;
                 }
@@ -503,7 +514,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
             stage.setTitle("");
             stage.showAndWait();
             
-            loadOrders(filteredData.get(pnRow).getClientIndex07());
+//            loadOrders(filteredData.get(pnRow).getClientIndex08());
         } catch (IOException e) {
             e.printStackTrace();
             MsgBox.showOk(e.getMessage());

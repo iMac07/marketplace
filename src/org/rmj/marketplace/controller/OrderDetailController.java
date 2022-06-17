@@ -152,6 +152,7 @@ public class OrderDetailController implements Initializable, ScreenInterface {
         String lsButton = ((Button)event.getSource()).getId();
         switch (lsButton){
             case "btnExit":
+                
                 CommonUtils.closeStage(btnExit);
                 break;
                 
@@ -165,8 +166,6 @@ public class OrderDetailController implements Initializable, ScreenInterface {
             orderdetail_data.clear();
            
             if (oTrans.LoadOrderDetail(strans)){
-                 
-                 
                 int lnRow = oTrans.getOrderDetailItemCount(); 
                 for (int lnCtr = 1; lnCtr <= lnRow; lnCtr++){
                     //get
