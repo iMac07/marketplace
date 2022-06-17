@@ -116,7 +116,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     @FXML
     private Pagination pagination1;
 
-    private static final int ROWS_PER_PAGE = 10;
+    private static final int ROWS_PER_PAGE = 50;
     private FilteredList<RatingsReviewModel> filteredData;
 
     private final ObservableList<RatingsReviewModel> data_ratings = FXCollections.observableArrayList();
@@ -152,6 +152,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         @Override
         public void changed(ObservableValue<? extends Tab> observable, Tab oldTab, Tab newTab) {
             if(newTab == tabAcknowledge) {
+                
                 oTrans.setTranStat(1);
                 recdstat = "1";
                 }
@@ -506,7 +507,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
         if(event.getClickCount()<=1){
             if(!tblAcknowledge.getItems().isEmpty()){
             pnRow = tblAcknowledge.getSelectionModel().getSelectedIndex();
-            pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+            pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
             try {            
                 if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                     pnEditMode = oTrans.getEditMode();
@@ -534,7 +535,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                                
                                 if (pnRow == tblAcknowledge.getItems().size()) {
                                     pnRow = tblAcknowledge.getItems().size();
-                                    if (oTrans.OpenTransaction(data_ratings.get(pnRow).getAcknowledgeIndex02(),data_ratings.get(pnRow).getAcknowledgeIndex03())){
+                                    if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
                                             if(oTrans.ReadReview()){
@@ -550,7 +551,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                                     }
 
                                 }else {
-                                    if (oTrans.OpenTransaction(data_ratings.get(pnRow).getAcknowledgeIndex02(),data_ratings.get(pnRow).getAcknowledgeIndex03())){
+                                    if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
                         
@@ -573,7 +574,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                                 pnRows = tblAcknowledge.getSelectionModel().getSelectedIndex();
                                 pnRow = pnRows;
                                
-                                if (oTrans.OpenTransaction(data_ratings.get(pnRow).getAcknowledgeIndex02(),data_ratings.get(pnRow).getAcknowledgeIndex03())){
+                                if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                                     if (oTrans.UpdateTransaction()){
                                         pnEditMode = oTrans.getEditMode();
                         
@@ -604,95 +605,60 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     }
     public void loadDetail(){
 //        taMessages.setText(data.get(pnRow).getAcknowledgeIndex05()); 
-        lblCustomerName.setText(data_ratings.get(pagecounter).getAcknowledgeIndex18());
-        
         lvMessageBody.getItems().clear();
         pnEditMode = EditMode.UPDATE;
         addToChat();
         if(!data_ratings.get(pagecounter).getAcknowledgeIndex06().trim().isEmpty()){
            addToReply();
         }
-        
         boolean isReply = (Integer.parseInt(data_ratings.get(pagecounter).getAcknowledgeIndex15())>0);
-
         txtField01.setDisable(isReply);
         btnSend.setDisable(isReply);
         
         
     }
     public synchronized void addToChat() {
-        
         BubbledLabel bl6 = new BubbledLabel();
-        lblCustomerName.setText(data_ratings.get(pagecounter).getAcknowledgeIndex18());
-        bl6.setText(data_ratings.get(pagecounter).getAcknowledgeIndex05());
+        
+        if  ((txtSeeks11.getText().isEmpty()) && (txtSeeks10.getText().isEmpty())) {
+              lblCustomerName.setText(data_ratings.get(pagecounter).getAcknowledgeIndex18());  
+              bl6.setText(data_ratings.get(pagecounter).getAcknowledgeIndex05());
+              bl6.setText(data_ratings.get(pagecounter).getAcknowledgeIndex05());
+            } else {
+              lblCustomerName.setText(filteredData.get(pnRow).getAcknowledgeIndex18());
+              bl6.setText(filteredData.get(pnRow).getAcknowledgeIndex05());
+              bl6.setText(filteredData.get(pnRow).getAcknowledgeIndex05());
+        }
+        double y = filteredData.get(pnRow).getAcknowledgeIndex05().length()+ 10;
         bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,null, null)));
         HBox x = new HBox();
+        x.setMaxWidth(lvMessageBody.getWidth()- 20);
+        x.setMaxHeight(y);
         bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
         x.getChildren().add(bl6);
-        x.setStyle("-fx-opacity:1.0");
+        x.setStyle("-fx-opacity:1.0;-fx-text-fill: black; -fx-font-size: 13px; -fx-font-weight: 300; -fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
         lvMessageBody.getItems().add(x);
-//        Task<HBox> othersMessages = new Task<HBox>() {
-//            @Override
-//            public HBox call() throws Exception {
-//                
-//                BubbledLabel bl6 = new BubbledLabel();
-//                bl6.setText(data.get(pnRow).getAcknowledgeIndex05());
-//                bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,null, null)));
-//                HBox x = new HBox();
-//                bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
-//                x.getChildren().add(bl6);
-//                x.setStyle("-fx-opacity:1.0");
-//                
-//                return x;
-//            }
-//        };
-//
-//        othersMessages.setOnSucceeded(event -> {
-//            lvMessageBody.getItems().add(othersMessages.getValue());
-//        });
-//
-//        Thread t = new Thread(othersMessages);
-//        t.setDaemon(true);
-//        t.start();
+        bl6.setWrapText(true);
     }
     public synchronized void addToReply() {
-//        Task<HBox> yourMessages = new Task<HBox>() {
-//            @Override
-//            public HBox call() throws Exception {
-//               
-//                BubbledLabel bl6 = new BubbledLabel();
-//                bl6.setText(data.get(pnRow).getAcknowledgeIndex06());
-//                
-//                bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
-//                        null, null)));
-//                HBox x = new HBox();
-//                x.setMaxWidth(lvMessageBody.getWidth() - 30);
-//                x.setAlignment(Pos.TOP_RIGHT);
-//                x.setStyle("-fx-opacity:1.0");
-//                bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_CENTER);
-//                x.getChildren().add(bl6);
-//
-//                return x;
-//            }
-//        };
-//        yourMessages.setOnSucceeded(event -> lvMessageBody.getItems().add(yourMessages.getValue()));
-//
-//        Thread t = new Thread(yourMessages);
-//        t.setDaemon(true);
-//        t.start();
-//        
         BubbledLabel bl6 = new BubbledLabel();
-        bl6.setText(data_ratings.get(pagecounter).getAcknowledgeIndex06());
-
+        if  (txtSeeks11.getText().isEmpty()) {
+               bl6.setText(data_ratings.get(pagecounter).getAcknowledgeIndex06());
+            } else {
+               bl6.setText(filteredData.get(pnRow).getAcknowledgeIndex06());
+        }
+        double y = filteredData.get(pnRow).getAcknowledgeIndex06().length() + 30;
         bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
                 null, null)));
         HBox x = new HBox();
-        x.setMaxWidth(lvMessageBody.getWidth() - 30);
+        x.setMaxWidth(lvMessageBody.getWidth()- 20);
+        lvMessageBody.setFixedCellSize(y);  
         x.setAlignment(Pos.TOP_RIGHT);
-        x.setStyle("-fx-opacity:1.0");
+        x.setStyle("-fx-opacity:1.0; -fx-font-size: 13px;-fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
         bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_CENTER);
         x.getChildren().add(bl6);
         lvMessageBody.getItems().add(x);
+        bl6.setWrapText(true);
     }
     
 }
