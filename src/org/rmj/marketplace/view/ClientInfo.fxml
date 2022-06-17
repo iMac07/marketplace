@@ -81,9 +81,9 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </padding>
                                              <children>
-                                                <ScrollPane fitToWidth="true" style="-fx-border-color: #F4F4F4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-border-color: #F4F4F4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <content>
-                                                      <VBox>
+                                                      <VBox prefHeight="594.0" prefWidth="463.0">
                                                          <children>
                                                             <AnchorPane fx:id="searchBar1">
                                                                <children>
@@ -193,7 +193,7 @@
                                                                   <Insets />
                                                                </VBox.margin>
                                                             </AnchorPane>
-                                                            <AnchorPane>
+                                                            <AnchorPane prefWidth="463.0">
                                                                <children>
                                                                   <GridPane layoutX="-11.0" layoutY="-22.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                                                                      <columnConstraints>
@@ -219,13 +219,13 @@
                                                                         </Label>
                                                                      </children>
                                                                   </GridPane>
-                                                                  <TableView fx:id="tblOrders" focusTraversable="false" layoutX="10.0" stylesheets="@../css/TableWithImage.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="28.0">
+                                                                  <TableView fx:id="tblOrders" focusTraversable="false" layoutX="35.0" onMouseClicked="#tblOrderDetail_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0">
                                                                      <columns>
-                                                                        <TableColumn fx:id="orderIndex01" editable="false" prefWidth="30.0" sortable="false" text="Qty" />
-                                                                        <TableColumn fx:id="orderIndex02" editable="false" prefWidth="180.0" sortable="false" text="Description" />
-                                                                        <TableColumn fx:id="orderIndex03" editable="false" prefWidth="120.0" sortable="false" text="Brand Name" />
-                                                                        <TableColumn fx:id="orderIndex04" editable="false" prefWidth="100.0" sortable="false" text="Model Name" />
-                                                                        <TableColumn fx:id="orderIndex05" editable="false" prefWidth="100.0" sortable="false" text="Color" />
+                                                                        <TableColumn fx:id="orderIndex01" editable="false" prefWidth="30.0" sortable="false" text="No." />
+                                                                        <TableColumn fx:id="orderIndex02" editable="false" maxWidth="180.0" minWidth="120.0" prefWidth="180.0" sortable="false" text="Order No." />
+                                                                        <TableColumn fx:id="orderIndex03" editable="false" maxWidth="150.0" minWidth="80.0" prefWidth="150.0" sortable="false" text="Total Amt." />
+                                                                        <TableColumn fx:id="orderIndex04" editable="false" maxWidth="100.0" minWidth="80.0" prefWidth="100.0" sortable="false" text="Order Date" />
+                                                                        <TableColumn fx:id="orderIndex05" editable="false" maxWidth="100.0" minWidth="80.0" prefWidth="100.0" sortable="false" text="Status" />
                                                                      </columns>
                                                                   </TableView>
                                                                </children>
