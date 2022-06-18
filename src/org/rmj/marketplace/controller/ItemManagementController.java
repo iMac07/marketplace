@@ -992,13 +992,14 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 }
                 
                 if(!img_data.isEmpty()){
-                    
                     tblProdImage.setDisable(false);
                     imgRow = 0;
                     initImageGrid();
-                }else{
-                     tblProdImage.setDisable(true);
                 }
+            }else{
+                imgDefault.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+                imgProduct.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+                tblProdImage.setDisable(true);
             }
             txtField05.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex06())));
             txtField06.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex07())));
@@ -1067,10 +1068,13 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                
                 
             }
-            if(!img_data.isEmpty()){
+            if(img_data != null){
                 tblProdImage.setDisable(false);
                 initImageGrid();
             }else{
+                imgRow = 0;
+                img_data.add(new ImageModel(String.valueOf(1),
+                                "/org/rmj/marketplace/images/no-image-available_1.png"));
                 tblProdImage.setDisable(true);
                 initImageGrid();
             }
@@ -1235,14 +1239,14 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         if(row < 0 ){
             row++;
         }
-         if(img_data.size() > 0){
-            Image image = new Image(img_data.get(row).getImgIndex02());
-            imgProduct.setImage(image);
-            imgDefault.setImage(image);
-        }else{
-            imgDefault.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
-            imgProduct.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
-        }
+         if(!img_data.isEmpty()){
+            if(!img_data.get(row).getImgIndex02().isEmpty()){
+               System.out.println("img url = " + img_data.get(row).getImgIndex02());
+               Image image = new Image(img_data.get(row).getImgIndex02());
+               imgProduct.setImage(image);
+               imgDefault.setImage(image);
+            }
+         }
     }
     private void generateDirectory(){
         File dir = new File(imagePath);
