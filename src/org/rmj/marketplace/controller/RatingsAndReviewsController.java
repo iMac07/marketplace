@@ -531,7 +531,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                         switch (key){
                             case DOWN:
                                 pnRow = tblAcknowledge.getSelectionModel().getSelectedIndex();
-
+                                pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
                                
                                 if (pnRow == tblAcknowledge.getItems().size()) {
                                     pnRow = tblAcknowledge.getItems().size();
@@ -573,7 +573,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                                 int x = 1;
                                 pnRows = tblAcknowledge.getSelectionModel().getSelectedIndex();
                                 pnRow = pnRows;
-                               
+                                pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
                                 if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                                     if (oTrans.UpdateTransaction()){
                                         pnEditMode = oTrans.getEditMode();
@@ -629,14 +629,14 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
               bl6.setText(filteredData.get(pnRow).getAcknowledgeIndex05());
               bl6.setText(filteredData.get(pnRow).getAcknowledgeIndex05());
         }
-        double y = filteredData.get(pnRow).getAcknowledgeIndex05().length()+ 10;
-        bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,null, null)));
+        
+        bl6.setBackground(new Background(new BackgroundFill(Color.rgb(191, 191, 191),null, null)));
         HBox x = new HBox();
-        x.setMaxWidth(lvMessageBody.getWidth()- 20);
-        x.setMaxHeight(y);
+        x.setMaxWidth(lvMessageBody.getWidth()- 50);
+        
         bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
         x.getChildren().add(bl6);
-        x.setStyle("-fx-opacity:1.0;-fx-text-fill: black; -fx-font-size: 13px; -fx-font-weight: 300; -fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
+        x.setStyle("-fx-opacity:1.0;-fx-font-size: 15px; -fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
         lvMessageBody.getItems().add(x);
         bl6.setWrapText(true);
     }
@@ -647,14 +647,12 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
             } else {
                bl6.setText(filteredData.get(pnRow).getAcknowledgeIndex06());
         }
-        double y = filteredData.get(pnRow).getAcknowledgeIndex06().length() + 30;
-        bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
-                null, null)));
+        
+        bl6.setBackground(new Background(new BackgroundFill(Color.rgb(252, 156, 66), null, null)));
         HBox x = new HBox();
-        x.setMaxWidth(lvMessageBody.getWidth()- 20);
-        lvMessageBody.setFixedCellSize(y);  
+        x.setStyle("-fx-opacity:1.0;-fx-font-size: 15px; -fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
+        x.setMaxWidth(lvMessageBody.getWidth()- 50);
         x.setAlignment(Pos.TOP_RIGHT);
-        x.setStyle("-fx-opacity:1.0; -fx-font-size: 13px;-fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
         bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_CENTER);
         x.getChildren().add(bl6);
         lvMessageBody.getItems().add(x);
