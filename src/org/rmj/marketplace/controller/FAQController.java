@@ -628,7 +628,7 @@ public class FAQController implements Initializable, ScreenInterface {
         
     }
     public synchronized void addToChat() {
-        message = filteredData.get(pnRow).getRepliedIndex04().length() + 25  ;
+        double message = filteredData.get(pnRow).getRepliedIndex04().length() + 25  ;
         BubbledLabel bl6 = new BubbledLabel();
         if  ((txtSeeks11.getText().isEmpty()) && (txtSeeks10.getText().isEmpty())) {
               lblCustomerName.setText(data_faq.get(pagecounter).getRepliedIndex17());  
@@ -644,6 +644,8 @@ public class FAQController implements Initializable, ScreenInterface {
         bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
         x.getChildren().add(bl6);
         x.setStyle("-fx-opacity:1.0");
+        x.setMaxWidth(lvMessageBody.getWidth()- 20);
+        x.setMaxHeight(message);
         lvMessageBody.getItems().add(x);
         
         x.setAlignment(Pos.CENTER_LEFT);
@@ -655,7 +657,7 @@ public class FAQController implements Initializable, ScreenInterface {
     }
     public synchronized void addToReply() { 
 
-        message = filteredData.get(pnRow).getRepliedIndex05().length() + 25  ;
+        double message = filteredData.get(pnRow).getRepliedIndex05().length() + 25  ;
         BubbledLabel bl6 = new BubbledLabel();
         if  (txtSeeks11.getText().isEmpty()) {
                bl6.setText(data_faq.get(pagecounter).getRepliedIndex05());
@@ -663,17 +665,18 @@ public class FAQController implements Initializable, ScreenInterface {
                bl6.setText(filteredData.get(pnRow).getRepliedIndex05());
         }
 
-        bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN,
+        bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON,
                 null, null)));
         HBox x = new HBox();
         x.setMaxWidth(lvMessageBody.getWidth() - 30);
         x.setAlignment(Pos.TOP_RIGHT);
-        x.setStyle("-fx-opacity:1.0");
-        
+        lvMessageBody.setFixedCellSize(message);
+        x.setStyle("-fx-opacity:1.0; -fx-font-size: 13px;-fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
         bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_BOTTOM);
         x.getChildren().add(bl6);
         lvMessageBody.getItems().add(x);
         x.setAlignment(Pos.BOTTOM_RIGHT);
+         x.setMaxWidth(lvMessageBody.getWidth()- 25);
 
         x.setPrefHeight(message);
 //        lvMessageBody.setFixedCellSize(message);
