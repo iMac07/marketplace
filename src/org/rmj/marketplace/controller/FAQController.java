@@ -628,7 +628,7 @@ public class FAQController implements Initializable, ScreenInterface {
         
     }
     public synchronized void addToChat() {
-        double message = filteredData.get(pnRow).getRepliedIndex04().length() + 25  ;
+       
         BubbledLabel bl6 = new BubbledLabel();
         if  ((txtSeeks11.getText().isEmpty()) && (txtSeeks10.getText().isEmpty())) {
               lblCustomerName.setText(data_faq.get(pagecounter).getRepliedIndex17());  
@@ -639,25 +639,22 @@ public class FAQController implements Initializable, ScreenInterface {
               bl6.setText(filteredData.get(pnRow).getRepliedIndex04());
               bl6.setText(filteredData.get(pnRow).getRepliedIndex04());
         }
-        bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY,null, null)));
-        VBox x = new VBox();
+       bl6.setBackground(new Background(new BackgroundFill(Color.rgb(191, 191, 191),null, null)));
+        HBox x = new HBox();
+        x.setMaxWidth(lvMessageBody.getWidth()- 50);
+        
         bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
         x.getChildren().add(bl6);
-        x.setStyle("-fx-opacity:1.0");
-        x.setMaxWidth(lvMessageBody.getWidth()- 20);
-        x.setMaxHeight(message);
+        x.setStyle("-fx-opacity:1.0;-fx-font-size: 15px; -fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
         lvMessageBody.getItems().add(x);
-        
-        x.setAlignment(Pos.CENTER_LEFT);
         bl6.setWrapText(true);
-        x.setPrefHeight(message);   
 
         //bl6.wrapTextProperty();
         
     }
     public synchronized void addToReply() { 
 
-        double message = filteredData.get(pnRow).getRepliedIndex05().length() + 25  ;
+       
         BubbledLabel bl6 = new BubbledLabel();
         if  (txtSeeks11.getText().isEmpty()) {
                bl6.setText(data_faq.get(pagecounter).getRepliedIndex05());
@@ -665,21 +662,14 @@ public class FAQController implements Initializable, ScreenInterface {
                bl6.setText(filteredData.get(pnRow).getRepliedIndex05());
         }
 
-        bl6.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON,
-                null, null)));
+        bl6.setBackground(new Background(new BackgroundFill(Color.rgb(252, 156, 66), null, null)));
         HBox x = new HBox();
-        x.setMaxWidth(lvMessageBody.getWidth() - 30);
+        x.setStyle("-fx-opacity:1.0;-fx-font-size: 15px; -fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
+        x.setMaxWidth(lvMessageBody.getWidth()- 50);
         x.setAlignment(Pos.TOP_RIGHT);
-        lvMessageBody.setFixedCellSize(message);
-        x.setStyle("-fx-opacity:1.0; -fx-font-size: 13px;-fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
-        bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_BOTTOM);
+        bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_CENTER);
         x.getChildren().add(bl6);
         lvMessageBody.getItems().add(x);
-        x.setAlignment(Pos.BOTTOM_RIGHT);
-         x.setMaxWidth(lvMessageBody.getWidth()- 25);
-
-        x.setPrefHeight(message);
-//        lvMessageBody.setFixedCellSize(message);
         bl6.setWrapText(true);
 
     }
