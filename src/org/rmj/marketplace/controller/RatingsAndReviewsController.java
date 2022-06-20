@@ -360,6 +360,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     } 
      
     private void loadTab(){
+        
         if ("1".equals(recdstat) ) {
                 int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0  / ROWS_PER_PAGE));
                 pagination.setPageCount(totalPage);
@@ -369,6 +370,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                         (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
                 
             } else {
+            
                int totalPage = (int) (Math.ceil(data_ratings.size() * 1.0 / ROWS_PER_PAGE));
                 pagination1.setPageCount(totalPage);
                 pagination1.setCurrentPageIndex(0);
@@ -399,47 +401,87 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
     }
     @FXML
     private void tblUnAcknowledge_Clicked(MouseEvent event) {
-        
-        if(event.getClickCount()<=1){
-            if(!tblUnAcknowledge.getItems().isEmpty()){
-            
-            pnRow = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
-            pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
-            System.out.println(pagecounter);
-            try {
-                if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
-                    pnEditMode = oTrans.getEditMode();
-                    if (oTrans.UpdateTransaction()){
+        pnRow = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
+        pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+        if (pagecounter >= 0 ){
+            if(event.getClickCount()<=1){
+                if(!tblUnAcknowledge.getItems().isEmpty()){
+
+                System.out.println(pagecounter);
+                try {
+                    if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                         pnEditMode = oTrans.getEditMode();
-                         System.out.println(pagecounter);
-                        if(oTrans.ReadReview()){
-                            loadProducts();
+                        if (oTrans.UpdateTransaction()){
+                            pnEditMode = oTrans.getEditMode();
+                             System.out.println(pagecounter);
+                            if(oTrans.ReadReview()){
+                                loadProducts();
+                            }
+
+                            loadDetail();
+                        } else {
+                            MsgBox.showOk(oTrans.getMessage());
                         }
-                        
-                        loadDetail();
                     } else {
                         MsgBox.showOk(oTrans.getMessage());
                     }
-                } else {
-                    MsgBox.showOk(oTrans.getMessage());
-                }
-                tblUnAcknowledge.setOnKeyReleased((KeyEvent t)-> {
-                     
-                    try {
-                        KeyCode key = t.getCode();
-                        switch (key){
-                            case DOWN:
-                                pnRow = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
-                                pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
-                                if (pnRow == tblUnAcknowledge.getItems().size()) {
-                                    pnRow = tblUnAcknowledge.getItems().size();
+                    tblUnAcknowledge.setOnKeyReleased((KeyEvent t)-> {
+
+                        try {
+                            KeyCode key = t.getCode();
+                            switch (key){
+                                case DOWN:
+                                    pnRow = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
+                                    pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+                                    if (pnRow == tblUnAcknowledge.getItems().size()) {
+                                        pnRow = tblUnAcknowledge.getItems().size();
+                                        if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
+                                            if (oTrans.UpdateTransaction()){
+                                                pnEditMode = oTrans.getEditMode();
+                                                if(oTrans.ReadReview()){
+                                                    loadProducts();
+                                                }
+
+                                                loadDetail();
+                                            } else {
+                                                MsgBox.showOk(oTrans.getMessage());
+                                            }
+                                        } else {
+                                            MsgBox.showOk(oTrans.getMessage());
+                                        }
+
+                                    }else {
+                                        if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
+                                            if (oTrans.UpdateTransaction()){
+                                                pnEditMode = oTrans.getEditMode();
+
+                                                if(oTrans.ReadReview()){
+                                                    loadProducts();
+                                                }
+
+                                                loadDetail();
+                                            } else {
+                                                MsgBox.showOk(oTrans.getMessage());
+                                            }
+                                        } else {
+                                            MsgBox.showOk(oTrans.getMessage());
+                                        }
+                                    }
+                                    break;
+                                case UP:
+                                    int pnRows = 0;
+                                    int x = 1;
+                                    pnRows = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
+                                    pnRow = pnRows;
+                                    pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
                                     if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
+
                                             if(oTrans.ReadReview()){
                                                 loadProducts();
                                             }
-                                            
+
                                             loadDetail();
                                         } else {
                                             MsgBox.showOk(oTrans.getMessage());
@@ -447,67 +489,29 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                                     } else {
                                         MsgBox.showOk(oTrans.getMessage());
                                     }
-
-                                }else {
-                                    if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
-                                        if (oTrans.UpdateTransaction()){
-                                            pnEditMode = oTrans.getEditMode();
-                        
-                                            if(oTrans.ReadReview()){
-                                                loadProducts();
-                                            }
-                                           
-                                            loadDetail();
-                                        } else {
-                                            MsgBox.showOk(oTrans.getMessage());
-                                        }
-                                    } else {
-                                        MsgBox.showOk(oTrans.getMessage());
-                                    }
-                                }
-                                break;
-                            case UP:
-                                int pnRows = 0;
-                                int x = 1;
-                                pnRows = tblUnAcknowledge.getSelectionModel().getSelectedIndex();
-                                pnRow = pnRows;
-                                pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
-                                if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
-                                    if (oTrans.UpdateTransaction()){
-                                        pnEditMode = oTrans.getEditMode();
-                        
-                                        if(oTrans.ReadReview()){
-                                            loadProducts();
-                                        }
-
-                                        loadDetail();
-                                    } else {
-                                        MsgBox.showOk(oTrans.getMessage());
-                                    }
-                                } else {
-                                    MsgBox.showOk(oTrans.getMessage());
-                                }
-                                break;
-                            default:
-                                break;
-                        }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } catch (SQLException ex) {
+                           Logger.getLogger(RatingsAndReviewsController.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                    }); 
                     } catch (SQLException ex) {
                        Logger.getLogger(RatingsAndReviewsController.class.getName()).log(Level.SEVERE, null, ex);
                    }
-                }); 
-                } catch (SQLException ex) {
-                   Logger.getLogger(RatingsAndReviewsController.class.getName()).log(Level.SEVERE, null, ex);
                }
-           }
+            }
         }
     }
     @FXML
     private void tblAcknowledge_Clicked(MouseEvent event) {
-        
+       pnRow = tblAcknowledge.getSelectionModel().getSelectedIndex();
+       pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
+       if (pagecounter >=0){
         if(event.getClickCount()<=1){
             if(!tblAcknowledge.getItems().isEmpty()){
-            pnRow = tblAcknowledge.getSelectionModel().getSelectedIndex();
-            pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
+            
             try {            
                 if (oTrans.OpenTransaction(data_ratings.get(pagecounter).getAcknowledgeIndex02(),data_ratings.get(pagecounter).getAcknowledgeIndex03())){
                     pnEditMode = oTrans.getEditMode();
@@ -601,7 +605,8 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                    Logger.getLogger(RatingsAndReviewsController.class.getName()).log(Level.SEVERE, null, ex);
                }
            }
-        }   
+        }
+       }
     }
     public void loadDetail(){
 //        taMessages.setText(data.get(pnRow).getAcknowledgeIndex05()); 

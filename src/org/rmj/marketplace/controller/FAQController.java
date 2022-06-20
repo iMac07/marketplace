@@ -40,9 +40,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agent.MsgBox;
 import org.rmj.appdriver.constants.EditMode;
@@ -397,47 +395,88 @@ public class FAQController implements Initializable, ScreenInterface {
 
     @FXML
     private void tblUnReplied_Clicked(MouseEvent event) {
-        
-        if(event.getClickCount()<=1){
-            if(!tblUnReplied.getItems().isEmpty()){
+         pnRow = tblUnReplied.getSelectionModel().getSelectedIndex();
+         pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+        if (pagecounter >= 0){
+            if(event.getClickCount()<=1){
+                if(!tblUnReplied.getItems().isEmpty()){
 
-            pnRow = tblUnReplied.getSelectionModel().getSelectedIndex();
-            pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
-            System.out.println(pagecounter);
-            try {
-                if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
-                    pnEditMode = oTrans.getEditMode();
-                    if (oTrans.UpdateTransaction()){
+
+                System.out.println(pagecounter);
+                try {
+                    if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                         pnEditMode = oTrans.getEditMode();
-                        
-                        if(oTrans.ReadReview()){
-                            loadProducts();
+                        if (oTrans.UpdateTransaction()){
+                            pnEditMode = oTrans.getEditMode();
+
+                            if(oTrans.ReadReview()){
+                                loadProducts();
+                            }
+                            loadDetail();
+                        } else {
+                            MsgBox.showOk(oTrans.getMessage());
                         }
-                        loadDetail();
                     } else {
                         MsgBox.showOk(oTrans.getMessage());
                     }
-                } else {
-                    MsgBox.showOk(oTrans.getMessage());
-                }
-                tblUnReplied.setOnKeyReleased((KeyEvent t)-> {
-                     
-                    try {
-                        KeyCode key = t.getCode();
-                        switch (key){
-                            case DOWN:
-                                pnRow = tblUnReplied.getSelectionModel().getSelectedIndex();
-                                pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
-                               
-                                if (pagecounter == tblUnReplied.getItems().size()) {
-                                    pagecounter = tblUnReplied.getItems().size();
+                    tblUnReplied.setOnKeyReleased((KeyEvent t)-> {
+
+                        try {
+                            KeyCode key = t.getCode();
+                            switch (key){
+                                case DOWN:
+                                    pnRow = tblUnReplied.getSelectionModel().getSelectedIndex();
+                                    pagecounter = pnRow + pagination1.getCurrentPageIndex() * ROWS_PER_PAGE;
+
+                                    if (pagecounter == tblUnReplied.getItems().size()) {
+                                        pagecounter = tblUnReplied.getItems().size();
+                                        if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
+                                            if (oTrans.UpdateTransaction()){
+                                                pnEditMode = oTrans.getEditMode();
+                                                if(oTrans.ReadReview()){
+                                                    loadProducts();
+                                                }
+
+                                                loadDetail();
+                                            } else {
+                                                MsgBox.showOk(oTrans.getMessage());
+                                            }
+                                        } else {
+                                            MsgBox.showOk(oTrans.getMessage());
+                                        }
+
+                                    }else {
+                                        if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
+                                            if (oTrans.UpdateTransaction()){
+                                                pnEditMode = oTrans.getEditMode();
+
+                                                if(oTrans.ReadReview()){
+                                                    loadProducts();
+                                                }
+
+                                                loadDetail();
+                                            } else {
+                                                MsgBox.showOk(oTrans.getMessage());
+                                            }
+                                        } else {
+                                            MsgBox.showOk(oTrans.getMessage());
+                                        }
+                                    }
+                                    break;
+                                case UP:
+                                    int pnRows = 0;
+                                    int x = 1;
+                                    pnRows = tblUnReplied.getSelectionModel().getSelectedIndex();
+                                    pnRow = pnRows;
+
                                     if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
+
                                             if(oTrans.ReadReview()){
                                                 loadProducts();
                                             }
-                                            
+
                                             loadDetail();
                                         } else {
                                             MsgBox.showOk(oTrans.getMessage());
@@ -445,106 +484,106 @@ public class FAQController implements Initializable, ScreenInterface {
                                     } else {
                                         MsgBox.showOk(oTrans.getMessage());
                                     }
-
-                                }else {
-                                    if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
-                                        if (oTrans.UpdateTransaction()){
-                                            pnEditMode = oTrans.getEditMode();
-                        
-                                            if(oTrans.ReadReview()){
-                                                loadProducts();
-                                            }
-                                           
-                                            loadDetail();
-                                        } else {
-                                            MsgBox.showOk(oTrans.getMessage());
-                                        }
-                                    } else {
-                                        MsgBox.showOk(oTrans.getMessage());
-                                    }
-                                }
-                                break;
-                            case UP:
-                                int pnRows = 0;
-                                int x = 1;
-                                pnRows = tblUnReplied.getSelectionModel().getSelectedIndex();
-                                pnRow = pnRows;
-                               
-                                if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
-                                    if (oTrans.UpdateTransaction()){
-                                        pnEditMode = oTrans.getEditMode();
-                        
-                                        if(oTrans.ReadReview()){
-                                            loadProducts();
-                                        }
-
-                                        loadDetail();
-                                    } else {
-                                        MsgBox.showOk(oTrans.getMessage());
-                                    }
-                                } else {
-                                    MsgBox.showOk(oTrans.getMessage());
-                                }
-                                break;
-                            default:
-                                break;
-                        }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } catch (SQLException ex) {
+                           Logger.getLogger(FAQController.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                    }); 
                     } catch (SQLException ex) {
                        Logger.getLogger(FAQController.class.getName()).log(Level.SEVERE, null, ex);
                    }
-                }); 
-                } catch (SQLException ex) {
-                   Logger.getLogger(FAQController.class.getName()).log(Level.SEVERE, null, ex);
                }
-           }
+            }
         }
-        
         
     }
     @FXML
     private void tblReplied_Clicked(MouseEvent event) {
-        
-        if(event.getClickCount()<=1){
-            if(!tblReplied.getItems().isEmpty()){
+        pnRow = tblReplied.getSelectionModel().getSelectedIndex();
+        pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
+        if (pagecounter >= 0){
+            if(event.getClickCount()<=1){
+                if(!tblReplied.getItems().isEmpty()){
+                System.out.println(pagecounter);
+                try {
 
-            pnRow = tblReplied.getSelectionModel().getSelectedIndex();
-            pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
-            System.out.println(pagecounter);
-            try {
-              
-                if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
-                    pnEditMode = oTrans.getEditMode();
-                    if (oTrans.UpdateTransaction()){
+                    if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                         pnEditMode = oTrans.getEditMode();
-                        
-                        if(oTrans.ReadReview()){
-                            loadProducts();
+                        if (oTrans.UpdateTransaction()){
+                            pnEditMode = oTrans.getEditMode();
+
+                            if(oTrans.ReadReview()){
+                                loadProducts();
+                            }
+                            loadDetail();
+                        } else {
+                            MsgBox.showOk(oTrans.getMessage());
                         }
-                        loadDetail();
                     } else {
                         MsgBox.showOk(oTrans.getMessage());
                     }
-                } else {
-                    MsgBox.showOk(oTrans.getMessage());
-                }
-                tblReplied.setOnKeyReleased((KeyEvent t)-> {
-                     
-                    try {
-                        KeyCode key = t.getCode();
-                        switch (key){
-                            case DOWN:
-                                pnRow = tblReplied.getSelectionModel().getSelectedIndex();
-                                pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
-                               
-                                if (pagecounter == tblReplied.getItems().size()) {
-                                    pagecounter = tblReplied.getItems().size();
+                    tblReplied.setOnKeyReleased((KeyEvent t)-> {
+
+                        try {
+                            KeyCode key = t.getCode();
+                            switch (key){
+                                case DOWN:
+                                    pnRow = tblReplied.getSelectionModel().getSelectedIndex();
+                                    pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
+
+                                    if (pagecounter == tblReplied.getItems().size()) {
+                                        pagecounter = tblReplied.getItems().size();
+                                        if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
+                                            if (oTrans.UpdateTransaction()){
+                                                pnEditMode = oTrans.getEditMode();
+                                                if(oTrans.ReadReview()){
+                                                    loadProducts();
+                                                }
+
+                                                loadDetail();
+                                            } else {
+                                                MsgBox.showOk(oTrans.getMessage());
+                                            }
+                                        } else {
+                                            MsgBox.showOk(oTrans.getMessage());
+                                        }
+
+                                    }else {
+                                        if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
+                                            if (oTrans.UpdateTransaction()){
+                                                pnEditMode = oTrans.getEditMode();
+
+                                                if(oTrans.ReadReview()){
+                                                    loadProducts();
+                                                }
+
+                                                loadDetail();
+                                            } else {
+                                                MsgBox.showOk(oTrans.getMessage());
+                                            }
+                                        } else {
+                                            MsgBox.showOk(oTrans.getMessage());
+                                        }
+                                    }
+                                    break;
+                                case UP:
+                                    int pnRows = 0;
+                                    int x = 1;
+                                    pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
+                                    pnRows = tblReplied.getSelectionModel().getSelectedIndex();
+                                    pnRow = pnRows;
+
                                     if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                                         if (oTrans.UpdateTransaction()){
                                             pnEditMode = oTrans.getEditMode();
+
                                             if(oTrans.ReadReview()){
                                                 loadProducts();
                                             }
-                                            
+
                                             loadDetail();
                                         } else {
                                             MsgBox.showOk(oTrans.getMessage());
@@ -552,59 +591,19 @@ public class FAQController implements Initializable, ScreenInterface {
                                     } else {
                                         MsgBox.showOk(oTrans.getMessage());
                                     }
-
-                                }else {
-                                    if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
-                                        if (oTrans.UpdateTransaction()){
-                                            pnEditMode = oTrans.getEditMode();
-                        
-                                            if(oTrans.ReadReview()){
-                                                loadProducts();
-                                            }
-                                           
-                                            loadDetail();
-                                        } else {
-                                            MsgBox.showOk(oTrans.getMessage());
-                                        }
-                                    } else {
-                                        MsgBox.showOk(oTrans.getMessage());
-                                    }
-                                }
-                                break;
-                            case UP:
-                                int pnRows = 0;
-                                int x = 1;
-                                pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
-                                pnRows = tblReplied.getSelectionModel().getSelectedIndex();
-                                pnRow = pnRows;
-                               
-                                if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
-                                    if (oTrans.UpdateTransaction()){
-                                        pnEditMode = oTrans.getEditMode();
-                        
-                                        if(oTrans.ReadReview()){
-                                            loadProducts();
-                                        }
-
-                                        loadDetail();
-                                    } else {
-                                        MsgBox.showOk(oTrans.getMessage());
-                                    }
-                                } else {
-                                    MsgBox.showOk(oTrans.getMessage());
-                                }
-                                break;
-                            default:
-                                break;
-                        }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } catch (SQLException ex) {
+                           Logger.getLogger(FAQController.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                    }); 
                     } catch (SQLException ex) {
                        Logger.getLogger(FAQController.class.getName()).log(Level.SEVERE, null, ex);
                    }
-                }); 
-                } catch (SQLException ex) {
-                   Logger.getLogger(FAQController.class.getName()).log(Level.SEVERE, null, ex);
                }
-           }
+            }
         }
         
         

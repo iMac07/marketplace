@@ -53,7 +53,7 @@
                                              <content>
                                                 <AnchorPane>
                                                    <children>
-                                                      <Pagination fx:id="pagination" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                      <Pagination fx:id="pagination" maxPageIndicatorCount="1" pageCount="0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                                       <TableView fx:id="tblAcknowledge" layoutX="10.0" layoutY="10.0" onMouseClicked="#tblAcknowledge_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                                          <columns>
                                                             <TableColumn fx:id="acknowledgeIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
