@@ -873,84 +873,90 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     }
     @FXML
     private void tblProducts_Clicked(MouseEvent event) {
-        if(!tblProducts.getItems().isEmpty()){
-            pnRow = tblProducts.getSelectionModel().getSelectedIndex();
-            txtField04.clear();
-            getSelectedItems();
-            tblProducts.setOnKeyReleased((KeyEvent t)-> {
-                KeyCode key = t.getCode();
-                switch (key){
-                    case DOWN:
-                        if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
-                            MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
-                        }else{
-                            pnRow = tblProducts.getSelectionModel().getSelectedIndex();
-                            if (pnRow == tblProducts.getItems().size()) {
-                                pnRow = tblProducts.getItems().size();
-                                getSelectedItems();
-                            }else {
-    //                            int y = 1;
-    //                            pnRow = pnRow + y;
-                                getSelectedItems();
-                            }
-                        }
+        pnRow = tblProducts.getSelectionModel().getSelectedIndex();
+        if (pnRow >= 0){
+            if(!tblProducts.getItems().isEmpty()){
 
-                        break;
-                    case UP:
-                        if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
-                            MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
-                        }else{
-                            int pnRows = 0;
-                            int x = 1;
-                            pnRows = tblProducts.getSelectionModel().getSelectedIndex();
-                            pnRow = pnRows; 
-                            getSelectedItems();
-                        }
-                        break;
-                    default:
-                        return; 
-                }
-            });
-        }
-    }
-    @FXML
-    private void tblProdDesc_Clicked(MouseEvent event) {
-        try{
-            if(!tblProdDesc.getItems().isEmpty()){
-            dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
-            
-            txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
-            tblProdDesc.getSelectionModel().select(dtailRow);
-            tblProdDesc.setOnKeyReleased((KeyEvent t)-> {
-                KeyCode key = t.getCode();
+                txtField04.clear();
+                getSelectedItems();
+                tblProducts.setOnKeyReleased((KeyEvent t)-> {
+                    KeyCode key = t.getCode();
                     switch (key){
                         case DOWN:
-                            dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
-                            if (dtailRow == tblProdDesc.getItems().size()) {
-                                dtailRow = tblProdDesc.getItems().size();
-
-                                txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
-                                tblProdDesc.getSelectionModel().select(dtailRow);
-                            }else {
-    //                            int y = 1;
-    //                            pnRow = pnRow + y;
-
-                                txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
-                                tblProdDesc.getSelectionModel().select(dtailRow);
+                            if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
+                                MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
+                            }else{
+                                pnRow = tblProducts.getSelectionModel().getSelectedIndex();
+                                if (pnRow == tblProducts.getItems().size()) {
+                                    pnRow = tblProducts.getItems().size();
+                                    getSelectedItems();
+                                }else {
+        //                            int y = 1;
+        //                            pnRow = pnRow + y;
+                                    getSelectedItems();
+                                }
                             }
+
                             break;
                         case UP:
-                            int pnRows = 0;
-                            int x = 1;
-                            pnRows = tblProdDesc.getSelectionModel().getSelectedIndex();
-                            dtailRow = pnRows; 
-                            txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
-                            tblProdDesc.getSelectionModel().select(dtailRow);
+                            if(pnEditMode == EditMode.ADDNEW || pnEditMode == EditMode.UPDATE){
+                                MsgBox.showOk("Unable to show item details when adding/updating mode!!!");
+                            }else{
+                                int pnRows = 0;
+                                int x = 1;
+                                pnRows = tblProducts.getSelectionModel().getSelectedIndex();
+                                pnRow = pnRows; 
+                                getSelectedItems();
+                            }
                             break;
                         default:
                             return; 
                     }
                 });
+            }
+        }
+    }
+    @FXML
+    private void tblProdDesc_Clicked(MouseEvent event) {
+        try{
+            dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
+            if (dtailRow >= 0){
+                if(!tblProdDesc.getItems().isEmpty()){
+
+
+                txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+                tblProdDesc.getSelectionModel().select(dtailRow);
+                tblProdDesc.setOnKeyReleased((KeyEvent t)-> {
+                    KeyCode key = t.getCode();
+                        switch (key){
+                            case DOWN:
+                                dtailRow = tblProdDesc.getSelectionModel().getSelectedIndex();
+                                if (dtailRow == tblProdDesc.getItems().size()) {
+                                    dtailRow = tblProdDesc.getItems().size();
+
+                                    txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+                                    tblProdDesc.getSelectionModel().select(dtailRow);
+                                }else {
+        //                            int y = 1;
+        //                            pnRow = pnRow + y;
+
+                                    txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+                                    tblProdDesc.getSelectionModel().select(dtailRow);
+                                }
+                                break;
+                            case UP:
+                                int pnRows = 0;
+                                int x = 1;
+                                pnRows = tblProdDesc.getSelectionModel().getSelectedIndex();
+                                dtailRow = pnRows; 
+                                txtField04.setText(dataDesc.get(dtailRow).getDetailIndex02());
+                                tblProdDesc.getSelectionModel().select(dtailRow);
+                                break;
+                            default:
+                                return; 
+                        }
+                    });
+                }
             }
         }catch(NullPointerException ex){
             System.out.println(ex);

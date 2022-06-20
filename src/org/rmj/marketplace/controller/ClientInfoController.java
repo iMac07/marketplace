@@ -391,8 +391,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
         pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
         getSelectedItem();
         loadOrders(filteredData.get(pagecounter).getClientIndex08());
-
-        
+        if (pagecounter >= 0){
         tblClients.setOnKeyReleased((KeyEvent t)-> {
                 KeyCode key = t.getCode();
                 switch (key){
@@ -422,6 +421,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
                         return; 
                 }
             });
+        }
     }
     
     private void getSelectedItem(){
