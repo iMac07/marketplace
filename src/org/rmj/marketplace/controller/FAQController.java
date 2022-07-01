@@ -71,46 +71,27 @@ public class FAQController implements Initializable, ScreenInterface {
     
     @FXML
     private Button btnSend;
-    @FXML
-    private TextField txtField01;
-    @FXML
+     @FXML
     private TabPane tabPaneSelection;
     @FXML
-    private Tab tabReplied;
+    private Tab tabReplied,tabUnReplied;
     @FXML
-    private Tab tabUnReplied;
+    private Pagination pagination,pagination1;
     @FXML
-    private Pagination pagination;
+    private TableColumn repliedIndex01,repliedIndex02,
+                            repliedIndex03,repliedIndex04;
+     @FXML
+    private TableView tblReplied,tblUnReplied;
     @FXML
-    private Pagination pagination1;
-    @FXML
-    private TableView tblReplied;
-    @FXML
-    private TableColumn repliedIndex01;
-    @FXML
-    private TableColumn repliedIndex02;
-    @FXML
-    private TableColumn repliedIndex03;
-    @FXML
-    private TableColumn repliedIndex04;
-    @FXML
-    private TableView tblUnReplied;
-    @FXML
-    private TableColumn tblunRepliedIndex01;
-    @FXML
-    private TableColumn tblunRepliedIndex02;
-    @FXML
-    private TableColumn tblunRepliedIndex03;
-    @FXML
-    private TableColumn tblunRepliedIndex04;
+    private TableColumn tblunRepliedIndex01,tblunRepliedIndex02,
+                            tblunRepliedIndex03,tblunRepliedIndex04;
     @FXML
     private ListView lvMessageBody;
     @FXML
     private Label lblCustomerName;
     @FXML
-    private TextField txtSeeks10;
-    @FXML
-    private TextField txtSeeks11;
+    private TextField txtField01,txtSeeks10,txtSeeks11;
+
 
     private static final int ROWS_PER_PAGE = 30;
   
@@ -187,6 +168,7 @@ public class FAQController implements Initializable, ScreenInterface {
         int lnCtr;
         try {
             data_faq.clear();
+           
             if (oTrans.LoadList("", true)){//true if by barcode; false if by description
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
                     data_faq.add(new FAQuestionsModel(String.valueOf(lnCtr),
@@ -210,8 +192,10 @@ public class FAQController implements Initializable, ScreenInterface {
      
                    
                 }
-                loadTab();
+                
             }
+                 loadTab();
+
         } catch (SQLException ex) {
             System.out.println("SQLException" + ex.getMessage());
         } catch (NullPointerException ex) {
@@ -228,15 +212,15 @@ public class FAQController implements Initializable, ScreenInterface {
             switch (lsButton){
                 case "btnSend": 
                     if(pnRow>=0){
-                        oTrans.setMaster(5, txtField01.getText());
+                        oTrans.setMaster(4, txtField01.getText());
 //                        oTrans.setMaster(9, oApp.getUserID());
 //                        oTrans.setMaster(10, oApp.getServerDate());
-                        oTrans.setMaster(14, 1);
+                        oTrans.setMaster(13, 1);
                         if (oTrans.SaveTransaction()){
                             MsgBox.showOk("Transaction save successfully");
                             clear();
                             loadProducts();
-                            loadDetail();
+                          //  loadDetail();
                         } else {
                            MsgBox.showOk(oTrans.getMessage());
                         }
@@ -260,9 +244,12 @@ public class FAQController implements Initializable, ScreenInterface {
         }
     } 
    private void clear(){
-        lvMessageBody.getItems().clear();
+        data_faq.clear();
+        filteredData.clear();
+                lvMessageBody.getItems().clear();
         txtField01.clear();
         lblCustomerName.setText("Customer Name:");
+        
    }
     private void initGrid() {
         
@@ -401,8 +388,6 @@ public class FAQController implements Initializable, ScreenInterface {
             if(event.getClickCount()<=1){
                 if(!tblUnReplied.getItems().isEmpty()){
 
-
-                System.out.println(pagecounter);
                 try {
                     if (oTrans.OpenTransaction(data_faq.get(pagecounter).getRepliedIndex02(),data_faq.get(pagecounter).getRepliedIndex03())){
                         pnEditMode = oTrans.getEditMode();
@@ -610,12 +595,11 @@ public class FAQController implements Initializable, ScreenInterface {
     }
     public void loadDetail(){
 //        taMessages.setText(data.get(pnRow).getRepliedIndex04()); 
-        lblCustomerName.setText(data_faq.get(pagecounter).getRepliedIndex17());
-        
         lvMessageBody.getItems().clear();
         pnEditMode = EditMode.UPDATE;
+        lblCustomerName.setText(data_faq.get(pagecounter).getRepliedIndex17());   
         addToChat();
-        if(!data_faq.get(pagecounter).getRepliedIndex04().trim().isEmpty()){
+        if(!data_faq.get(pagecounter).getRepliedIndex05().trim().isEmpty()){
            addToReply();
         }
         
@@ -640,7 +624,7 @@ public class FAQController implements Initializable, ScreenInterface {
         }
        bl6.setBackground(new Background(new BackgroundFill(Color.rgb(191, 191, 191),null, null)));
         HBox x = new HBox();
-        x.setMaxWidth(lvMessageBody.getWidth()- 50);
+        x.setMaxWidth(lvMessageBody.getWidth()- 20);
         
         bl6.setBubbleSpec(BubbleSpec.FACE_LEFT_CENTER);
         x.getChildren().add(bl6);
@@ -664,7 +648,7 @@ public class FAQController implements Initializable, ScreenInterface {
         bl6.setBackground(new Background(new BackgroundFill(Color.rgb(252, 156, 66), null, null)));
         HBox x = new HBox();
         x.setStyle("-fx-opacity:1.0;-fx-font-size: 15px; -fx-font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;");
-        x.setMaxWidth(lvMessageBody.getWidth()- 50);
+        x.setMaxWidth(lvMessageBody.getWidth()- 20);
         x.setAlignment(Pos.TOP_RIGHT);
         bl6.setBubbleSpec(BubbleSpec.FACE_RIGHT_CENTER);
         x.getChildren().add(bl6);

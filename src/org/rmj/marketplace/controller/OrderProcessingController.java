@@ -6,7 +6,6 @@
 package org.rmj.marketplace.controller;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import org.rmj.marketplace.model.ScreenInterface;
 import java.net.URL;
@@ -37,6 +36,8 @@ import org.rmj.appdriver.constants.EditMode;
 import org.rmj.marketplace.base.SalesOrder;
 import org.rmj.marketplace.model.OrderDetailModel;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -76,7 +77,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         private int pagecounter;
     private int pnEditMode;
     private String oldTransNox = "";
-    
+    private String transNox = "";
     double xOffset = 0;
     double yOffset = 0;
     @FXML
@@ -84,13 +85,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     @FXML
     private Pagination pagination;
     @FXML
-    private TableView tblClients;
-    @FXML
-    private TableColumn clientsIndex01,clientsIndex02,clientsIndex03,clientsIndex04;
-    @FXML
     private AnchorPane searchBar1;
-    @FXML
-    private TextField txtField01;
     @FXML
     private Label label01,label02,label03,label04,
                     label05,label06,label07,label08,
@@ -98,16 +93,14 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                    lblDetail01,lblDetail02,lblDetail03,
                    lblStatus;
     @FXML
-    private TextField txtField02;
+    private TableView tblOrders,tblPaymenttype,tblClients;
     @FXML
-    private TableView tblOrders;
+    private TableColumn clientsIndex01,clientsIndex02,
+                      clientsIndex03,clientsIndex04;
     @FXML
     private TableColumn orderIndex01,orderIndex02,orderIndex03,
                          orderIndex04,orderIndex05,orderIndex06,
                          orderIndex07,orderIndex08,orderIndex09;
-    @FXML
-    private TableView tblPaymenttype;
-
     @FXML
     private TableColumn paymentIndex01,paymentIndex02,paymentIndex03,
                         paymentIndex04,paymentIndex05,paymentIndex06;
@@ -130,15 +123,13 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private HBox hbButtons;
     @FXML
     private Button btnBrowse,btnApproved,btnDisapproved,btnUpdate,
-                    btnUpdate1,btnPrintIssuance;
-    @FXML
-    private FontAwesomeIconView btnPrintOrder;
+                    btnPrintOrder,btnPrintIssuance;
     @FXML
     private AnchorPane searchBar;
     @FXML
     private DatePicker DateSeeks01;
     @FXML
-    private TextField txtSeeks01;
+    private TextField txtSeeks01,txtField01,txtField02;
     
     private static final int ROWS_PER_PAGE = 30; 
   
@@ -149,6 +140,9 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private FilteredList<OrderModel> filteredData;
     private FilteredList<OrderDetailModel> filteredOrderDetData;
 
+    public void setTransaction(String fsValue){
+        transNox = fsValue;
+    }
     private Stage getStage(){
 	return (Stage) txtField01.getScene().getWindow();
     }
@@ -180,14 +174,39 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         oTrans.setListener(oListener);
         oTrans.setTranStat(10234);
         oTrans.setWithUI(true);
-        pbLoaded = true;
-        loadOrders();
+                loadOrders();
         btnBrowse.setOnAction(this::cmdButton_Click);
+        btnBrowse.setOnAction(this::cmdButton_Click);
+        btnApproved.setOnAction(this::cmdButton_Click);
+        btnDisapproved.setOnAction(this::cmdButton_Click);
+        btnUpdate.setOnAction(this::cmdButton_Click);
+        btnPrintIssuance.setOnAction(this::cmdButton_Click);
+        btnPrintOrder.setOnAction(this::cmdButton_Click);
         pnEditMode = EditMode.UNKNOWN;
         pagination.setPageFactory(this::createPage); 
+        tblPaymenttype.setDisable(true);
+        try { 
+            if(getTransNox().isEmpty()){
+                pnEditMode = EditMode.UNKNOWN;
+                initButton(pnEditMode);
+            } else {
+                if (oTrans.SearchTransaction(getTransNox(), true)){
+                  //  loadIncentives();
+                    pnEditMode = EditMode.READY;
+                    initButton(pnEditMode);
+                } else
+                    ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderProcessingController.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+        pbLoaded = true;
         
     }    
-   private Node createPage(int pageIndex) {
+    public String getTransNox(){
+        return transNox;
+  }
+    private Node createPage(int pageIndex) {
         int fromIndex = pageIndex * ROWS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, data.size());
         
@@ -202,10 +221,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 
     @FXML
     private void tblClients_Clicked(MouseEvent event) {
-        
-        if(event.getClickCount() == 2){
             pnRow = tblClients.getSelectionModel().getSelectedIndex();
             pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
+    if (pagecounter >= 0){
+        if(event.getClickCount() == 2){
+            if(!tblClients.getItems().isEmpty()){
+            
             txtField02.setText(dateToWord(filteredData.get(pagecounter).getOrderIndex03()));
             txtField01.setText(filteredData.get(pagecounter).getOrderIndex02());
             label08.setText(filteredData.get(pagecounter).getOrderIndex05());
@@ -218,31 +239,30 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             label01.setText(filteredData.get(pagecounter).getOrderIndex13());
             oldPnRow = pagecounter;
              loadOrderDetail(filteredData.get(pagecounter).getOrderIndex02());
-        }    
-
-        
-        
-        
+        } 
+}            
+}        
     }
         private void loadMaster() throws SQLException {
         
         if (oTrans.getMaster(11).toString().equalsIgnoreCase("0")){
-            lblStatus.setVisible(true);
-            lblStatus.setText("OPEN");
+            lblOrder02.setVisible(true);
+            lblOrder02.setText("OPEN");
         }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("1")){
-            lblStatus.setVisible(true);
-            lblStatus.setText("CLOSED");
+            lblOrder02.setVisible(true);
+            lblOrder02.setText("CLOSED");
         }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("2")){
-            lblStatus.setVisible(true);
-            lblStatus.setText("POSTED");
+            lblOrder02.setVisible(true);
+            lblOrder02.setText("POSTED");
+            btnUpdate.setDisable(true);
         }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("3")){
-            lblStatus.setVisible(true);
-            lblStatus.setText("CANCELLED");
+            lblOrder02.setVisible(true);
+            lblOrder02.setText("CANCELLED");
+            btnUpdate.setDisable(true);
         }else{
             lblStatus.setVisible(false);
         }
-        lblOrder02.setText(lblStatus.getText());                    
-        //lblOrder01.setText(oTrans.getDetail(0, "sReferNox").toString());
+
    }
  
         private void loadOrders(){
@@ -544,8 +564,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             tblClients.setItems(sortedData);
                 
     }
-        @FXML
-        private void tblPaymenttype_Click (MouseEvent event) {
+
+    @FXML
+    private void tblPaymenttype_Click (MouseEvent event) {
+        if (pagecounter >= 0){
+            if(event.getClickCount()<=1){
+                if(!tblPaymenttype.getItems().isEmpty()){
             try {
                         pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
                         loadPaymentDetail(data3.get(pnRow1).getPaymentIndex02(), pnRow1); 
@@ -554,9 +578,21 @@ public class OrderProcessingController implements Initializable, ScreenInterface
               ex.printStackTrace();
               ShowMessageFX.Warning(getStage(),ex.getMessage(), "Warning", null);
         }
+            }
+                }
+                    }      
     }
     private void initButton(int fnValue){
-        boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
+         boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
+                btnBrowse.setVisible(!lbShow);
+                btnApproved.setVisible(!lbShow);
+                btnDisapproved.setVisible(!lbShow);
+                btnBrowse.setManaged(!lbShow);
+                btnApproved.setManaged(!lbShow);
+                btnDisapproved.setManaged(!lbShow);
+                tblOrders.setDisable(!lbShow);
+                tblPaymenttype.setDisable(!lbShow);
+
 
     }
     private void cmdButton_Click(ActionEvent event) {
@@ -569,6 +605,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 //                    }else{
 //                        MsgBox.showOk(oTrans.getMessage());
 //                    }
+                    break;
+                case "btnUpdate":
+                                          
+                        pnEditMode = oTrans.getEditMode();
+                      
+                   
                     break;
             }
             initButton(pnEditMode);
