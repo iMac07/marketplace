@@ -51,15 +51,15 @@
                                       <tabs>
                                         <Tab fx:id="tabReplied" text="Replied Questions">
                                           <content>
-                                            <AnchorPane>
+                                            <AnchorPane prefHeight="351.0" prefWidth="777.0">
                                                    <children>
-                                                      <Pagination fx:id="pagination" prefHeight="345.0" prefWidth="664.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                      <TableView fx:id="tblReplied" onMouseClicked="#tblReplied_Clicked" prefHeight="300.0" prefWidth="654.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                      <Pagination fx:id="pagination" layoutX="6.0" prefHeight="351.0" prefWidth="767.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
+                                                      <TableView fx:id="tblReplied" onMouseClicked="#tblReplied_Clicked" prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                                                          <columns>
                                                             <TableColumn fx:id="repliedIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
-                                                            <TableColumn fx:id="repliedIndex02" prefWidth="203.0" resizable="false" sortable="false" text="Product Name" />
-                                                            <TableColumn fx:id="repliedIndex03" prefWidth="192.0" resizable="false" sortable="false" text="Customer Name" />
-                                                            <TableColumn fx:id="repliedIndex04" prefWidth="333.0" resizable="false" sortable="false" text="Questions" />
+                                                            <TableColumn fx:id="repliedIndex02" prefWidth="195.0" resizable="false" sortable="false" text="Product Name" />
+                                                            <TableColumn fx:id="repliedIndex03" prefWidth="220.0" resizable="false" sortable="false" text="Customer Name" />
+                                                            <TableColumn fx:id="repliedIndex04" prefWidth="313.0" resizable="false" sortable="false" text="Questions" />
                                                          </columns>
                                                       </TableView>
                                                    </children>
@@ -70,13 +70,13 @@
                                           <content>
                                             <AnchorPane>
                                                    <children>
-                                                      <Pagination fx:id="pagination1" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                      <TableView fx:id="tblUnReplied" onMouseClicked="#tblUnReplied_Clicked" prefHeight="300.0" prefWidth="654.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                                      <Pagination fx:id="pagination1" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
+                                                      <TableView fx:id="tblUnReplied" onMouseClicked="#tblUnReplied_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                                                          <columns>
                                                             <TableColumn fx:id="tblunRepliedIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
-                                                            <TableColumn fx:id="tblunRepliedIndex02" prefWidth="120.0" resizable="false" sortable="false" text="Product Name" />
-                                                            <TableColumn fx:id="tblunRepliedIndex03" prefWidth="200.0" resizable="false" sortable="false" text="Customer Name" />
-                                                            <TableColumn fx:id="tblunRepliedIndex04" prefWidth="300.0" resizable="false" sortable="false" text="Questions" />
+                                                            <TableColumn fx:id="tblunRepliedIndex02" prefWidth="195.0" resizable="false" sortable="false" text="Product Name" />
+                                                            <TableColumn fx:id="tblunRepliedIndex03" prefWidth="220.0" resizable="false" sortable="false" text="Customer Name" />
+                                                            <TableColumn fx:id="tblunRepliedIndex04" prefWidth="313.0" resizable="false" sortable="false" text="Questions" />
                                                          </columns>
                                                       </TableView>
                                                    </children>

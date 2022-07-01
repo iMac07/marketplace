@@ -4,8 +4,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -290,7 +292,7 @@
                                                                         </Label>
                                                                      </children>
                                                                   </GridPane>
-                                                                  <TableView fx:id="tblOrders" focusTraversable="false" layoutX="10.0" prefHeight="200.0" prefWidth="531.0" stylesheets="@../css/TableWithImage.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+                                                                  <TableView fx:id="tblOrders" focusTraversable="false" layoutX="10.0" prefHeight="200.0" prefWidth="531.0" stylesheets="@../css/Tables.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
                                                                      <columns>
                                                                         <TableColumn fx:id="orderIndex01" editable="false" maxWidth="-1.0" minWidth="25.0" prefWidth="-1.0" sortable="false" text="NO" />
                                                                         <TableColumn fx:id="orderIndex02" editable="false" maxWidth="155.0" minWidth="120.0" prefWidth="120.0" sortable="false" text="BARCODE" />
@@ -315,7 +317,7 @@
                                                             </Separator>
                                                             <AnchorPane prefHeight="141.0" prefWidth="536.0">
                                                                <children>
-                                                                  <TableView fx:id="tblPaymenttype" layoutX="6.0" layoutY="31.0" onMouseClicked="#tblPaymenttype_Click" prefHeight="120.0" prefWidth="528.0" stylesheets="@../css/TableWithImage.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+                                                                  <TableView fx:id="tblPaymenttype" layoutX="6.0" layoutY="31.0" onMouseClicked="#tblPaymenttype_Click" prefHeight="110.0" prefWidth="528.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
                                                                     <columns>
                                                                       <TableColumn fx:id="paymentIndex01" prefWidth="40.0" text="NO" />
                                                                       <TableColumn fx:id="paymentIndex02" prefWidth="160.0" text="TRANSACTION NO" />
@@ -356,7 +358,7 @@
                                                                   </Label>
                                                                </children>
                                                             </AnchorPane>
-                                                            <TableView fx:id="tblissueditems" focusTraversable="false" prefHeight="200.0" stylesheets="@../css/TableWithImage.css">
+                                                            <TableView fx:id="tblissueditems" focusTraversable="false" prefHeight="200.0" stylesheets="@../css/Tables.css">
                                                                <columns>
                                                                   <TableColumn fx:id="issuedIndex01" editable="false" prefWidth="30.0" sortable="false" text="NO" />
                                                                   <TableColumn fx:id="issuedIndex02" editable="false" prefWidth="140.0" sortable="false" text="BARCODE" />
@@ -520,20 +522,17 @@
                                                             <Blend />
                                                          </effect>
                                                       </Button>
-                                                      <Button fx:id="btnUpdate" contentDisplay="TOP" ellipsisString="" layoutX="150.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="button_process" text="Update">
+                                                      <Button fx:id="btnUpdate" contentDisplay="TOP" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="button_process" text="Update">
                                                          <graphic>
                                                             <FontAwesomeIconView glyphName="EDIT" size="20" />
                                                          </graphic>
-                                                         <effect>
-                                                            <Blend />
-                                                         </effect>
                                                       </Button>
-                                                      <Button fx:id="btnUpdate1" contentDisplay="TOP" ellipsisString="" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="button_process" text="Print Order">
+                                                      <Button fx:id="btnPrintOrder" contentDisplay="TOP" ellipsisString="" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="button_process" text="Print Order">
                                                          <effect>
                                                             <Blend />
                                                          </effect>
                                                          <graphic>
-                                                            <FontAwesomeIconView fx:id="btnPrintOrder" glyphName="PRINT" size="20" />
+                                                            <FontAwesomeIconView glyphName="PRINT" size="20" />
                                                          </graphic>
                                                       </Button>
                                                       <Button fx:id="btnPrintIssuance" contentDisplay="TOP" ellipsisString="" mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" styleClass="button_process" text="Print Issuance">
@@ -566,27 +565,22 @@
                               </StackPane>
                            </center>
                            <top>
-                              <AnchorPane fx:id="searchBar" prefHeight="40.0" prefWidth="1043.0" style="-fx-border-color: #F88222; -fx-border-radius: 5; -fx-background-color: #F88222;" BorderPane.alignment="CENTER">
+                              <AnchorPane fx:id="searchBar" prefHeight="29.0" prefWidth="899.0" style="-fx-border-color: #F88222; -fx-border-radius: 5; -fx-background-color: #F88222;" BorderPane.alignment="CENTER">
                                  <children>
-                                    <GridPane layoutX="4.0" layoutY="21.0" prefHeight="22.0" prefWidth="1043.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="15.0">
+                                    <GridPane layoutX="14.0" layoutY="29.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="70.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="104.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="120.0" />
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="185.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="2.0" prefWidth="70.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="211.0" minWidth="10.0" prefWidth="90.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="165.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="48.0" />
-                                          <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="193.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.0" minWidth="9.0" prefWidth="35.0" />
-                                          <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="186.0" minWidth="10.0" prefWidth="70.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="2.0" prefWidth="30.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="211.0" minWidth="10.0" prefWidth="120.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="185.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="331.0" minWidth="10.0" prefWidth="150.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Label prefHeight="17.0" prefWidth="121.0" text="Order No." GridPane.columnIndex="1">
+                                          <Label prefHeight="17.0" prefWidth="121.0" text="Order No.">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
@@ -594,7 +588,7 @@
                                                 <Insets bottom="5.0" left="20.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <Label prefHeight="17.0" prefWidth="121.0" text="Order Date" GridPane.columnIndex="4">
+                                          <Label prefHeight="17.0" prefWidth="121.0" text="Order Date" GridPane.columnIndex="3">
                                              <font>
                                                 <Font name="System Bold" size="12.0" />
                                              </font>
@@ -602,20 +596,26 @@
                                                 <Insets left="20.0" />
                                              </padding>
                                           </Label>
-                                          <DatePicker fx:id="DateSeeks01" GridPane.columnIndex="5" />
-                                          <Label fx:id="lblStatus" alignment="CENTER" prefHeight="30.0" prefWidth="165.0" text="STATUS" GridPane.columnIndex="7">
-                                             <font>
-                                                <Font name="System Bold" size="20.0" />
-                                             </font>
-                                          </Label>
-                                          <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="185.0" text="LOAD" GridPane.columnIndex="9" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
-                                             <font>
-                                                <Font name="System Bold" size="14.0" />
-                                             </font>
-                                          </Button>
-                                          <TextField fx:id="txtSeeks01" promptText="SEARCH : F3" GridPane.columnIndex="2" />
+                                          <DatePicker fx:id="DateSeeks01" prefWidth="890.0" GridPane.columnIndex="4" />
+                                          <TextField fx:id="txtSeeks01" promptText="SEARCH : F3" GridPane.columnIndex="1" />
+                                          <MenuButton fx:id="menuStatus" mnemonicParsing="false" prefWidth="100.0" text="OPEN        " GridPane.columnIndex="5" GridPane.halignment="RIGHT">
+                                             <items>
+                                                <CheckMenuItem fx:id="itemStat01" mnemonicParsing="false" text="OPEN" />
+                                                <CheckMenuItem fx:id="itemStat02" mnemonicParsing="false" text="CLOSED" />
+                                                <CheckMenuItem fx:id="itemStat03" mnemonicParsing="false" text="POSTED" />
+                                                <CheckMenuItem fx:id="itemStat04" mnemonicParsing="false" text="CANCELLED" />
+                                             </items>
+                                          </MenuButton>
                                        </children>
                                     </GridPane>
+                                    <Button fx:id="btnRefresh" contentDisplay="CENTER" ellipsisString="" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="36.0" styleClass="button_process" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="REFRESH" size="25" textAlignment="CENTER" />
+                                       </graphic>
+                                       <effect>
+                                          <Blend />
+                                       </effect>
+                                    </Button>
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" top="5.0" />
