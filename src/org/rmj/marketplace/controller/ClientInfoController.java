@@ -3,9 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+/*
+'########################################################################################
+'#        ___          ___          ___           ___       ___                         #
+'#       /\  \        /\  \        /\  \         /\  \     /\  \         ___            #
+'#       \:\  \      /::\  \      /::\  \        \:\  \   /::\  \       /\  \           #
+'#        \:\  \    /:/\:\  \    /:/\:\  \   ___ /::\__\ /:/\:\  \      \:\  \          #
+'#        /::\  \  /::\~\:\  \  /::\~\:\  \ /\  /:/\/__//::\~\:\  \     /::\__\         #
+'#       /:/\:\__\/:/\:\ \:\__\/:/\:\ \:\__\\:\/:/  /  /:/\:\ \:\__\ __/:/\/__/         #
+'#      /:/  \/__/\:\~\:\ \/__/\:\~\:\ \/__/ \::/  /   \:\~\:\ \/__//\/:/  /            #
+'#     /:/  /      \:\ \:\__\   \:\ \:\__\    \/__/     \:\ \:\__\  \::/__/             #
+'#     \/__/        \:\ \/__/    \:\ \/__/               \:\ \/__/   \:\__\             #
+'#                   \:\__\       \:\__\                  \:\__\      \/__/             #
+'#                    \/__/        \/__/                   \/__/                        #
+'#                                                                                      #
+'#                                 DATE CREATED 06-18-2022                              #
+'#                                 DATE LAST MODIFIED 07-06-2022                        #
+'#                                                                                      #
+'########################################################################################
+'LAST UPDATE NOTE
+'Add tabpane for verified and unverified account, also add  tabpane for additional customer info such
+'valid id, customer photo, email and mobile
+*/
 package org.rmj.marketplace.controller;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import org.rmj.marketplace.model.ScreenInterface;
 import java.net.URL;
@@ -30,11 +54,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -50,6 +77,8 @@ import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.marketplace.base.Clients;
 import org.rmj.marketplace.base.LTransaction;
 import org.rmj.marketplace.model.ClientInfoModel;
+import org.rmj.marketplace.model.UserProfileModel;
+
 
 /**
  * FXML Controller class
@@ -79,47 +108,73 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     private String a = "";
     
     @FXML
-    private Pagination tblPagination;
-    @FXML
     private AnchorPane AnchorClient;
     @FXML
-     private TableView tblClients;
+    private TabPane clientTab;
+    @FXML
+    private Tab tabVerified;
+    @FXML
+    private Pagination pagination;
+    @FXML
+    private TableView tblClients;
     @FXML
     private TableColumn clientIndex01;
     @FXML
-    private TableColumn clientIndex03;
-    @FXML
     private TableColumn clientIndex02;
     @FXML
-    private TextField txtField01;
+    private TableColumn clientIndex03;
     @FXML
-    private TextField txtField02;
+    private AnchorPane searchBar1;
     @FXML
-    private TextArea txtField03;
+    private TextField txtField01,txtField02,txtField03,txtField04;
     @FXML
-    private TextField txtField04;
+    private TableView tblOrders;
     @FXML
-    private TextField txtField05;
+    private TableColumn orderIndex01,orderIndex02,orderIndex03,orderIndex04,orderIndex05;
     @FXML
-    private TextField txtField06;
+    private Tab tabUnVerified;
     @FXML
-    private TextField txtField07;
+    private Pagination pagination1;
     @FXML
-    private TextField txtField08;
+    private TableView tblClients1;
     @FXML
-    private TextField txtField09;
+    private TableColumn clientIndex011;
     @FXML
-    private TableView<OrderModel> tblOrders;
+    private TableColumn clientIndex021;
     @FXML
-    private TableColumn orderIndex01;
+    private TableColumn clientIndex031;
     @FXML
-    private TableColumn orderIndex02;
+    private AnchorPane searchBar11;
     @FXML
-    private TableColumn orderIndex03;
+    private TextField txtFieldUV01;
     @FXML
-    private TableColumn orderIndex04;
+    private TextField txtFieldUV02;
     @FXML
-    private TableColumn orderIndex05;
+    private TextField txtFieldUV04;
+    @FXML
+    private TextArea txtFieldUV03;
+    @FXML
+    private TableView tblOrders1;
+    @FXML
+    private TableColumn orderIndex011;
+    @FXML
+    private TableColumn orderIndex021;
+    @FXML
+    private TableColumn orderIndex031;
+    @FXML
+    private Tab tabEmail;
+    @FXML
+    private Tab tabValidID;
+    @FXML
+    private Tab tabMobile;
+    @FXML
+    private Tab tabCustPhoto;
+    @FXML
+    private Tab tabUserProfile;
+    @FXML
+    private TextField txtField0911;
+    @FXML
+    private FontAwesomeIconView FXTEST;
     @FXML
     private AnchorPane searchBar;
     @FXML
@@ -128,11 +183,6 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     private TextField txtSeeks11;
     @FXML
     private Button btnRefresh;
-    @FXML
-    private Button btnReset;
-    @FXML
-    private Pagination pagination;
-    
     private static final int ROWS_PER_PAGE = 50;
     
 //    private final TableView<ClientInfoModel> table = createTable();
@@ -142,6 +192,8 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     
     private final ObservableList<ClientInfoModel> client_data = FXCollections.observableArrayList();
     private FilteredList<ClientInfoModel> filteredData;
+
+    private final ObservableList<UserProfileModel> userprofile_data = FXCollections.observableArrayList();
     
    
     private void setCategory(String val){
@@ -161,12 +213,11 @@ public class ClientInfoController implements Initializable, ScreenInterface {
 //        txtSeeks11.setOnKeyPressed(this::txtField_KeyPressed);
 //        a = client_data.get(pnRow).getClientIndex08();
         loadClient();
-        System.out.print(oldTransNox + " initialize");
         loadOrders(oldTransNox);
         
         pagination.setPageFactory(this::createPage); 
         btnRefresh.setOnAction(this::cmdButton_Click);    
-            
+      FXTEST.setGlyphName("CLOSE");//CHECK pag verified
     } 
     private Node createPage(int pageIndex) {
         int fromIndex = pageIndex * ROWS_PER_PAGE;
@@ -209,13 +260,13 @@ public class ClientInfoController implements Initializable, ScreenInterface {
                 System.out.println("List count -->" + oTrans.getItemCount());
                 for (int lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
                     client_data.add(new ClientInfoModel((String) oTrans.getDetail(lnCtr, 1),
-                            (String) oTrans.getDetail(lnCtr, 19),
-                            (String) oTrans.getDetail(lnCtr, 16),
+                            (String) oTrans.getDetail(lnCtr, "sUserIDxx"),
+                            (String) oTrans.getDetail(lnCtr, "sEmailAdd"),
                             (String) oTrans.getDetail(lnCtr, 17),
                             (String) oTrans.getDetail(lnCtr, "sHouseNox") +  ", " + oTrans.getDetail(lnCtr, "sAddressx") +  ", " + oTrans.getDetail(lnCtr, "xTownName"),
                             (String) oTrans.getDetail(lnCtr, "cGenderCd"),
                             (String) oTrans.getDetail(lnCtr, "xNational"),
-                            (String) oTrans.getDetail(lnCtr, 2),
+                            (String) oTrans.getDetail(lnCtr, "sMobileNo"),
                             (CommonUtils.xsDateLong((Date) oTrans.getDetail(lnCtr, "dBirthDte"))),
                             (String) oTrans.getDetail(lnCtr, "xBirthPlc"),
                             String.valueOf(lnCtr)));
@@ -236,12 +287,9 @@ public class ClientInfoController implements Initializable, ScreenInterface {
     
     private void loadOrders(String transNox){
         int lnCtr;
-        System.out.println(oldTransNox + " old0");
-        System.out.println(transNox + " load");
         try {
             
             order_data.clear();
-            System.out.println(oldTransNox + " old");
             if (oTrans.LoadOrder(transNox)){
                 //true if by barcode; false if by description
                 oTrans.displayMasFields();
@@ -265,6 +313,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
                             System.out.println(oTrans.getOrder(lnCtr, "nTranTotl"));
                 }   
                 oldTransNox = transNox;
+     
                 initOrderGrid();
             } else {//true if by barcode; false if by description
             }    
@@ -277,15 +326,56 @@ public class ClientInfoController implements Initializable, ScreenInterface {
             System.out.println("DateTimeException" + ex.getMessage());
         } 
     }
+//    private void loadUserProfile(String transNox){
+//        int lnCtr;
+//        try {
+//            
+//            userprofile_data.clear();
+//            if (oTrans.loadUserProfile(transNox)){
+//                //true if by barcode; false if by description
+//                oTrans.displayMasFields();
+//                for (lnCtr = 1; lnCtr <= oTrans.getOrderItemCount(); lnCtr++){
+//                    order_data.add(new OrderModel(String.valueOf(lnCtr),
+//                            (String) oTrans.getOrder(lnCtr, "sTransNox"),
+//                            (CommonUtils.xsDateLong((Date) oTrans.getOrder(lnCtr, "dTransact"))),
+//                            (String) oTrans.getOrder(lnCtr, "sTermCode"),
+//                            oTrans.getOrder(lnCtr, "nTranTotl").toString(),
+//                            oTrans.getOrder(lnCtr, "nVATRatex").toString(),
+//                            oTrans.getOrder(lnCtr, "nDiscount").toString(),
+//                            oTrans.getOrder(lnCtr, "nAddDiscx").toString(),
+//                            oTrans.getOrder(lnCtr, "nFreightx").toString(),
+//                            oTrans.getOrder(lnCtr, "nAmtPaidx").toString(),
+//                            oTrans.getOrder(lnCtr, "cTranStat").toString(),
+//                            (String) oTrans.getOrder(lnCtr, "sRemarksx"),
+//                            (String) oTrans.getOrder(lnCtr, "sCompnyNm"),
+//                            (String) oTrans.getOrder(lnCtr, "sAddressx"),
+//                            (String) oTrans.getOrder(lnCtr, "sTownName")));
+//                            System.out.println(oTrans.getOrder(lnCtr, "sTransNox"));
+//                            System.out.println(oTrans.getOrder(lnCtr, "nTranTotl"));
+//                }   
+//                oldTransNox = transNox;
+//                initOrderGrid();
+//            } else {//true if by barcode; false if by description
+//            }    
+//        } catch (SQLException ex) {
+//            System.out.println("SQLException" + ex.getMessage());
+//        } catch (NullPointerException ex) {
+//            System.out.println("NullPointerException" + ex.getMessage());
+//        } catch (DateTimeException ex) {
+////            MsgBox.showOk(ex.getMessage());
+//            System.out.println("DateTimeException" + ex.getMessage());
+//        } 
+//    }
     
     public void initClientsGrid() { 
+
         clientIndex01.setStyle("-fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 5;");
         clientIndex02.setStyle("-fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 5;");
         clientIndex03.setStyle("-fx-alignment: CENTER-LEFT; -fx-padding: 0 0 0 5;");
         
         clientIndex01.setCellValueFactory(new PropertyValueFactory<>("clientIndex11"));
-        clientIndex02.setCellValueFactory(new PropertyValueFactory<>("clientIndex02"));
-        clientIndex03.setCellValueFactory(new PropertyValueFactory<>("clientIndex03"));
+        clientIndex02.setCellValueFactory(new PropertyValueFactory<>("clientIndex03"));
+        clientIndex03.setCellValueFactory(new PropertyValueFactory<>("clientIndex02"));
         tblClients.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblClients.lookup("TableHeaderRow");
             header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -390,6 +480,7 @@ public class ClientInfoController implements Initializable, ScreenInterface {
         pnRow = tblClients.getSelectionModel().getSelectedIndex(); 
         pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
         getSelectedItem();
+//        loadUserProfile();
         loadOrders(filteredData.get(pagecounter).getClientIndex08());
         if (pagecounter >= 0){
         tblClients.setOnKeyReleased((KeyEvent t)-> {
@@ -409,13 +500,10 @@ public class ClientInfoController implements Initializable, ScreenInterface {
                         }
                         break;
                     case UP:
-                        int pnRows = 0;
-                        
-                        pnRows = tblClients.getSelectionModel().getSelectedIndex();
+                        pnRow = tblClients.getSelectionModel().getSelectedIndex();
                         pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
                         loadOrders(filteredData.get(pagecounter).getClientIndex07());
-                            pnRow = pnRows; 
-                            getSelectedItem();
+                        getSelectedItem();
                         break;
                     default:
                         return; 
@@ -430,22 +518,22 @@ public class ClientInfoController implements Initializable, ScreenInterface {
         txtField02.setText(filteredData.get(pagecounter).getClientIndex02());
         txtField03.setText(filteredData.get(pagecounter).getClientIndex05());
         txtField04.setText(filteredData.get(pagecounter).getClientIndex04()); 
-        txtField05.setText(filteredData.get(pagecounter).getClientIndex03()); 
-        switch (genval) {
-            case 1:
-                txtField06.setText("Female");
-                break;
-            case 0:
-                txtField06.setText("Male");
-                break;
-            default:
-                txtField06.setText("LGBTQ");
-                break;
-        }
-        txtField07.setText(filteredData.get(pagecounter).getClientIndex07()); 
-        txtField08.setText(filteredData.get(pagecounter).getClientIndex09()); 
-        txtField09.setText(filteredData.get(pagecounter).getClientIndex10()); 
-        
+//        txtField05.setText(filteredData.get(pagecounter).getClientIndex03()); 
+//        switch (genval) {
+//            case 1:
+//                txtField06.setText("Female");
+//                break;
+//            case 0:
+//                txtField06.setText("Male");
+//                break;
+//            default:
+//                txtField06.setText("LGBTQ");
+//                break;
+//        }
+//        txtField07.setText(filteredData.get(pagecounter).getClientIndex07()); 
+//        txtField08.setText(filteredData.get(pagecounter).getClientIndex09()); 
+//        txtField09.setText(filteredData.get(pagecounter).getClientIndex10()); 
+//        
         
     } 
     
