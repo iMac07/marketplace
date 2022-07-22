@@ -197,7 +197,7 @@ public class OrderDetailController implements Initializable, ScreenInterface {
         lblTotal.setText(priceWithDecimal(Totl));
         
        lblCustName.setText(cltModel.getClientIndex02());
-       lblCustAdd.setText(cltModel.getClientIndex05());
+       lblCustAdd.setText(cltModel.getClientIndex04());
        lblContactNo.setText(cltModel.getClientIndex03());
        psCode = (orderModel.getOrderIndex02());
     }

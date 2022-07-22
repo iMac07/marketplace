@@ -199,7 +199,7 @@ public class RatingsAndReviewsController implements Initializable, ScreenInterfa
                             oTrans.getDetail(lnCtr, "sReplyxxx").toString(),
                             oTrans.getDetail(lnCtr, "nPriority").toString(),
                             oTrans.getDetail(lnCtr, "sCreatedx").toString(),
-                            (CommonUtils.xsDateMedium((Date) oTrans.getDetail(lnCtr, "dCreatedx"))),
+                            oTrans.getDetail(lnCtr, "dCreatedx").toString(),
                             oTrans.getDetail(lnCtr, "sRepliedx").toString(),
                             oTrans.getDetail(lnCtr, "dRepliedx").toString(),
                             oTrans.getDetail(lnCtr, "cReadxxxx").toString(),

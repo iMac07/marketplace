@@ -24,7 +24,8 @@ public class ClientInfoModel {
     private SimpleStringProperty clientIndex08;  
     private SimpleStringProperty clientIndex09; 
     private SimpleStringProperty clientIndex10;
-    private SimpleStringProperty clientIndex11;  
+    private SimpleStringProperty clientIndex11; 
+    private SimpleStringProperty clientIndex12;
 
     
     public ClientInfoModel(){
@@ -40,7 +41,9 @@ public class ClientInfoModel {
             String clientIndex08,
             String clientIndex09,
             String clientIndex10,
-            String clientIndex11) {
+            String clientIndex11,
+            String clientIndex12) 
+{
         this.clientIndex01 = new SimpleStringProperty(clientIndex01);
         this.clientIndex02 = new SimpleStringProperty(clientIndex02);
         this.clientIndex03 = new SimpleStringProperty(clientIndex03);
@@ -52,6 +55,7 @@ public class ClientInfoModel {
         this.clientIndex09 = new SimpleStringProperty(clientIndex09);
         this.clientIndex10 = new SimpleStringProperty(clientIndex10);
         this.clientIndex11 = new SimpleStringProperty(clientIndex11);
+        this.clientIndex12 = new SimpleStringProperty(clientIndex12);
     }
     
     public String getClientIndex01() {
@@ -69,23 +73,18 @@ public class ClientInfoModel {
     public String getClientIndex04() {
         return clientIndex04.get();
     }
-
     public String getClientIndex05() {
         return clientIndex05.get();
     }
-
     public String getClientIndex06() {
         return clientIndex06.get();
     }
-     
     public String getClientIndex07() {
         return clientIndex07.get();
     }
-
     public String getClientIndex08() {
         return clientIndex08.get();
     }
-
     public String getClientIndex09() {
         return clientIndex09.get();
     }
@@ -94,6 +93,9 @@ public class ClientInfoModel {
     }
     public String getClientIndex11() {
         return clientIndex11.get();
+    }
+    public String getClientIndex12() {
+        return clientIndex12.get();
     }
 
 }

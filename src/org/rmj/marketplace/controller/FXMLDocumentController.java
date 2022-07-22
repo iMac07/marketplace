@@ -83,6 +83,8 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
     @FXML
     private ToggleButton btnReports;
     @FXML
+    private ToggleButton btnParameters;
+    @FXML
     private FontAwesomeIconView drawer_icon;
     public static ToggleGroup drawer_button;
     private TranslateTransition openNav;
@@ -140,7 +142,8 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
             btnClient,
             btnQA,
             btnRatings,
-            btnReports
+            btnReports,
+            btnParameters
         };
         for (ToggleButton navButton : navButtons) {
             navButton.setToggleGroup(drawer_button);
@@ -158,7 +161,8 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
             new Tooltip("CLIENT INFO"),
             new Tooltip("QUESTION AND ANSWER"),
             new Tooltip("RATINGS AND REVIEWS"),
-            new Tooltip("STANDARD REPORTS")
+            new Tooltip("STANDARD REPORTS"),
+            new Tooltip("PARAMETERS")
         };
         for(int t = 0; t < navTooltip.length; t++){
             hackTooltipStartTiming(navTooltip[t]);
@@ -233,6 +237,11 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
         setNavButtonsSelected(8);
         setScene(loadAnimate("/org/rmj/marketplace/view/Reports.fxml"));
     }
+    @FXML
+    private void switchParameters(ActionEvent event) throws IOException {
+        setNavButtonsSelected(9);
+        setScene(loadAnimate("/org/rmj/marketplace/view/Parameters.fxml"));
+    }
     
     @FXML
     private void handleButtonCloseClick(MouseEvent event) {
@@ -270,6 +279,8 @@ public class FXMLDocumentController implements Initializable, ScreenInterface {
                 return (ScreenInterface) new ReportsController();
              case "/org/rmj/marketplace/view/OrderPaymentTagging.fxml":
                 return (ScreenInterface) new OrderPaymentTaggingController();
+             case "/org/rmj/marketplace/view/Parameters.fxml":
+                return (ScreenInterface) new ParametersController();
             default:
                 return null;
         }
