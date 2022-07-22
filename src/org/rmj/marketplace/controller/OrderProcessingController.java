@@ -51,6 +51,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -66,7 +67,7 @@ import org.rmj.marketplace.model.OrderPaymentTaggingModel;
  * @author user
  */
 public class OrderProcessingController implements Initializable, ScreenInterface {
-    
+    private final String pxeModuleName = "Order Processing";
     private GRider oApp;
     private SalesOrder oTrans;
     private LResult oListener;
@@ -80,6 +81,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private String transNox = "";
     double xOffset = 0;
     double yOffset = 0;
+    private boolean state = false;
+
     @FXML
     private AnchorPane MainOrderProcessing;
     @FXML
@@ -122,7 +125,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     @FXML
     private HBox hbButtons;
     @FXML
-    private Button btnBrowse,btnApproved,btnDisapproved,btnUpdate,
+    private Button btnBrowse,btnApproved,btnCancel,btnUpdate,
                     btnPrintOrder,btnPrintIssuance;
     @FXML
     private AnchorPane searchBar;
@@ -164,10 +167,23 @@ public class OrderProcessingController implements Initializable, ScreenInterface
              }
              @Override
              public void OnCancel(String message) {
+                oTrans = new SalesOrder(oApp, oApp.getBranchCode(), false);
+                oTrans.setListener(oListener);
+                oTrans.setTranStat(10234);
+                oTrans.setWithUI(true);
+                pbLoaded = true;
+                 loadOrders();
                  pnRow1 = -1;
+                 tblClients.getSelectionModel().select(oldPnRow);
                  loadOrderDetail(oldTransNox);
+                 pnEditMode = EditMode.READY;
                 System.out.println("OnCancel = " + message);
              }
+
+        @Override
+        public void MasterRetreive(int i, Object o) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
        
         };
         oTrans = new SalesOrder(oApp, oApp.getBranchCode(), false);
@@ -178,7 +194,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnApproved.setOnAction(this::cmdButton_Click);
-        btnDisapproved.setOnAction(this::cmdButton_Click);
+        btnCancel.setOnAction(this::cmdButton_Click);
         btnUpdate.setOnAction(this::cmdButton_Click);
         btnPrintIssuance.setOnAction(this::cmdButton_Click);
         btnPrintOrder.setOnAction(this::cmdButton_Click);
@@ -224,7 +240,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             pnRow = tblClients.getSelectionModel().getSelectedIndex();
             pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
     if (pagecounter >= 0){
-        if(event.getClickCount() == 2){
+        if(event.getClickCount() > 0){
             if(!tblClients.getItems().isEmpty()){
             
             txtField02.setText(dateToWord(filteredData.get(pagecounter).getOrderIndex03()));
@@ -239,9 +255,9 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             label01.setText(filteredData.get(pagecounter).getOrderIndex13());
             oldPnRow = pagecounter;
              loadOrderDetail(filteredData.get(pagecounter).getOrderIndex02());
-        } 
-}            
-}        
+                                                } 
+                                    }            
+                          }        
     }
         private void loadMaster() throws SQLException {
         
@@ -567,8 +583,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 
     @FXML
     private void tblPaymenttype_Click (MouseEvent event) {
-        if (pagecounter >= 0){
-            if(event.getClickCount()<=1){
+           if (pagecounter >= 0){
+             if(event.getClickCount() > 0){
                 if(!tblPaymenttype.getItems().isEmpty()){
             try {
                         pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
@@ -584,20 +600,27 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     }
     private void initButton(int fnValue){
          boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
-                btnBrowse.setVisible(!lbShow);
-                btnApproved.setVisible(!lbShow);
-                btnDisapproved.setVisible(!lbShow);
-                btnBrowse.setManaged(!lbShow);
-                btnApproved.setManaged(!lbShow);
-                btnDisapproved.setManaged(!lbShow);
+                btnUpdate.setVisible(!lbShow);
                 tblOrders.setDisable(!lbShow);
                 tblPaymenttype.setDisable(!lbShow);
+                tblissueditems.setDisable(!lbShow);
+                btnCancel.setVisible(lbShow);
+                btnBrowse.setVisible(!lbShow);
+                btnApproved.setVisible(lbShow);
+
+                btnUpdate.setManaged(!lbShow);
+                btnApproved.setManaged(lbShow);
+                btnCancel.setManaged(lbShow);
+                btnBrowse.setManaged(!lbShow);
+                tblClients.setDisable(lbShow);      
+
+ 
 
 
     }
     private void cmdButton_Click(ActionEvent event) {
         String lsButton = ((Button)event.getSource()).getId();
-//        try {
+        try {
             switch (lsButton){
                 case "btnBrowse":
 //                    if(oTrans.SearchTransaction(txtSeeks99.getText(), true)){
@@ -607,17 +630,23 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 //                    }
                     break;
                 case "btnUpdate":
-                                          
-                        pnEditMode = oTrans.getEditMode();
-                      
-                   
-                    break;
-            }
+                             
+                        if (oTrans.UpdateTransaction()){
+                            pnEditMode = oTrans.getEditMode(); 
+                          } else 
+                            ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+                    break;     
+                case "btnCancel":
+                        if (ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to disregard changes?") == true){  
+                                oListener.OnCancel("");
+                        }
+                    break;             
+             }
             initButton(pnEditMode);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            MsgBox.showOk(e.getMessage());
-//        } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            MsgBox.showOk(e.getMessage());
+        } 
     } 
     public static String priceWithDecimal (Double price) {
         DecimalFormat formatter = new DecimalFormat("₱ ###,###,##0.00");
@@ -667,7 +696,7 @@ public static String dateToWord1 (String dtransact) {
        private void loadPaymentDetail(String psCode, int fnRow) throws SQLException{
         try {
             Stage stage = new Stage();
-            if(oTrans.UpdateTransaction()){
+
 
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
@@ -708,7 +737,7 @@ public static String dateToWord1 (String dtransact) {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setTitle("");
                 stage.showAndWait();
-            }
+            
             
             
             loadOrders();
@@ -745,7 +774,13 @@ public static String dateToWord1 (String dtransact) {
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
-        
+
         return null;
+    }
+            private void onsuccessUpdate(){
+        StackPane myBox = (StackPane) MainOrderProcessing.getParent();
+        myBox.getChildren().clear();
+        myBox.getChildren().add(setScene());
+          
     }
 }
