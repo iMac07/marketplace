@@ -160,24 +160,20 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 oTrans.setTranStat(10234);
                 oTrans.setWithUI(true);
                 pbLoaded = true;
-                 loadOrders();
-                 pnRow1 = -1;
-                 loadOrderDetail(oldTransNox);
-                 tblClients.getSelectionModel().select(oldPnRow);
+                loadOrders();
+                pnRow1 = -1;
+                loadOrderDetail(oldTransNox);
+                tblClients.getSelectionModel().select(oldPnRow);
              }
              @Override
              public void OnCancel(String message) {
-                oTrans = new SalesOrder(oApp, oApp.getBranchCode(), false);
-                oTrans.setListener(oListener);
-                oTrans.setTranStat(10234);
-                oTrans.setWithUI(true);
-                pbLoaded = true;
-                 loadOrders();
-                 pnRow1 = -1;
-                 tblClients.getSelectionModel().select(oldPnRow);
-                 loadOrderDetail(oldTransNox);
-                 pnEditMode = EditMode.READY;
                 System.out.println("OnCancel = " + message);
+                
+                loadOrders();
+                pnRow1 = -1;
+                loadOrderDetail(oldTransNox);
+                tblClients.getSelectionModel().select(oldPnRow);
+                initButton(pnEditMode);
              }
 
         @Override
@@ -583,20 +579,24 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 
     @FXML
     private void tblPaymenttype_Click (MouseEvent event) {
-           if (pagecounter >= 0){
-             if(event.getClickCount() > 0){
+       
+        if (pagecounter >= 0){ 
+            System.out.println("pagecounter = " + pagecounter);
+            if(event.getClickCount()>0){
+                System.out.println("event click count = " + event.getClickCount());
                 if(!tblPaymenttype.getItems().isEmpty()){
-            try {
-                        pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
-                        loadPaymentDetail(data3.get(pnRow1).getPaymentIndex02(), pnRow1); 
-                        
-            } catch (SQLException ex) {
-              ex.printStackTrace();
-              ShowMessageFX.Warning(getStage(),ex.getMessage(), "Warning", null);
-        }
-            }
+                    try {
+                                pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
+                         System.out.println("Not Empty  index = " + pnRow1);
+                                loadPaymentDetail(data3.get(pnRow1).getPaymentIndex02(), pnRow1); 
+
+                    } catch (SQLException ex) {
+                      ex.printStackTrace();
+                      ShowMessageFX.Warning(getStage(),ex.getMessage(), "Warning", null);
+                    }
                 }
-                    }      
+            }
+        }      
     }
     private void initButton(int fnValue){
          boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
@@ -612,7 +612,6 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 btnApproved.setManaged(lbShow);
                 btnCancel.setManaged(lbShow);
                 btnBrowse.setManaged(!lbShow);
-                tblClients.setDisable(lbShow);      
 
  
 
@@ -638,7 +637,13 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                     break;     
                 case "btnCancel":
                         if (ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to disregard changes?") == true){  
-                                oListener.OnCancel("");
+                           
+                            loadOrders();
+                            pnRow1 = -1;
+                            loadOrderDetail(oldTransNox);
+                            tblClients.getSelectionModel().select(oldPnRow);
+                            pnEditMode = EditMode.READY;
+                            initButton(pnEditMode);
                         }
                     break;             
              }
@@ -656,10 +661,6 @@ public class OrderProcessingController implements Initializable, ScreenInterface
        
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
-//            Date date = dateParser.parse("2022-04-29 16:59:13");
-//            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
-//             String str_date="2012-08-11+05:30";
-//           
             Date date = new Date();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             date = (Date)formatter.parse(dtransact);  
@@ -696,7 +697,7 @@ public static String dateToWord1 (String dtransact) {
        private void loadPaymentDetail(String psCode, int fnRow) throws SQLException{
         try {
             Stage stage = new Stage();
-
+//            if(oTrans.UpdateTransaction()){
 
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
@@ -737,7 +738,7 @@ public static String dateToWord1 (String dtransact) {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setTitle("");
                 stage.showAndWait();
-            
+//            }
             
             
             loadOrders();
@@ -777,10 +778,5 @@ public static String dateToWord1 (String dtransact) {
 
         return null;
     }
-            private void onsuccessUpdate(){
-        StackPane myBox = (StackPane) MainOrderProcessing.getParent();
-        myBox.getChildren().clear();
-        myBox.getChildren().add(setScene());
-          
-    }
+
 }

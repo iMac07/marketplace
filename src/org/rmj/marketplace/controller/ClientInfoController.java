@@ -402,6 +402,7 @@ private void txtField_KeyPressed(KeyEvent event){
          boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
                 btnEdit.setVisible(!lbShow);
                 btnAnchorPane.setVisible(lbShow);
+                
                 if (!lbShow){
                 btnAnchorPane.setManaged(!lbShow);
                 CustDetAnchorPane.setManaged(!lbShow);
@@ -412,18 +413,36 @@ private void txtField_KeyPressed(KeyEvent event){
                 btnSave.setVisible(lbShow);
                 btnClose.setVisible(lbShow);
                 tblClients.setDisable(lbShow);
-                
+            int tabNo = tabCustomerDetail.getSelectionModel().getSelectedIndex();
             
-            if(tabCustomerDetail.getSelectionModel().isSelected(2)){
-            txtField10uVUP.setEditable(lbShow);
-            txtField11uVUP.setEditable(lbShow);
-            txtField12uVUP.setEditable(lbShow);
-            txtField13uVUP.setEditable(lbShow);
-            txtField14uVUP.setEditable(lbShow);
-            txtField15uVUP.setEditable(lbShow);
-            txtField16uVUP.setEditable(lbShow);         
-            txtField17uVUP.setEditable(lbShow);
-}
+            switch (tabNo) {
+                case 0:
+                    btnClose.setVisible(lbShow);
+                    btnSave.setVisible(!lbShow);
+                    btnSave.setManaged(false);
+                    break;
+                case 1:
+                    btnClose.setVisible(lbShow);
+                    btnSave.setVisible(!lbShow);
+                    btnSave.setManaged(false);
+                    break;    
+                case 2:
+                    txtField10uVUP.setEditable(lbShow);
+                    txtField11uVUP.setEditable(lbShow);
+                    txtField12uVUP.setEditable(lbShow);
+                    txtField13uVUP.setEditable(lbShow);
+                    txtField14uVUP.setEditable(lbShow);
+                    txtField15uVUP.setEditable(lbShow);
+                    txtField16uVUP.setEditable(lbShow);         
+                    txtField17uVUP.setEditable(lbShow);
+                    btnSave.setVisible(lbShow);
+                    btnSave.setManaged(true);
+                    break;
+                case 3: break;
+                case 4: break;
+            default:
+                throw new AssertionError();
+            }   
             loadStatus();
     }
     private void loadClient(){
@@ -443,8 +462,8 @@ private void txtField_KeyPressed(KeyEvent event){
                         (String) oTrans.getDetail(lnCtr, "cPrVerify"),//profile
                         (String) oTrans.getDetail(lnCtr, "cEmVerify"),
                         (String) oTrans.getDetail(lnCtr, "cMoVerify"),
-                        (String) oTrans.getDetail(lnCtr, "sTownIDx1"),
-                        (String) oTrans.getDetail(lnCtr, "sTownIDx2"),
+                        (String) oTrans.getDetail(lnCtr, "sAddress1"),
+                        (String) oTrans.getDetail(lnCtr, "sAddress2"),
                         (String) oTrans.getDetail(lnCtr, "sMobileNo")));
                     }
 //                tblClients.getSelectionModel().select(clienrRow - 1);
@@ -821,10 +840,10 @@ private void txtField_KeyPressed(KeyEvent event){
                 clear();
                         getSelectedItem();
                         tabCustomerDetail.getSelectionModel().select(tabValidID);
-                        loadStatus();
+                        
                         loadValidID();
                         loadPhoto();
-                        btnEdit.setDisable(false);
+                        loadStatus();
 
     tblClients.setOnKeyReleased((KeyEvent t)-> {
                 KeyCode key = t.getCode();
@@ -856,32 +875,51 @@ private void txtField_KeyPressed(KeyEvent event){
     
     private void getSelectedItem(){
                 txtField01.setText(client_data.get(pagecounter).getClientIndex03());
-                txtField02.setText(client_data.get(0).getClientIndex10());
-                txtField03.setText(client_data.get(0).getClientIndex10());
-                txtField04.setText(client_data.get(0).getClientIndex10());
+                txtField02.setText(client_data.get(pagecounter).getClientIndex10());
+                txtField03.setText(client_data.get(pagecounter).getClientIndex11());
+                txtField04.setText(client_data.get(pagecounter).getClientIndex12());
                 pnEditMode = EditMode.UNKNOWN;
                 initButton(pnEditMode);
                          oldPnRow = pagecounter;         
       
     } 
     private void loadStatus(){
-        btnEdit.setDisable(false);
+        
+        int tabNo = tabCustomerDetail.getSelectionModel().getSelectedIndex();
+        System.out.println("tabNo = " + tabNo);
+           btnEdit.setDisable(false);
+        switch (tabNo) {
+            case 0:
+                if (client_data.get(pagecounter).getClientIndex05().equalsIgnoreCase("1")){
+                    btnEdit.setDisable(true);
+                }    break;
+            case 1:
+                if (client_data.get(pagecounter).getClientIndex06().equalsIgnoreCase("1")){
+                    btnEdit.setDisable(true);
+                }    break;
+            case 2:
+                if (client_data.get(pagecounter).getClientIndex07().equalsIgnoreCase("1")){
+                    btnEdit.setDisable(true);
+                }    break;
+            default:
+                btnEdit.setDisable(false);
+                break;
+        }
+        
         if (client_data.get(pagecounter).getClientIndex05().equalsIgnoreCase("1")){
            statusValidID.setGlyphName("CHECK");
            statusValidID.setFill(GREEN);
-           btnEdit.setDisable(true);
-           btnSave.setDisable(true);
+           
           }
         if (client_data.get(pagecounter).getClientIndex06().equalsIgnoreCase("1")){
            statusCustPhoto.setGlyphName("CHECK");
            statusCustPhoto.setFill(GREEN);
-           btnEdit.setDisable(true);
-           btnSave.setDisable(true);
+           
           }       
         if (client_data.get(pagecounter).getClientIndex07().equalsIgnoreCase("1")){
            statusUserProfile.setGlyphName("CHECK");
            statusUserProfile.setFill(GREEN);
-           btnEdit.setDisable(true);
+           
           }       
         if (client_data.get(pagecounter).getClientIndex08().equalsIgnoreCase("1")){
            statusEmail.setGlyphName("CHECK");
@@ -891,6 +929,7 @@ private void txtField_KeyPressed(KeyEvent event){
            statusMobile.setGlyphName("CHECK");
            statusMobile.setFill(GREEN);
           }
+       
 }
     
     private void cmdButton_Click(ActionEvent event) {
@@ -967,8 +1006,6 @@ private void txtField_KeyPressed(KeyEvent event){
                            if (oTrans.SaveUserProfile()){
                                 ShowMessageFX.Warning(getStage(), "Transaction save successfully.", "Warning", null);
 //                                 CommonUtils.closeStage(btnSave);
-
-                  
                                 }else {
                                  ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
                         }
@@ -976,54 +1013,59 @@ private void txtField_KeyPressed(KeyEvent event){
                         loadClient();
                         loadUserProfile(oldUserID);
                         getSelectedItem();    
-                          
                     break;
                 case "btnVerify":
-
-                          if (tabCustomerDetail.getSelectionModel().isSelected(0)){
-                            if (oTrans.SaveMasterID()){
-                                ShowMessageFX.Warning(getStage(), "User Valid ID's Succesfully Verified.", "Warning", null);
-                                pnEditMode = EditMode.READY;
-                            }else {
-                                ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
-                            }
-                          }else if(tabCustomerDetail.getSelectionModel().isSelected(1)){
-                            System.out.println("VerifytabCustPhoto");
-                            if (oTrans.SaveUserPicture()){
-                                pnEditMode = EditMode.READY;
-                                ShowMessageFX.Warning(getStage(), "Customer Picture Succesfully Verified.", "Warning", null);
-                            }else {
-                                ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
-                            }
-                          }else if(tabCustomerDetail.getSelectionModel().isSelected(2)){
-                            System.out.println("VerifytabUserProfile");
-                            oTrans.setUserProfile("cVerified", "1");
-                          if (oTrans.VerifyUserProfile()){
-                                ShowMessageFX.Warning(getStage(), "User Profile Succesfully Verified.", "Warning", null);
-                            }else {
-                                 ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
-                        }
-
+                        int tab = tabCustomerDetail.getSelectionModel().getSelectedIndex();
+                        switch (tab) {
+                            case 0:
+                                if (!clientValidID_data.isEmpty()) {
+                                    if (oTrans.SaveMasterID()){
+                                        ShowMessageFX.Warning(getStage(), "User Valid ID's Succesfully Verified.", "Warning", null);
+                                    }else {
+                                        ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+                                    }
+                                } else ShowMessageFX.Warning(getStage(), "No Valid ID's Uploaded.", "Warning", null);
+                                break;
+                            case 1:
+                                if (!clientPhoto_data.isEmpty()) {
+                                    if (oTrans.SaveUserPicture()){
+                                        ShowMessageFX.Warning(getStage(), "Customer Picture Succesfully Verified.", "Warning", null);
+                                    }else {
+                                        ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+                                    }
+                                } else ShowMessageFX.Warning(getStage(), "No Profile Picture Uploaded.", "Warning", null);
+                                break;
+                            case 2:
+                                if (!userprofile_data.isEmpty()) {
+                                    if (oTrans.VerifyUserProfile()){
+                                        ShowMessageFX.Warning(getStage(), "User Profile Succesfully Verified.", "Warning", null);
+                                    }else {
+                                         ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+                                    }
+                                } else ShowMessageFX.Warning(getStage(), "No User Data Uploaded.", "Warning", null);
+                                break;
+                        default:
+                            throw new AssertionError();
                     }
+                            
                             oTrans = new ClientProfiling(oApp, oApp.getBranchCode(), false);
                             oTrans.setListener(oListener);
                             oTrans.setWithUI(true);
                             pbLoaded = true;
-                             loadClient();
-                             loadStatus();
-                             pnRow1 = -1;
-                             loadUserProfile(oldUserID);
-                             tblClients.getSelectionModel().select(oldPnRow);
-                             getSelectedItem();
-                             pnEditMode = EditMode.READY;          
+                            loadClient();
+                            loadStatus();
+                            pnRow1 = -1;
+                            loadUserProfile(oldUserID);
+                            tblClients.getSelectionModel().select(oldPnRow);
+                            getSelectedItem();
+                            pnEditMode = EditMode.READY;          
                     break;
             }
                             initButton(pnEditMode);
             } catch (SQLException ex) {
             Logger.getLogger(OrderPaymentTaggingController.class.getName()).log(Level.SEVERE, null, ex);
-        
         }
-                }
+}
     
     private void openValidID() {
         try {
@@ -1057,7 +1099,6 @@ private void txtField_KeyPressed(KeyEvent event){
                     stage.setY(event.getScreenY() - yOffset);
                 }
             });
-            
             //set the main interface as the scene
             Scene scene = new Scene(parent);
             stage.setScene(scene);
@@ -1065,7 +1106,6 @@ private void txtField_KeyPressed(KeyEvent event){
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("");
             stage.showAndWait();
-            
 //            loadOrders(filteredData.get(pnRow).getClientIndex08());
         } catch (IOException e) {
             e.printStackTrace();
@@ -1088,7 +1128,6 @@ private void txtField_KeyPressed(KeyEvent event){
             loControl.setData(clientPhoto_data.get(0));
             
             fxmlLoader.setController(loControl);
-            
             //load the main interface
             Parent parent = fxmlLoader.load();
                 
@@ -1106,7 +1145,6 @@ private void txtField_KeyPressed(KeyEvent event){
                     stage.setY(event.getScreenY() - yOffset);
                 }
             });
-            
             //set the main interface as the scene
             Scene scene = new Scene(parent);
             stage.setScene(scene);
@@ -1114,7 +1152,6 @@ private void txtField_KeyPressed(KeyEvent event){
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("");
             stage.showAndWait();
-            
 //            loadOrders(filteredData.get(pnRow).getClientIndex08());
         } catch (IOException e) {
             e.printStackTrace();
@@ -1176,7 +1213,6 @@ private void txtField_KeyPressed(KeyEvent event){
                             return;
                         } break;
                     case 16:
-                        
                         if (lsValue.isEmpty()){
                             txtField16uVUP.requestFocus();
                             return;
@@ -1192,14 +1228,10 @@ private void txtField_KeyPressed(KeyEvent event){
                         ShowMessageFX.Warning(null, pxeModuleName, "Text field with name " + txtField.getId() + " not registered.");
                         return;
                 }
-    //            
             } else
                 txtField.selectAll();
             } catch (SQLException ex) {
             Logger.getLogger(OrderPaymentTaggingController.class.getName()).log(Level.SEVERE, null, ex);
-        
         }
         };
-
-
 }
