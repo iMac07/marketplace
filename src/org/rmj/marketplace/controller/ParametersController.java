@@ -136,7 +136,7 @@ public class ParametersController implements Initializable, ScreenInterface {
          pnEditMode = EditMode.UNKNOWN;
          initButton(pnEditMode);
          
-         btnBrowse.setOnAction(this::cmdButton_Click);
+        btnBrowse.setOnAction(this::cmdButton_Click);
         btnNew.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);
         btnUpdate.setOnAction(this::cmdButton_Click);
