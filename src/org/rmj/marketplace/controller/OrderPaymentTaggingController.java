@@ -10,11 +10,14 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -25,6 +28,7 @@ import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.appdriver.constants.EditMode;
 import org.rmj.marketplace.base.LResult;
+import org.rmj.marketplace.base.OrderList;
 import org.rmj.marketplace.base.SalesOrder;
 import static org.rmj.marketplace.controller.OrderProcessingController.priceWithDecimal;
 import org.rmj.marketplace.model.ScreenInterface;
@@ -47,7 +51,7 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     private LResult oListener;
     
     private String psCode;
-    private SalesOrder oTrans;
+    private OrderList oTrans;
     
     private int pnEditMode;
     public int tbl_row = 0;
@@ -78,8 +82,10 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     private TextField txtField03;
 
     @FXML
-    private ChoiceBox<String> status;
-    private String[] statuslb = {"OPEN","CLOSED","POSTED","CANCELLED"};
+    private ComboBox status;
+    
+    private ObservableList<String> statuslb = FXCollections.observableArrayList("OPEN","CLOSED","POSTED","CANCELLED");
+//    private String[] statuslb = {"OPEN","CLOSED","POSTED","CANCELLED"};
     
     @FXML
     private TextField txtField04;
@@ -101,7 +107,7 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     public void setGRider(GRider foValue) {
         oApp = foValue;
     }
-    public void setSalesOrder(SalesOrder foValue){
+    public void setSalesOrder(OrderList foValue){
         oTrans = foValue;
     }
     public void setListener(LResult foValue){
@@ -120,6 +126,7 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     }
 
     public void setEditMode(int editmode){
+        System.out.println(editmode);
         pnEditMode = editmode;
     }
     private Stage getStage(){
@@ -128,14 +135,14 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     @Override
     public void initialize(URL url, ResourceBundle rb) {
             
-            status.getItems().addAll(statuslb);
+            status.setItems(statuslb);
             
             
             btnSave.setOnAction(this::cmdButton_Click);
             btnClose.setOnAction(this::cmdButton_Click);
             btnExit.setOnAction(this::cmdButton_Click);
             
-            pnEditMode = oTrans.getEditMode();
+//            pnEditMode = oTrans.getEditMode();
             
             try {
                 if (oTrans.getItemCount() > 0) pnRow = 1;
@@ -156,19 +163,20 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
         
         if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("0")){
             status.setValue("OPEN");
-        }else if(oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("1")){
-            status.setValue("CLOSED");
-             status.setDisable(false);
-        }else if(oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("2")){
-            status.setValue("POSTED");
-            status.setDisable(true);
+//            status.setDisable(false);
+        }else {
+            
             btnSave.setDisable(true);
-        }else if(oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("3")){
-            status.setValue("CANCELLED");
-            status.setDisable(true);
-            btnSave.setDisable(true);
-        }else{
-           
+           if(oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("1")){
+                status.setValue("CLOSED");
+                status.setDisable(true);
+            }else if(oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("2")){
+                status.setValue("POSTED");
+                status.setDisable(true);
+            }else if(oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("3")){
+                status.setValue("CANCELLED");
+                status.setDisable(true);
+            }
         }
 
    }
@@ -202,15 +210,22 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                 txtField04.setText(String.valueOf(oTrans.getPayment(tbl_row, "sReferNox")));
                 txtField05.setText((String) oTrans.getPayment(tbl_row, "sRemarksx"));
                 txtField06.setText(priceWithDecimal(Double.valueOf(oTrans.getPayment(tbl_row, "nAmountxx").toString())));
-                loadTransactionMaster(); 
-           
+                
+                
+                status.getSelectionModel().select(Integer.parseInt(oTrans.getPayment(tbl_row,"cTranStat").toString()));   
+                if(Integer.parseInt((String) oTrans.getPayment(tbl_row,"cTranStat"))>0){
+                    status.setDisable(true);
+                    btnSave.setDisable(true);
+                }
+//                loadTransactionMaster(); 
+                    
                 txtField01.setDisable(true);
                 txtField02.setDisable(true);
                 txtField03.setDisable(true);
                 txtField04.setDisable(true);
                 txtField06.setDisable(true);
                 txtField05.setDisable(pnEditMode != EditMode.ADDNEW && pnEditMode != EditMode.UPDATE);
-                status.setDisable(pnEditMode != EditMode.ADDNEW && pnEditMode != EditMode.UPDATE);
+              
                 
  
             } catch (SQLException ex) {
@@ -228,39 +243,71 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                     CommonUtils.closeStage(btnClose);
                     break;
                 case "btnSave":
-                   if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("0") 
-                  && status.getSelectionModel().getSelectedItem().equalsIgnoreCase("POSTED") 
-                || (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("0")
-                  && status.getSelectionModel().getSelectedItem().equalsIgnoreCase("CANCELLED"))
-                || status.getSelectionModel().getSelectedItem().equalsIgnoreCase("OPEN")){
-
-                    if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("1")) 
-                        ShowMessageFX.Warning(getStage(), "UNABLE TO OPEN A CONFIRM TRANSACTION","Warning", null);
-                    else 
-                        ShowMessageFX.Warning(getStage(), "Please Confirm the Transaction First","Warning", null);  
-                      
-                   }else if (status.getSelectionModel().getSelectedItem().equalsIgnoreCase("CLOSED") ||
-                        status.getSelectionModel().getSelectedItem().equalsIgnoreCase("POSTED") ||
-                        status.getSelectionModel().getSelectedItem().equalsIgnoreCase("CANCELLED"))
-                            
-                 
-                          if(oTrans.getPayment(tbl_row,  "sRemarksx").toString().equalsIgnoreCase(txtField05.getText())&&
-                            oTrans.getPayment(tbl_row, "cTranStat").toString().equalsIgnoreCase(String.valueOf(status.getSelectionModel().getSelectedIndex()))){
-                       
-                            if (oListener != null) oListener.OnSave("Transaction no edited.");
-                                CommonUtils.closeStage(btnSave);
-                    }else{
-                        oTrans.setPayment(tbl_row, "sRemarksx", txtField05.getText());
-                        oTrans.setPayment(tbl_row, "cTranStat", status.getSelectionModel().getSelectedIndex());
-                                if (oTrans.SaveTransaction()){
-                            
+                    if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("1")){
+                        ShowMessageFX.Warning(getStage(), "UNABLE TO SAVE A CONFIRM TRANSACTION","Warning", null);
+                   
+                    } 
+                    else if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("2")){
+                        ShowMessageFX.Warning(getStage(), "UNABLE TO SAVE A POSTED TRANSACTION","Warning", null);
+                   
+                    } 
+                    else if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("3")){
+                        ShowMessageFX.Warning(getStage(), "UNABLE TO SAVE A CANCELLED TRANSACTION","Warning", null);
+                    } 
+                    else{
+                        if(status.getSelectionModel().getSelectedIndex() > 0){
+                            oTrans.setPayment(tbl_row, "sRemarksx", txtField05.getText());
+                            oTrans.setPayment(tbl_row, "cTranStat", status.getSelectionModel().getSelectedIndex());
+                            if (oTrans.SaveTransaction()){
                                 ShowMessageFX.Warning(getStage(), "Transaction save successfully.", "Warning", null);
-                                 CommonUtils.closeStage(btnSave);
-                  
-                                }else {
-                                 ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+                                CommonUtils.closeStage(btnSave);
+
+                            }else {
+                             ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+                            }
+                        }else{
+                            ShowMessageFX.Warning(getStage(), "Please Confirm the Transaction First","Warning", null);  
                         }
-}
+                        
+                    }
+                        
+                
+           
+                   
+//                   if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("0") 
+//                  && status.getSelectionModel().getSelectedItem().equalsIgnoreCase("POSTED") 
+//                || (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("0")
+//                  && status.getSelectionModel().getSelectedItem().equalsIgnoreCase("CANCELLED"))
+//                || status.getSelectionModel().getSelectedItem().equalsIgnoreCase("OPEN")){
+//
+//                    if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("1")) 
+//                        ShowMessageFX.Warning(getStage(), "UNABLE TO OPEN A CONFIRM TRANSACTION","Warning", null);
+//                    else 
+//                        ShowMessageFX.Warning(getStage(), "Please Confirm the Transaction First","Warning", null);  
+//                      
+//                   }
+//                   if (status.getSelectionModel().getSelectedItem().equalsIgnoreCase("CLOSED") ||
+//                        status.getSelectionModel().getSelectedItem().equalsIgnoreCase("POSTED") ||
+//                        status.getSelectionModel().getSelectedItem().equalsIgnoreCase("CANCELLED"))
+//                            
+//                 
+//                          if(oTrans.getPayment(tbl_row,  "sRemarksx").toString().equalsIgnoreCase(txtField05.getText())&&
+//                            oTrans.getPayment(tbl_row, "cTranStat").toString().equalsIgnoreCase(String.valueOf(status.getSelectionModel().getSelectedIndex()))){
+//                       
+//                            if (oListener != null) oListener.OnSave("Transaction no edited.");
+//                                CommonUtils.closeStage(btnSave);
+//                    }else{
+//                        oTrans.setPayment(tbl_row, "sRemarksx", txtField05.getText());
+//                        oTrans.setPayment(tbl_row, "cTranStat", status.getSelectionModel().getSelectedIndex());
+//                                if (oTrans.SaveTransaction()){
+//                            
+//                                ShowMessageFX.Warning(getStage(), "Transaction save successfully.", "Warning", null);
+//                                 CommonUtils.closeStage(btnSave);
+//                  
+//                                }else {
+//                                 ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+//                        }
+//}
                    
                     break;
                 case "btnExit":

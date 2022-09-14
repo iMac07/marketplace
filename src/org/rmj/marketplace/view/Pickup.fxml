@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
@@ -44,27 +41,6 @@
                   <StackPane BorderPane.alignment="CENTER">
                      <children>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
-                           <left>
-                              <AnchorPane prefHeight="462.0" prefWidth="485.0" style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <Label alignment="CENTER" layoutY="6.0" prefHeight="15.0" prefWidth="304.0" text="Projects List" textFill="WHITE" AnchorPane.topAnchor="10.0" />
-                                    <TableView fx:id="tblClients" layoutX="8.0" layoutY="8.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
-                                       <columns>
-                                          <TableColumn fx:id="index01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
-                                          <TableColumn fx:id="index02" prefWidth="100.0" resizable="false" sortable="false" text="Order  No." />
-                                          <TableColumn fx:id="index03" prefWidth="175.0" resizable="false" sortable="false" text="Customer Name" />
-                                          <TableColumn fx:id="index04" prefWidth="137.0" resizable="false" sortable="false" text="Total Amount" />
-                                       </columns>
-                                    </TableView>
-                                 </children>
-                                 <opaqueInsets>
-                                    <Insets bottom="5.0" right="5.0" top="5.0" />
-                                 </opaqueInsets>
-                                 <BorderPane.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </BorderPane.margin>
-                              </AnchorPane>
-                           </left>
                            <center>
                               <StackPane prefHeight="462.0" BorderPane.alignment="CENTER">
                                  <children>
@@ -104,7 +80,7 @@
                                                                               <Insets left="20.0" />
                                                                            </padding>
                                                                         </Label>
-                                                                        <TextField prefHeight="30.0" prefWidth="235.0" GridPane.columnIndex="1" />
+                                                                        <TextField fx:id="txtField01" disable="true" editable="false" prefHeight="30.0" prefWidth="235.0" GridPane.columnIndex="1" />
                                                                         <Label text="Date:" GridPane.columnIndex="3">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
@@ -113,7 +89,7 @@
                                                                               <Insets left="20.0" />
                                                                            </padding>
                                                                         </Label>
-                                                                        <TextField GridPane.columnIndex="4" />
+                                                                        <TextField fx:id="txtField02" disable="true" GridPane.columnIndex="4" />
                                                                      </children>
                                                                   </GridPane>
                                                                </children>
@@ -137,30 +113,31 @@
                                                                   <Label text="Remarks:" />
                                                                   <Label text="Pickup By:" GridPane.rowIndex="2" />
                                                                   <Label text="Pickup Date:." GridPane.rowIndex="3" />
-                                                                  <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowSpan="2" />
-                                                                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                  <TextArea fx:id="txtField03" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowSpan="2" />
+                                                                  <TextField fx:id="txtField04" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                  <TextField fx:id="txtField05" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                </children>
                                                             </GridPane>
                                                             <Separator layoutY="166.0" prefHeight="0.0" prefWidth="610.0" style="-fx-background-color: orange;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
                                                     <AnchorPane>
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                         </padding>
                                                          <children>
                                                             <Label layoutX="47.0" layoutY="29.0" text="WAYBILL" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                                                                <font>
                                                                   <Font name="System Bold" size="13.0" />
                                                                </font>
                                                             </Label>
-                                                            <TableView fx:id="tblClients1" layoutX="16.0" layoutY="41.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+                                                            <TableView fx:id="tblWaybill" layoutX="16.0" layoutY="41.0" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                                                                <columns>
-                                                                  <TableColumn fx:id="index011" prefWidth="30.0" resizable="false" sortable="false" text="No." />
-                                                                  <TableColumn fx:id="index021" prefWidth="100.0" resizable="false" sortable="false" text="Order  No." />
-                                                                  <TableColumn fx:id="index031" prefWidth="175.0" resizable="false" sortable="false" text="Customer Name" />
-                                                                  <TableColumn fx:id="index041" prefWidth="137.0" resizable="false" sortable="false" text="Total Amount" />
+                                                                  <TableColumn fx:id="billIndex01" editable="false" maxWidth="-1.0" minWidth="30.0" prefWidth="-1.0" sortable="false" text="No." />
+                                                                  <TableColumn fx:id="billIndex02" editable="false" maxWidth="150.0" minWidth="110.0" prefWidth="-1.0" sortable="false" text="Transaction No" />
+                                                                  <TableColumn fx:id="billIndex03" editable="false" maxWidth="200.0" minWidth="170.0" prefWidth="-1.0" sortable="false" text="Client Name" />
+                                                                  <TableColumn fx:id="billIndex04" editable="false" maxWidth="100.0" minWidth="70.0" prefWidth="-1.0" sortable="false" text="Order No." />
+                                                                  <TableColumn fx:id="billIndex05" editable="false" maxWidth="100.0" minWidth="80.0" prefWidth="-1.0" sortable="false" text="Tracker No." />
+                                                                  <TableColumn fx:id="billIndex06" editable="false" maxWidth="140.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="Packaging" />
+                                                                  <TableColumn fx:id="billIndex07" editable="false" maxWidth="100.0" minWidth="80.0" prefWidth="-1.0" resizable="false" sortable="false" text="Date" />
+                                                                  <TableColumn fx:id="billIndex08" editable="false" maxWidth="80.0" minWidth="50.0" prefWidth="-1.0" sortable="false" text="Pick" />
                                                                </columns>
                                                                <padding>
                                                                   <Insets bottom="5.0" />
@@ -170,56 +147,11 @@
                                                   </items>
                                                 </SplitPane>
                                              </children>
+                                             <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                             </padding>
                                           </AnchorPane>
                                        </center>
-                                       <bottom>
-                                          <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="62.0" prefWidth="491.0" style="-fx-border-color: orange; -fx-border-radius: 5; -fx-background-radius: 5;" BorderPane.alignment="CENTER">
-                                             <children>
-                                                <HBox fx:id="hbButtons" spacing="2.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-                                                   <children>
-                                                      <Button fx:id="btnBrowse" contentDisplay="TOP" ellipsisString="" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="button_process" text="Browse">
-                                                         <graphic>
-                                                            <FontAwesomeIconView glyphName="SEARCH" size="20" />
-                                                         </graphic>
-                                                         <effect>
-                                                            <Blend />
-                                                         </effect>
-                                                      </Button>
-                                                      <Button fx:id="btnApproved" contentDisplay="TOP" ellipsisString="" layoutX="150.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="button_process" text="Confirm">
-                                                         <graphic>
-                                                            <FontAwesomeIconView glyphName="CHECK" size="20" />
-                                                         </graphic>
-                                                         <effect>
-                                                            <Blend />
-                                                         </effect>
-                                                      </Button>
-                                                      <Button fx:id="btnDisapproved" contentDisplay="TOP" ellipsisString="" layoutX="150.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="button_process" text="Cancel">
-                                                         <graphic>
-                                                            <FontAwesomeIconView glyphName="CLOSE" size="20" />
-                                                         </graphic>
-                                                         <effect>
-                                                            <Blend />
-                                                         </effect>
-                                                      </Button>
-                                                      <Button fx:id="btnUpdate" contentDisplay="TOP" ellipsisString="" layoutX="150.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="80.0" styleClass="button_process" text="Update">
-                                                         <graphic>
-                                                            <FontAwesomeIconView glyphName="EDIT" size="20" />
-                                                         </graphic>
-                                                         <effect>
-                                                            <Blend />
-                                                         </effect>
-                                                      </Button>
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                             <opaqueInsets>
-                                                <Insets top="5.0" />
-                                             </opaqueInsets>
-                                             <BorderPane.margin>
-                                                <Insets />
-                                             </BorderPane.margin>
-                                          </AnchorPane>
-                                       </bottom>
                                        <StackPane.margin>
                                           <Insets bottom="5.0" left="5.0" top="5.0" />
                                        </StackPane.margin>
@@ -252,7 +184,7 @@
                                                 <Insets bottom="5.0" left="20.0" top="5.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="txtSeeks10" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="143.0" promptText="Search: F3" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                                          <TextField fx:id="txtSeeks98" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="143.0" promptText="Search: F3" GridPane.columnIndex="1" GridPane.columnSpan="2">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
@@ -268,7 +200,7 @@
                                                 <Insets left="20.0" />
                                              </padding>
                                           </Label>
-                                          <TextField fx:id="txtSeeks11" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="315.0" promptText="Search: F3" GridPane.columnIndex="4">
+                                          <TextField fx:id="txtSeeks99" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="315.0" promptText="Search: F3" GridPane.columnIndex="4">
                                              <font>
                                                 <Font size="13.0" />
                                              </font>
@@ -281,6 +213,30 @@
                                  </padding>
                               </AnchorPane>
                            </top>
+                           <left>
+                              <AnchorPane style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TableView fx:id="tblOrders" onMouseClicked="#tblOrders_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                       <columns>
+                                          <TableColumn fx:id="orderIndex01" maxWidth="-1.0" minWidth="30.0" prefWidth="-1.0" sortable="false" text="No." />
+                                          <TableColumn fx:id="orderIndex02" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="Batch No." />
+                                          <TableColumn fx:id="orderIndex03" maxWidth="-1.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="Date" />
+                                          <TableColumn fx:id="orderIndex04" maxWidth="-1.0" minWidth="130.0" prefWidth="-1.0" sortable="false" text="Remarks" />
+                                       </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <Pagination fx:id="pagination" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets bottom="5.0" right="5.0" top="5.0" />
+                                 </opaqueInsets>
+                                 <BorderPane.margin>
+                                    <Insets top="5.0" />
+                                 </BorderPane.margin>
+                              </AnchorPane>
+                           </left>
                         </BorderPane>
                      </children>
                   </StackPane>
