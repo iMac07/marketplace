@@ -58,6 +58,8 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.marketplace.base.LResult;
+import org.rmj.marketplace.base.OrderList;
+import org.rmj.marketplace.model.IssuedItemModel;
 import org.rmj.marketplace.model.OrderPaymentTaggingModel;
 
 
@@ -69,7 +71,7 @@ import org.rmj.marketplace.model.OrderPaymentTaggingModel;
 public class OrderProcessingController implements Initializable, ScreenInterface {
     private final String pxeModuleName = "Order Processing";
     private GRider oApp;
-    private SalesOrder oTrans;
+    private OrderList oTrans;
     private LResult oListener;
     private boolean pbLoaded = false;
     private int pnRow = -1;
@@ -116,7 +118,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 
     @FXML
     private TableColumn issuedIndex01,issuedIndex02,issuedIndex03,
-                        issuedIndex04,issuedIndex05,issuedIndex06;
+                        issuedIndex04,issuedIndex05,issuedIndex06,issuedIndex07;
     @FXML
     private TextField txtFieldDet01,txtFieldDet02,txtFieldDet03,
                       txtFieldDet04,txtFieldDet05,txtFieldDet06;
@@ -124,9 +126,6 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private CheckBox CheckBoxAG01;
     @FXML
     private HBox hbButtons;
-    @FXML
-    private Button btnBrowse,btnApproved,btnCancel,btnUpdate,
-                    btnPrintOrder,btnPrintIssuance;
     @FXML
     private AnchorPane searchBar;
     @FXML
@@ -138,10 +137,11 @@ public class OrderProcessingController implements Initializable, ScreenInterface
   
     private ObservableList<OrderModel> data = FXCollections.observableArrayList();
     private ObservableList<OrderDetailModel> data1 = FXCollections.observableArrayList();
-    private ObservableList<OrderDetailModel> data2 = FXCollections.observableArrayList();
+    private ObservableList<IssuedItemModel> data2 = FXCollections.observableArrayList();
     private ObservableList<OrderPaymentTaggingModel> data3 = FXCollections.observableArrayList();
     private FilteredList<OrderModel> filteredData;
     private FilteredList<OrderDetailModel> filteredOrderDetData;
+    private FilteredList<IssuedItemModel> filteredIssuedItem;
 
     public void setTransaction(String fsValue){
         transNox = fsValue;
@@ -155,7 +155,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
              @Override
              public void OnSave(String message) {
                 System.out.println("OnSave = " + message);
-                oTrans = new SalesOrder(oApp, oApp.getBranchCode(), false);
+                oTrans = new OrderList(oApp, oApp.getBranchCode(), false);
                 oTrans.setListener(oListener);
                 oTrans.setTranStat(10234);
                 oTrans.setWithUI(true);
@@ -163,6 +163,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 loadOrders();
                 pnRow1 = -1;
                 loadOrderDetail(oldTransNox);
+                loadPaymentTagging(oldTransNox);
                 tblClients.getSelectionModel().select(oldPnRow);
              }
              @Override
@@ -172,6 +173,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 loadOrders();
                 pnRow1 = -1;
                 loadOrderDetail(oldTransNox);
+                loadPaymentTagging(oldTransNox);
                 tblClients.getSelectionModel().select(oldPnRow);
                 initButton(pnEditMode);
              }
@@ -182,36 +184,14 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         }
        
         };
-        oTrans = new SalesOrder(oApp, oApp.getBranchCode(), false);
+        oTrans = new OrderList(oApp, oApp.getBranchCode(), false);
         oTrans.setListener(oListener);
         oTrans.setTranStat(10234);
         oTrans.setWithUI(true);
                 loadOrders();
-        btnBrowse.setOnAction(this::cmdButton_Click);
-        btnBrowse.setOnAction(this::cmdButton_Click);
-        btnApproved.setOnAction(this::cmdButton_Click);
-        btnCancel.setOnAction(this::cmdButton_Click);
-        btnUpdate.setOnAction(this::cmdButton_Click);
-        btnPrintIssuance.setOnAction(this::cmdButton_Click);
-        btnPrintOrder.setOnAction(this::cmdButton_Click);
         pnEditMode = EditMode.UNKNOWN;
         pagination.setPageFactory(this::createPage); 
         tblPaymenttype.setDisable(true);
-        try { 
-            if(getTransNox().isEmpty()){
-                pnEditMode = EditMode.UNKNOWN;
-                initButton(pnEditMode);
-            } else {
-                if (oTrans.SearchTransaction(getTransNox(), true)){
-                  //  loadIncentives();
-                    pnEditMode = EditMode.READY;
-                    initButton(pnEditMode);
-                } else
-                    ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrderProcessingController.class.getName()).log(Level.SEVERE, null, ex);
-        }  
         pbLoaded = true;
         
     }    
@@ -251,26 +231,26 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             label01.setText(filteredData.get(pagecounter).getOrderIndex13());
             oldPnRow = pagecounter;
              loadOrderDetail(filteredData.get(pagecounter).getOrderIndex02());
-                                                } 
-                                    }            
-                          }        
+             loadPaymentTagging(filteredData.get(pagecounter).getOrderIndex02()); 
+             IssuedOrderDetail(filteredData.get(pagecounter).getOrderIndex16());  
+                    } 
+                }            
+           }        
     }
         private void loadMaster() throws SQLException {
         
-        if (oTrans.getMaster(11).toString().equalsIgnoreCase("0")){
+        if (oTrans.getMaster(10).toString().equalsIgnoreCase("0")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("OPEN");
-        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("1")){
+        }else if(oTrans.getMaster(10).toString().equalsIgnoreCase("1")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("CLOSED");
-        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("2")){
+        }else if(oTrans.getMaster(10).toString().equalsIgnoreCase("2")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("POSTED");
-            btnUpdate.setDisable(true);
-        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("3")){
+        }else if(oTrans.getMaster(10).toString().equalsIgnoreCase("3")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("CANCELLED");
-            btnUpdate.setDisable(true);
         }else{
             lblStatus.setVisible(false);
         }
@@ -287,7 +267,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                     data.add(new OrderModel(String.valueOf(lnCtr),
                             (String) oTrans.getDetail(lnCtr, "sTransNox"),
                             oTrans.getDetail(lnCtr, "dTransact").toString(),
-                            (String) oTrans.getDetail(lnCtr, "sTermCode"),
+                            (String) oTrans.getDetail(lnCtr, "sTermIDxx"),
                             priceWithDecimal(Double.valueOf(oTrans.getDetail(lnCtr, "nTranTotl").toString())),
                             priceWithDecimal(Double.valueOf(oTrans.getDetail(lnCtr, "nVATRatex").toString())),
                             priceWithDecimal(Double.valueOf(oTrans.getDetail(lnCtr, "nDiscount").toString())),
@@ -298,7 +278,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                             (String) oTrans.getDetail(lnCtr, "sRemarksx"),
                             (String) oTrans.getDetail(lnCtr, "sCompnyNm"),
                             (String) oTrans.getDetail(lnCtr, "sAddressx"),
-                            (String) oTrans.getDetail(lnCtr, "sTownName")));
+                            (String) oTrans.getDetail(lnCtr, "sTownName"),
+                            (String) oTrans.getDetail(lnCtr, "sPOSNoxxx")));
                   
                 }
                 
@@ -309,9 +290,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         } catch (SQLException ex) {
             System.out.println("SQLException" + ex.getMessage());
         } catch (NullPointerException ex) {
-            System.out.println("NullPointerException" + ex.getMessage());
+            System.out.println("NullPointerException " + ex.getMessage());
         } catch (DateTimeException ex) {
-//            MsgBox.showOk(ex.getMessage());
             System.out.println("DateTimeException" + ex.getMessage());
         } 
 
@@ -322,29 +302,25 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             data1.clear();
             oldTransNox = transNox;
             System.out.println(oldTransNox);
-            System.out.println(oldPnRow);
-            if (oTrans.OpenTransaction(transNox)){//true if by barcode; false if by description
-                for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
-
+            if (oTrans.LoadOrderDetail(transNox,true)){//true if by barcode; false if by description
+                for (lnCtr = 1; lnCtr <= oTrans.getDetailItemCount(); lnCtr++){
                     data1.add(new OrderDetailModel(String.valueOf(lnCtr),
-                            (String) oTrans.getDetail(lnCtr, "sTransNox"),
-                            (String) oTrans.getDetail(lnCtr, "xBarCodex"),
-                            (String) oTrans.getDetail(lnCtr, "xDescript"),
-                            (String) oTrans.getDetail(lnCtr, "xBrandNme"),
-                            (String) oTrans.getDetail(lnCtr, "xModelNme"),
-                            (String) oTrans.getDetail(lnCtr, "xColorNme"),
-                            oTrans.getDetail(lnCtr, "nEntryNox").toString(),
-                            oTrans.getDetail(lnCtr, "nQuantity").toString(),
-                            priceWithDecimal(Double.valueOf(oTrans.getDetail(lnCtr, "nUnitPrce").toString())),
-                            (String) oTrans.getDetail(lnCtr, "sReferNox"),
-                            oTrans.getDetail(lnCtr, "nIssuedxx").toString()
-                    ));
-                lblOrder01.setText(oTrans.getDetail(lnCtr, "sReferNox").toString());  
+                            (String) oTrans.getDetailItem(lnCtr, "sTransNox"),
+                            (String) oTrans.getDetailItem(lnCtr, "xBarCodex"),
+                            (String) oTrans.getDetailItem(lnCtr, "xBrandNme"),
+                            (String) oTrans.getDetailItem(lnCtr, "xModelNme"),
+                            (String) oTrans.getDetailItem(lnCtr, "xColorNme"),
+                            (String) oTrans.getDetailItem(lnCtr, "nEntryNox").toString(),
+                            (String) oTrans.getDetailItem(lnCtr, "nQuantity").toString(),
+                            priceWithDecimal(Double.valueOf((String) oTrans.getDetailItem(lnCtr, "nUnitPrce"))),
+                            (String) oTrans.getDetailItem(lnCtr, "sReferNox"),
+                            "",
+                            ""
+                    )); 
                 }
                 initGrid1();
                 loadMaster(); 
-                loadPaymentTagging();  
-                IssuedOrderDetail(filteredData.get(pnRow).getOrderIndex02());  
+                
                 
             }  else{
                 MsgBox.showOk(oTrans.getMessage());
@@ -352,7 +328,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         } catch (SQLException ex) {
             System.out.println("SQLException" + ex.getMessage());
         } catch (NullPointerException ex) {
-            System.out.println("NullPointerException" + ex.getMessage());
+            System.out.println("NullPointerException loadOrderDetail "  + ex.getMessage());
         } catch (DateTimeException ex) {
 //            MsgBox.showOk(ex.getMessage());
             System.out.println("DateTimeException" + ex.getMessage());
@@ -363,44 +339,40 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         try {
             data2.clear();
             oldTransNox = transNox;
-                        if (oTrans.OpenTransaction(transNox)){
-                for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++)
-                     {
-                    data2.add(new OrderDetailModel(String.valueOf(lnCtr),
-                            (String) oTrans.getDetail(lnCtr, "sTransNox"),
-                            (String) oTrans.getDetail(lnCtr, "xBarCodex"),
-                            (String) oTrans.getDetail(lnCtr, "xDescript"),
-                            (String) oTrans.getDetail(lnCtr, "xBrandNme"),
-                            (String) oTrans.getDetail(lnCtr, "xModelNme"),
-                            (String) oTrans.getDetail(lnCtr, "xColorNme"),
-                            oTrans.getDetail(lnCtr, "nEntryNox").toString(),
-                            oTrans.getDetail(lnCtr, "nQuantity").toString(),
-                            priceWithDecimal(Double.valueOf(oTrans.getDetail(lnCtr, "nUnitPrce").toString())),
-                            (String) oTrans.getDetail(lnCtr, "sReferNox"),
-                            oTrans.getDetail(lnCtr, "nIssuedxx").toString()
+            if (oTrans.LoadIssuedItem(transNox)){
+                for (lnCtr = 1; lnCtr <= oTrans.getIssuedItemCount(); lnCtr++){
+                    data2.add(new IssuedItemModel(String.valueOf(lnCtr),
+                            (String) oTrans.getIssued(lnCtr, "sSerialID"),
+                            (String) oTrans.getIssued(lnCtr, "xBarCodex"),
+                            (String) oTrans.getIssued(lnCtr, "xModelNme"),
+                            (String) oTrans.getIssued(lnCtr, "xColorNme"),
+                            oTrans.getIssued(lnCtr, "xQuantity").toString(),
+                            priceWithDecimal(Double.parseDouble(oTrans.getIssued(lnCtr, "nSelPrice").toString()))
                     ));
                   
                 }
+                System.out.println();
                 initGrid2();
                 
-            }  else{
-                MsgBox.showOk(oTrans.getMessage());
-            }  
+            }else{
+                System.out.println(oTrans.getMessage());
+            } 
         } catch (SQLException ex) {
-            System.out.println("SQLException" + ex.getMessage());
+            System.out.println("SQLException " + ex.getMessage());
         } catch (NullPointerException ex) {
-            System.out.println("NullPointerException" + ex.getMessage());
+            System.out.println("NullPointerException = " + ex.getMessage());
         } catch (DateTimeException ex) {
 //            MsgBox.showOk(ex.getMessage());
-            System.out.println("DateTimeException" + ex.getMessage());
+            System.out.println("DateTimeException " + ex.getMessage());
         } 
 }
-        private void loadPaymentTagging() {
+        private void loadPaymentTagging(String sTransNox) {
        try {
             int lnCtr;
         
             data3.clear();
-                 for (lnCtr = 1; lnCtr <= oTrans.getPaymentItemCount(); lnCtr++){
+            if(oTrans.LoadPayment(sTransNox)){
+                for (lnCtr = 1; lnCtr <= oTrans.getPaymentItemCount(); lnCtr++){
                     data3.add(new OrderPaymentTaggingModel(String.valueOf(lnCtr),
                             (String) oTrans.getPayment(lnCtr, "sTransNox"),
                             (dateToWord1(oTrans.getPayment(lnCtr, "dTransact").toString())),
@@ -413,11 +385,13 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                     ));
                   
                 }
+            }
+                 
                 initGrid3();           
         } catch (SQLException ex) {
             System.out.println("SQLException" + ex.getMessage());
         } catch (NullPointerException ex) {
-            System.out.println("NullPointerException" + ex.getMessage());
+            System.out.println("NullPointerException payment " + ex.getMessage());
         } catch (DateTimeException ex) {
 //            MsgBox.showOk(ex.getMessage());
             System.out.println("DateTimeException" + ex.getMessage());
@@ -464,19 +438,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         orderIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         orderIndex05.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         orderIndex06.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex07.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex08.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex09.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        orderIndex01.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex08"));
+        orderIndex01.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex01"));
         orderIndex02.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex03"));
         orderIndex03.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex04"));
         orderIndex04.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex05"));
         orderIndex05.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex06"));
-        orderIndex06.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex07"));
-        orderIndex07.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex02"));
-        orderIndex08.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex12"));   
-        orderIndex09.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex12"));   
-   
+        orderIndex06.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex08"));
 
         // 5. Add sorted (and filtered) data to the table.
        tblOrders.setItems(data1);
@@ -497,28 +464,17 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         issuedIndex03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         issuedIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         issuedIndex05.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        issuedIndex06.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        issuedIndex01.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex08"));
-        issuedIndex02.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex05"));
-        issuedIndex03.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex04"));
-        issuedIndex04.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex05"));
-        issuedIndex05.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex06"));
-        issuedIndex06.setCellValueFactory(new PropertyValueFactory<>("orderDetIndex07"));
+        issuedIndex06.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+        issuedIndex07.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+        issuedIndex01.setCellValueFactory(new PropertyValueFactory<>("index01"));
+        issuedIndex02.setCellValueFactory(new PropertyValueFactory<>("index02"));
+        issuedIndex03.setCellValueFactory(new PropertyValueFactory<>("index03"));
+        issuedIndex04.setCellValueFactory(new PropertyValueFactory<>("index04"));
+        issuedIndex05.setCellValueFactory(new PropertyValueFactory<>("index05"));
+        issuedIndex06.setCellValueFactory(new PropertyValueFactory<>("index06"));
+        issuedIndex07.setCellValueFactory(new PropertyValueFactory<>("index07"));
         
-           filteredOrderDetData = new FilteredList<>(data1, b -> true);
-//        autoSearch(txtSeeks98);
-//        autoSearch(txtSeeks99);
-        // 3. Wrap the FilteredList in a SortedList. 
-        SortedList<OrderDetailModel> sortedData = new SortedList<>(filteredOrderDetData);
-
-        // 4. Bind the SortedList comparator to the TableView comparator.
-        // 	  Otherwise, sorting the TableView would have no effect.
-        sortedData.comparatorProperty().bind(tblissueditems.comparatorProperty());
-        
-        
-        // 5. Add sorted (and filtered) data to the table.
-
-       tblissueditems.setItems(data1);
+       tblissueditems.setItems(data2);
         tblissueditems.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblissueditems.lookup("TableHeaderRow");
             header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -600,59 +556,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     }
     private void initButton(int fnValue){
          boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
-                btnUpdate.setVisible(!lbShow);
+                
                 tblOrders.setDisable(!lbShow);
-                tblPaymenttype.setDisable(!lbShow);
+                tblPaymenttype.setDisable(lbShow);
                 tblissueditems.setDisable(!lbShow);
-                btnCancel.setVisible(lbShow);
-                btnBrowse.setVisible(!lbShow);
-                btnApproved.setVisible(lbShow);
-
-                btnUpdate.setManaged(!lbShow);
-                btnApproved.setManaged(lbShow);
-                btnCancel.setManaged(lbShow);
-                btnBrowse.setManaged(!lbShow);
-
- 
-
 
     }
-    private void cmdButton_Click(ActionEvent event) {
-        String lsButton = ((Button)event.getSource()).getId();
-        try {
-            switch (lsButton){
-                case "btnBrowse":
-//                    if(oTrans.SearchTransaction(txtSeeks99.getText(), true)){
-//                        loadOrderDetail();
-//                    }else{
-//                        MsgBox.showOk(oTrans.getMessage());
-//                    }
-                    break;
-                case "btnUpdate":
-                             
-                        if (oTrans.UpdateTransaction()){
-                            pnEditMode = oTrans.getEditMode(); 
-                          } else 
-                            ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
-                    break;     
-                case "btnCancel":
-                        if (ShowMessageFX.OkayCancel(null, pxeModuleName, "Do you want to disregard changes?") == true){  
-                           
-                            loadOrders();
-                            pnRow1 = -1;
-                            loadOrderDetail(oldTransNox);
-                            tblClients.getSelectionModel().select(oldPnRow);
-                            pnEditMode = EditMode.READY;
-                            initButton(pnEditMode);
-                        }
-                    break;             
-             }
-            initButton(pnEditMode);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            MsgBox.showOk(e.getMessage());
-        } 
-    } 
     public static String priceWithDecimal (Double price) {
         DecimalFormat formatter = new DecimalFormat("₱ ###,###,##0.00");
         return formatter.format(price);
@@ -662,9 +571,9 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             Date date = new Date();
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             date = (Date)formatter.parse(dtransact);  
-            SimpleDateFormat fmt = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
+            SimpleDateFormat fmt = new SimpleDateFormat("MMM dd, yyyy");
             String todayStr = fmt.format(date);
             
             return todayStr;
@@ -697,9 +606,6 @@ public static String dateToWord1 (String dtransact) {
        private void loadPaymentDetail(String psCode, int fnRow) throws SQLException{
         try {
             Stage stage = new Stage();
-//            if(oTrans.UpdateTransaction()){
-
-
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/org/rmj/marketplace/view/OrderPaymentTagging.fxml"));
 
@@ -738,10 +644,10 @@ public static String dateToWord1 (String dtransact) {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setTitle("");
                 stage.showAndWait();
-//            }
             
             
             loadOrders();
+            
            
         } catch (IOException e) {
             e.printStackTrace();

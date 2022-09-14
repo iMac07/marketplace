@@ -28,7 +28,10 @@ public class OrderModel {
     private SimpleStringProperty orderIndex12;  
     private SimpleStringProperty orderIndex13;   
     private SimpleStringProperty orderIndex14;  
-    private SimpleStringProperty orderIndex15;    
+    private SimpleStringProperty orderIndex15; 
+    private SimpleStringProperty orderIndex16;    
+    private SimpleStringProperty orderIndex17;    
+    private SimpleStringProperty orderIndex18;    
 
     public OrderModel(String orderIndex01, String orderIndex02, String orderIndex03, 
                String orderIndex04){
@@ -37,11 +40,13 @@ public class OrderModel {
         this.orderIndex03 = new SimpleStringProperty(orderIndex03);
         this.orderIndex04 = new SimpleStringProperty(orderIndex04);
     }
+//   ORDER PROCESSING CONSTRUCTOR
     public OrderModel(String orderIndex01, String orderIndex02, String orderIndex03, 
             String orderIndex04,String orderIndex05,String orderIndex06,
             String orderIndex07,String orderIndex08,String orderIndex09,
             String orderIndex10,String orderIndex11,String orderIndex12,
-            String orderIndex13,String orderIndex14,String orderIndex15){
+            String orderIndex13,String orderIndex14,String orderIndex15,
+            String orderIndex16){
         this.orderIndex01 = new SimpleStringProperty(orderIndex01);
         this.orderIndex02 = new SimpleStringProperty(orderIndex02);
         this.orderIndex03 = new SimpleStringProperty(orderIndex03);
@@ -57,6 +62,58 @@ public class OrderModel {
         this.orderIndex13 = new SimpleStringProperty(orderIndex13);
         this.orderIndex14 = new SimpleStringProperty(orderIndex14);
         this.orderIndex15 = new SimpleStringProperty(orderIndex15);
+        this.orderIndex16 = new SimpleStringProperty(orderIndex16);
+    }
+//   WAY BILL CONSTRUCTOR
+    public OrderModel(String orderIndex01, String orderIndex02, String orderIndex03, 
+            String orderIndex04,String orderIndex05,String orderIndex06,
+            String orderIndex07,String orderIndex08,String orderIndex09,
+            String orderIndex10,String orderIndex11,String orderIndex12,
+            String orderIndex13,String orderIndex14,String orderIndex15,
+            String orderIndex16,String orderIndex17){
+        this.orderIndex01 = new SimpleStringProperty(orderIndex01);
+        this.orderIndex02 = new SimpleStringProperty(orderIndex02);
+        this.orderIndex03 = new SimpleStringProperty(orderIndex03);
+        this.orderIndex04 = new SimpleStringProperty(orderIndex04);
+        this.orderIndex05 = new SimpleStringProperty(orderIndex05);
+        this.orderIndex06 = new SimpleStringProperty(orderIndex06);
+        this.orderIndex07 = new SimpleStringProperty(orderIndex07);
+        this.orderIndex08 = new SimpleStringProperty(orderIndex08);
+        this.orderIndex09 = new SimpleStringProperty(orderIndex09);
+        this.orderIndex10 = new SimpleStringProperty(orderIndex10);
+        this.orderIndex11 = new SimpleStringProperty(orderIndex11);
+        this.orderIndex12 = new SimpleStringProperty(orderIndex12);
+        this.orderIndex13 = new SimpleStringProperty(orderIndex13);
+        this.orderIndex14 = new SimpleStringProperty(orderIndex14);
+        this.orderIndex15 = new SimpleStringProperty(orderIndex15);
+        this.orderIndex16 = new SimpleStringProperty(orderIndex16);
+        this.orderIndex17 = new SimpleStringProperty(orderIndex17);
+    }
+//   WAY BILL CONSTRUCTOR
+    public OrderModel(String orderIndex01, String orderIndex02, String orderIndex03, 
+            String orderIndex04,String orderIndex05,String orderIndex06,
+            String orderIndex07,String orderIndex08,String orderIndex09,
+            String orderIndex10,String orderIndex11,String orderIndex12,
+            String orderIndex13,String orderIndex14,String orderIndex15,
+            String orderIndex16,String orderIndex17,String orderIndex18){
+        this.orderIndex01 = new SimpleStringProperty(orderIndex01);
+        this.orderIndex02 = new SimpleStringProperty(orderIndex02);
+        this.orderIndex03 = new SimpleStringProperty(orderIndex03);
+        this.orderIndex04 = new SimpleStringProperty(orderIndex04);
+        this.orderIndex05 = new SimpleStringProperty(orderIndex05);
+        this.orderIndex06 = new SimpleStringProperty(orderIndex06);
+        this.orderIndex07 = new SimpleStringProperty(orderIndex07);
+        this.orderIndex08 = new SimpleStringProperty(orderIndex08);
+        this.orderIndex09 = new SimpleStringProperty(orderIndex09);
+        this.orderIndex10 = new SimpleStringProperty(orderIndex10);
+        this.orderIndex11 = new SimpleStringProperty(orderIndex11);
+        this.orderIndex12 = new SimpleStringProperty(orderIndex12);
+        this.orderIndex13 = new SimpleStringProperty(orderIndex13);
+        this.orderIndex14 = new SimpleStringProperty(orderIndex14);
+        this.orderIndex15 = new SimpleStringProperty(orderIndex15);
+        this.orderIndex16 = new SimpleStringProperty(orderIndex16);
+        this.orderIndex17 = new SimpleStringProperty(orderIndex17);
+        this.orderIndex18 = new SimpleStringProperty(orderIndex18);
     }
     public String getOrderIndex01() {
         return orderIndex01.get();
@@ -116,6 +173,17 @@ public class OrderModel {
 
     public String getOrderIndex15() {
         return orderIndex15.get();
+    }
+
+    public String getOrderIndex16() {
+        return orderIndex16.get();
+    }
+    public String getOrderIndex17() {
+        return orderIndex17.get();
+    }
+
+    public String getOrderIndex18() {
+        return orderIndex18.get();
     }
 
 
