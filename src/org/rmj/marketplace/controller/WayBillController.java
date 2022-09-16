@@ -179,7 +179,7 @@ public class WayBillController implements Initializable, ScreenInterface {
              
         oTrans = new WayBill(oApp, oApp.getBranchCode(), false);
         oTrans.setListener(oListener);
-        oTrans.setTranStat(10234);
+        oTrans.setTranStat(12);
         oTrans.setWithUI(true);
         pbLoaded = true;
         loadOrders();
@@ -200,9 +200,11 @@ public class WayBillController implements Initializable, ScreenInterface {
     private Node createPage(int pageIndex) {
         int fromIndex = pageIndex * ROWS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, order_data.size());
-        
+        if(order_data.size()>0){
             tblOrders.setItems(FXCollections.observableArrayList(order_data.subList(fromIndex, toIndex)));
-            return tblOrders;
+        }
+       
+        return tblOrders;
 
     }
     private void initToggleGroup(){

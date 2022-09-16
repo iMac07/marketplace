@@ -187,9 +187,10 @@ public class PickupController implements Initializable, ScreenInterface {
     private Node createPage(int pageIndex) {
         int fromIndex = pageIndex * ROWS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, data.size());
-        
+        if(data.size()>0){
             tblOrders.setItems(FXCollections.observableArrayList(data.subList(fromIndex, toIndex)));
-            return tblOrders;
+        }
+        return tblOrders;
 
     }
     
@@ -216,7 +217,13 @@ public class PickupController implements Initializable, ScreenInterface {
     }  
     private void loadTab(){
         int totalPage = (int) (Math.ceil(data.size() * 1.0 / ROWS_PER_PAGE));
-        pagination.setPageCount(totalPage);
+       
+        if(data.size()>0){
+            pagination.setPageCount(totalPage);
+        }else{
+            pagination.setPageCount(1);
+        }
+        
         pagination.setCurrentPageIndex(0);
         changeTableView(0, ROWS_PER_PAGE);
         pagination.currentPageIndexProperty().addListener(
@@ -226,12 +233,13 @@ public class PickupController implements Initializable, ScreenInterface {
     private void changeTableView(int index, int limit) {
         int fromIndex = index * limit;
         int toIndex = Math.min(fromIndex + limit, data.size());
-
-            int minIndex = Math.min(toIndex, filteredData.size());
-            SortedList<PickupModel> sortedData = new SortedList<>(
-                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
-            sortedData.comparatorProperty().bind(tblOrders.comparatorProperty());
-            tblOrders.setItems(sortedData); 
+       
+        int minIndex = Math.min(toIndex, filteredData.size());
+         System.out.println(toIndex);
+        SortedList<PickupModel> sortedData = new SortedList<>(
+                FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+        sortedData.comparatorProperty().bind(tblOrders.comparatorProperty());
+        tblOrders.setItems(sortedData); 
     }
     private void loadList(){
         int lnCtr;

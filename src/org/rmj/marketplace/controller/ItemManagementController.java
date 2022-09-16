@@ -50,8 +50,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.Pagination;
 import javax.imageio.ImageIO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -66,6 +68,7 @@ import org.rmj.marketplace.base.LTransaction;
 import org.rmj.marketplace.base.ProductListing;
 import org.rmj.marketplace.model.ImageModel;
 import org.rmj.marketplace.model.ItemDescriptionModel;
+import org.rmj.marketplace.model.OrderModel;
 import org.rmj.marketplace.model.ProductModel;
 
 public class ItemManagementController implements Initializable, ScreenInterface {
@@ -81,8 +84,10 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private int pnEditMode;
     private int pnRow = -1;
     private int dtailRow = -1;
+    private int pagecounter;
     private int imgRow = -1;
     private int statRow = -1;
+    private int oldPnRow = -1;
     public static String listingStart;
     public static String listingEnd;
     private double xOffset = 0;
@@ -92,6 +97,8 @@ public class ItemManagementController implements Initializable, ScreenInterface 
    
     private Desktop desktop = Desktop.getDesktop();
     private boolean pbLoaded = false;
+    @FXML
+    private Pagination pagination;
     @FXML
     private AnchorPane searchBar;
     @FXML
@@ -238,7 +245,10 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     @FXML
     private CheckMenuItem[] itemArr;
     @FXML
-    private AnchorPane AnchorItemManagement; 
+    private AnchorPane AnchorItemManagement;
+    
+    
+    private static final int ROWS_PER_PAGE = 30; 
     private final ObservableList<ProductModel> data = FXCollections.observableArrayList();
     private final ObservableList<ItemDescriptionModel> dataDesc = FXCollections.observableArrayList();
     
@@ -320,11 +330,22 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             imgDefault.setImage(image);
         }
         
+        
+        pagination.setPageFactory(this::createPage); 
     }    
 
     @Override
     public void setGRider(GRider foValue) {
         oApp = foValue;//To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private Node createPage(int pageIndex) {
+        int fromIndex = pageIndex * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, data.size());
+        if(data.size()>0){
+            tblProducts.setItems(FXCollections.observableArrayList(data.subList(fromIndex, toIndex)));
+        }
+        return tblProducts;
     }
      public static String getListingStart() {
         return listingStart;
@@ -415,6 +436,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 }
                 initGrid();
                 
+                loadTab();
                 tblproductdetail_column();
             } else {
 //                MsgBox.showOk(oTrans.getMessage());
@@ -456,6 +478,28 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         txtField19.setText((String)oTrans.getMaster(18));
         
         
+    }
+    private void loadTab(){
+
+                int totalPage = (int) (Math.ceil(data.size() * 1.0 / ROWS_PER_PAGE));
+                pagination.setPageCount(totalPage);
+                pagination.setCurrentPageIndex(0);
+                changeTableView(0, ROWS_PER_PAGE);
+                pagination.currentPageIndexProperty().addListener(
+                        (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+            
+    } 
+    private void changeTableView(int index, int limit) {
+        int fromIndex = index * limit;
+        int toIndex = Math.min(fromIndex + limit, data.size());
+        
+
+            int minIndex = Math.min(toIndex, filteredData.size());
+            SortedList<ProductModel> sortedData = new SortedList<>(
+                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+            sortedData.comparatorProperty().bind(tblProducts.comparatorProperty());
+            tblProducts.setItems(sortedData);
+                
     }
     private void clearFields(){
         txtField01.setText("");
@@ -805,11 +849,12 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     }
     private void autoSearch(TextField txtField){
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
+        boolean fsCode = true;
         txtField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(products-> {
-                    // If filter text is empty, display all persons.
+                // If filter text is empty, display all persons.
                 if (newValue == null || newValue.isEmpty()) {
-                        return true;
+                    return true;
                 }
                 // Compare first name and last name of every person with filter text.
                 String lowerCaseFilter = newValue.toLowerCase();
@@ -821,7 +866,9 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                             || products.getProdIndex16().toLowerCase().contains(lowerCaseFilter)); // Does not match.
                 }
             });
+            changeTableView(0, ROWS_PER_PAGE);
         });
+        loadTab();
     } 
     private void initGrid() {
         prodIndex01.setStyle("-fx-alignment: CENTER;");
@@ -833,13 +880,6 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         prodIndex02.setCellValueFactory(new PropertyValueFactory<>("prodIndex02"));
         prodIndex03.setCellValueFactory(new PropertyValueFactory<>("prodIndex03"));
         prodIndex04.setCellValueFactory(new PropertyValueFactory<>("prodIndex04"));
-      
-        tblProducts.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
-            TableHeaderRow header = (TableHeaderRow) tblProducts.lookup("TableHeaderRow");
-            header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                header.setReordering(false);
-            });
-        });
         filteredData = new FilteredList<>(data, b -> true);
         autoSearch(txtSeeks98);
         autoSearch(txtSeeks99);
@@ -849,9 +889,19 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         // 4. Bind the SortedList comparator to the TableView comparator.
         // 	  Otherwise, sorting the TableView would have no effect.
         sortedData.comparatorProperty().bind(tblProducts.comparatorProperty());
-
+        
+        
         // 5. Add sorted (and filtered) data to the table.
-        tblProducts.setItems(sortedData);
+       tblProducts.setItems(sortedData);
+       tblProducts.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
+            TableHeaderRow header = (TableHeaderRow) tblProducts.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                header.setReordering(false);
+            });
+        });
+           if(oldPnRow >= 0){
+           tblProducts.getSelectionModel().select(oldPnRow);
+       }
     }
     private void initGridDetail(){
         
@@ -874,7 +924,9 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     @FXML
     private void tblProducts_Clicked(MouseEvent event) {
         pnRow = tblProducts.getSelectionModel().getSelectedIndex();
+        pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
         if (pnRow >= 0){
+            oldPnRow = pagecounter;
             if(!tblProducts.getItems().isEmpty()){
 
                 txtField04.clear();
@@ -965,13 +1017,13 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private void getSelectedItems(){
         try {
 
-            txtField01.setText(filteredData.get(pnRow).getProdIndex02());
-            txtField21.setText(filteredData.get(pnRow).getProdIndex03());
-            txtField03.setText(filteredData.get(pnRow).getProdIndex04());
+            txtField01.setText(filteredData.get(pagecounter).getProdIndex02());
+            txtField21.setText(filteredData.get(pagecounter).getProdIndex03());
+            txtField03.setText(filteredData.get(pagecounter).getProdIndex04());
             if(!filteredData.get(pnRow).getProdIndex05().trim().isEmpty()){
                 dataDesc.clear();
                 JSONParser parser = new JSONParser();
-                JSONArray jsonArray = (JSONArray) parser.parse(filteredData.get(pnRow).getProdIndex05().replaceAll("'","\""));
+                JSONArray jsonArray = (JSONArray) parser.parse(filteredData.get(pagecounter).getProdIndex05().replaceAll("'","\""));
 
 
                 for(int i=0; i<jsonArray.size();i++) {
@@ -986,9 +1038,9 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 }
             }
             img_data.clear();
-            if(!filteredData.get(pnRow).getProdIndex19().trim().isEmpty()){
+            if(!filteredData.get(pagecounter).getProdIndex19().trim().isEmpty()){
                 JSONParser parser = new JSONParser();
-                JSONArray jsonArray = (JSONArray) parser.parse(filteredData.get(pnRow).getProdIndex19().replaceAll("'","\""));
+                JSONArray jsonArray = (JSONArray) parser.parse(filteredData.get(pagecounter).getProdIndex19().replaceAll("'","\""));
 
 
                 for(int i=0; i<jsonArray.size();i++) {
@@ -1007,20 +1059,20 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 imgProduct.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
                 tblProdImage.setDisable(true);
             }
-            txtField05.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex06())));
-            txtField06.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex07())));
-            txtField07.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex08())));
-            txtField08.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pnRow).getProdIndex09())));
-            txtField09.setText(priceWithDecimal(Double.valueOf(filteredData.get(pnRow).getProdIndex10())));
+            txtField05.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pagecounter).getProdIndex06())));
+            txtField06.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pagecounter).getProdIndex07())));
+            txtField07.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pagecounter).getProdIndex08())));
+            txtField08.setText(priceWithOutDecimal(Integer.valueOf(filteredData.get(pagecounter).getProdIndex09())));
+            txtField09.setText(priceWithDecimal(Double.valueOf(filteredData.get(pagecounter).getProdIndex10())));
 
-            txtField23.setText(filteredData.get(pnRow).getProdIndex15());
-            txtField24.setText(filteredData.get(pnRow).getProdIndex16());
-            txtField25.setText(filteredData.get(pnRow).getProdIndex17());
-            txtField26.setText(filteredData.get(pnRow).getProdIndex18());
-            txtField10.setText(filteredData.get(pnRow).getProdIndex11());
-            txtField11.setText(filteredData.get(pnRow).getProdIndex12());
-            txtField18.setText(filteredData.get(pnRow).getProdIndex13());
-            txtField19.setText(filteredData.get(pnRow).getProdIndex14());
+            txtField23.setText(filteredData.get(pagecounter).getProdIndex15());
+            txtField24.setText(filteredData.get(pagecounter).getProdIndex16());
+            txtField25.setText(filteredData.get(pagecounter).getProdIndex17());
+            txtField26.setText(filteredData.get(pagecounter).getProdIndex18());
+            txtField10.setText(filteredData.get(pagecounter).getProdIndex11());
+            txtField11.setText(filteredData.get(pagecounter).getProdIndex12());
+            txtField18.setText(filteredData.get(pagecounter).getProdIndex13());
+            txtField19.setText(filteredData.get(pagecounter).getProdIndex14());
             
         }catch (ParseException ex) {
             MsgBox.showOk("error");

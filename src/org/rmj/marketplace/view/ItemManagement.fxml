@@ -7,6 +7,7 @@
 <?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -52,8 +53,7 @@
                            <left>
                               <AnchorPane style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Label alignment="CENTER" layoutY="6.0" prefHeight="15.0" prefWidth="304.0" text="Projects List" textFill="WHITE" AnchorPane.topAnchor="10.0" />
-                                    <TableView fx:id="tblProducts" onMouseClicked="#tblProducts_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                    <TableView fx:id="tblProducts" onMouseClicked="#tblProducts_Clicked" stylesheets="@../css/Tables.css" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                        <columns>
                                           <TableColumn fx:id="prodIndex01" prefWidth="30.0" resizable="false" sortable="false" text="No." />
                                           <TableColumn fx:id="prodIndex02" prefWidth="100.0" resizable="false" sortable="false" text="Code" />
@@ -61,6 +61,7 @@
                                           <TableColumn fx:id="prodIndex04" prefWidth="175.0" resizable="false" sortable="false" text="Description" />
                                        </columns>
                                     </TableView>
+                                    <Pagination fx:id="pagination" prefWidth="426.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets bottom="5.0" right="5.0" top="5.0" />

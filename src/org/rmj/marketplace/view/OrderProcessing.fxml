@@ -136,7 +136,7 @@
                                                                   </GridPane>
                                                                </children>
                                                             </AnchorPane>
-                                                            <AnchorPane prefHeight="145.0">
+                                                            <AnchorPane prefHeight="180.0">
                                                                <children>
                                                                   <GridPane prefHeight="105.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                                                                      <columnConstraints>
@@ -150,10 +150,11 @@
                                                                      </columnConstraints>
                                                                      <rowConstraints>
                                                                         <RowConstraints minHeight="25.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="34.0" minHeight="25.0" prefHeight="31.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="26.0" minHeight="0.0" prefHeight="4.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="24.0" minHeight="16.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="20.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="71.0" minHeight="25.0" prefHeight="51.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="36.0" minHeight="14.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="71.0" minHeight="25.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="71.0" minHeight="14.0" prefHeight="51.0" vgrow="SOMETIMES" />
                                                                      </rowConstraints>
                                                                      <children>
                                                                         <Label prefHeight="14.0" prefWidth="196.0" text="Customer Name:">
@@ -161,17 +162,12 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label layoutX="10.0" layoutY="17.0" prefHeight="14.0" prefWidth="196.0" text="Address" GridPane.rowIndex="3">
+                                                                        <Label layoutX="10.0" layoutY="17.0" prefHeight="14.0" prefWidth="196.0" text="Billing Address" wrapText="true" GridPane.rowIndex="3">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label layoutX="10.0" layoutY="47.0" prefHeight="14.0" prefWidth="196.0" text="Town Name:" GridPane.rowIndex="1">
-                                                                           <font>
-                                                                              <Font name="System Bold" size="12.0" />
-                                                                           </font>
-                                                                        </Label>
-                                                                        <Label layoutX="10.0" layoutY="77.0" prefHeight="14.0" prefWidth="196.0" text="Remarks:" GridPane.rowIndex="4">
+                                                                        <Label layoutX="10.0" layoutY="77.0" prefHeight="14.0" prefWidth="196.0" text="Remarks:" GridPane.rowIndex="5">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -181,17 +177,12 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label03" layoutX="117.0" layoutY="17.0" prefHeight="44.0" prefWidth="268.0" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="3">
+                                                                        <Label fx:id="label02" prefHeight="44.0" prefWidth="268.0" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="3">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label02" layoutX="117.0" layoutY="47.0" prefHeight="17.0" prefWidth="315.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1">
-                                                                           <font>
-                                                                              <Font name="System Bold" size="12.0" />
-                                                                           </font>
-                                                                        </Label>
-                                                                        <Label fx:id="label04" layoutX="117.0" layoutY="77.0" prefHeight="17.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="4">
+                                                                        <Label fx:id="label04" ellipsisString="" layoutX="117.0" layoutY="77.0" prefHeight="44.0" prefWidth="268.0" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="5">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -211,12 +202,12 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label text="TERM" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                                                        <Label text="TERM" GridPane.columnIndex="3" GridPane.rowIndex="5">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label05" prefHeight="35.0" prefWidth="80.0" text="COD" GridPane.columnIndex="5" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
+                                                                        <Label fx:id="label05" prefHeight="35.0" prefWidth="196.0" text="COD" wrapText="true" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -244,6 +235,16 @@
                                                                            </padding>
                                                                            <font>
                                                                               <Font name="System Bold" size="16.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <Label prefHeight="14.0" prefWidth="196.0" text="Billing Address" wrapText="true" GridPane.rowIndex="4">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="12.0" />
+                                                                           </font>
+                                                                        </Label>
+                                                                        <Label fx:id="label03" prefHeight="44.0" prefWidth="268.0" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="4">
+                                                                           <font>
+                                                                              <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
                                                                      </children>
@@ -411,7 +412,7 @@
                                              </padding>
                                           </Label>
                                           <DatePicker fx:id="DateSeeks01" prefWidth="890.0" GridPane.columnIndex="4" />
-                                          <TextField fx:id="txtSeeks01" promptText="SEARCH : F3" GridPane.columnIndex="1" />
+                                          <TextField fx:id="txtSeeks98" promptText="SEARCH : F3" GridPane.columnIndex="1" />
                                           <MenuButton fx:id="menuStatus" mnemonicParsing="false" prefWidth="100.0" text="OPEN        " GridPane.columnIndex="5" GridPane.halignment="RIGHT">
                                              <items>
                                                 <CheckMenuItem fx:id="itemStat01" mnemonicParsing="false" text="OPEN" />
