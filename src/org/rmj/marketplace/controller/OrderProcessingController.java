@@ -59,6 +59,7 @@ import javafx.util.Duration;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.marketplace.base.LResult;
 import org.rmj.marketplace.base.OrderList;
+import org.rmj.marketplace.model.ClientInfoModel;
 import org.rmj.marketplace.model.IssuedItemModel;
 import org.rmj.marketplace.model.OrderPaymentTaggingModel;
 
@@ -80,6 +81,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         private int pagecounter;
     private int pnEditMode;
     private String oldTransNox = "";
+    private String oldPOSNox = "";
     private String transNox = "";
     double xOffset = 0;
     double yOffset = 0;
@@ -93,7 +95,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private AnchorPane searchBar1;
     @FXML
     private Label label01,label02,label03,label04,
-                    label05,label06,label07,label08,
+                    label05,label06,label07,label08,label09,
                    lblOrder02,lblOrder01,
                    lblDetail01,lblDetail02,lblDetail03,
                    lblStatus;
@@ -131,7 +133,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     @FXML
     private DatePicker DateSeeks01;
     @FXML
-    private TextField txtSeeks01,txtField01,txtField02;
+    private TextField txtSeeks98,txtField01,txtField02;
     
     private static final int ROWS_PER_PAGE = 30; 
   
@@ -157,13 +159,14 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 System.out.println("OnSave = " + message);
                 oTrans = new OrderList(oApp, oApp.getBranchCode(), false);
                 oTrans.setListener(oListener);
-                oTrans.setTranStat(10234);
+                oTrans.setTranStat(012);
                 oTrans.setWithUI(true);
                 pbLoaded = true;
                 loadOrders();
                 pnRow1 = -1;
                 loadOrderDetail(oldTransNox);
                 loadPaymentTagging(oldTransNox);
+                IssuedOrderDetail(oldPOSNox);
                 tblClients.getSelectionModel().select(oldPnRow);
              }
              @Override
@@ -174,6 +177,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 pnRow1 = -1;
                 loadOrderDetail(oldTransNox);
                 loadPaymentTagging(oldTransNox);
+                IssuedOrderDetail(oldPOSNox);
                 tblClients.getSelectionModel().select(oldPnRow);
                 initButton(pnEditMode);
              }
@@ -191,7 +195,6 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 loadOrders();
         pnEditMode = EditMode.UNKNOWN;
         pagination.setPageFactory(this::createPage); 
-        tblPaymenttype.setDisable(true);
         pbLoaded = true;
         
     }    
@@ -201,11 +204,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private Node createPage(int pageIndex) {
         int fromIndex = pageIndex * ROWS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, data.size());
-        
-            tblClients.setItems(FXCollections.observableArrayList(data.subList(fromIndex, toIndex)));
-            return tblClients;
-
-}
+        if(data.size()>0){
+           tblClients.setItems(FXCollections.observableArrayList(data.subList(fromIndex, toIndex))); 
+        }
+        return tblClients;
+    }
+    
     @Override
     public void setGRider(GRider foValue) {
         oApp = foValue; //To change body of generated methods, choose Tools | Torderlates.
@@ -239,16 +243,16 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     }
         private void loadMaster() throws SQLException {
         
-        if (oTrans.getMaster(10).toString().equalsIgnoreCase("0")){
+        if (oTrans.getMaster(11).toString().equalsIgnoreCase("0")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("OPEN");
-        }else if(oTrans.getMaster(10).toString().equalsIgnoreCase("1")){
+        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("1")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("CLOSED");
-        }else if(oTrans.getMaster(10).toString().equalsIgnoreCase("2")){
+        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("2")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("POSTED");
-        }else if(oTrans.getMaster(10).toString().equalsIgnoreCase("3")){
+        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("3")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("CANCELLED");
         }else{
@@ -264,10 +268,22 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             if (oTrans.LoadList("", true)){//true if by barcode; false if by description
                 oTrans.displayMasFields();
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
+                   
+                    String adrress1 = (String) oTrans.getDetail(lnCtr, "sHouseNo1") +  " " +
+                            (String) oTrans.getDetail(lnCtr, "sAddress1") + " " +
+                            (String) oTrans.getDetail(lnCtr, "sBrgyNme1") + ", " +
+                            (String) oTrans.getDetail(lnCtr, "sTownNme1") + ", " +
+                            (String) oTrans.getDetail(lnCtr, "sProvNme1");
+                    String adrress2 = (String) oTrans.getDetail(lnCtr, "sHouseNo2") +  " " +
+                            (String) oTrans.getDetail(lnCtr, "sAddress2") + " " +
+                            (String) oTrans.getDetail(lnCtr, "sBrgyNme2") + ", " +
+                            (String) oTrans.getDetail(lnCtr, "sTownNme2") + ", " +
+                            (String) oTrans.getDetail(lnCtr, "sProvNme2");
+                    
                     data.add(new OrderModel(String.valueOf(lnCtr),
                             (String) oTrans.getDetail(lnCtr, "sTransNox"),
                             oTrans.getDetail(lnCtr, "dTransact").toString(),
-                            (String) oTrans.getDetail(lnCtr, "sTermIDxx"),
+                            (String) oTrans.getDetail(lnCtr, "sTermName"),
                             priceWithDecimal(Double.valueOf(oTrans.getDetail(lnCtr, "nTranTotl").toString())),
                             priceWithDecimal(Double.valueOf(oTrans.getDetail(lnCtr, "nVATRatex").toString())),
                             priceWithDecimal(Double.valueOf(oTrans.getDetail(lnCtr, "nDiscount").toString())),
@@ -277,8 +293,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                             (String) oTrans.getDetail(lnCtr, "cTranStat"),
                             (String) oTrans.getDetail(lnCtr, "sRemarksx"),
                             (String) oTrans.getDetail(lnCtr, "sCompnyNm"),
-                            (String) oTrans.getDetail(lnCtr, "sAddressx"),
-                            (String) oTrans.getDetail(lnCtr, "sTownName"),
+                            adrress1,
+                            adrress2,
                             (String) oTrans.getDetail(lnCtr, "sPOSNoxxx")));
                   
                 }
@@ -301,8 +317,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         try {
             data1.clear();
             oldTransNox = transNox;
-            System.out.println(oldTransNox);
-            if (oTrans.LoadOrderDetail(transNox,true)){//true if by barcode; false if by description
+            if (oTrans.LoadOrderDetail(oldTransNox,true)){//true if by barcode; false if by description
                 for (lnCtr = 1; lnCtr <= oTrans.getDetailItemCount(); lnCtr++){
                     data1.add(new OrderDetailModel(String.valueOf(lnCtr),
                             (String) oTrans.getDetailItem(lnCtr, "sTransNox"),
@@ -310,9 +325,9 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                             (String) oTrans.getDetailItem(lnCtr, "xBrandNme"),
                             (String) oTrans.getDetailItem(lnCtr, "xModelNme"),
                             (String) oTrans.getDetailItem(lnCtr, "xColorNme"),
-                            (String) oTrans.getDetailItem(lnCtr, "nEntryNox").toString(),
-                            (String) oTrans.getDetailItem(lnCtr, "nQuantity").toString(),
-                            priceWithDecimal(Double.valueOf((String) oTrans.getDetailItem(lnCtr, "nUnitPrce"))),
+                            oTrans.getDetailItem(lnCtr, "nEntryNox").toString(),
+                            oTrans.getDetailItem(lnCtr, "nQuantity").toString(),
+                            priceWithDecimal(Double.valueOf(oTrans.getDetailItem(lnCtr, "nUnitPrce").toString())),
                             (String) oTrans.getDetailItem(lnCtr, "sReferNox"),
                             "",
                             ""
@@ -338,7 +353,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 int lnCtr;
         try {
             data2.clear();
-            oldTransNox = transNox;
+            oldPOSNox = transNox;
             if (oTrans.LoadIssuedItem(transNox)){
                 for (lnCtr = 1; lnCtr <= oTrans.getIssuedItemCount(); lnCtr++){
                     data2.add(new IssuedItemModel(String.valueOf(lnCtr),
@@ -351,7 +366,6 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                     ));
                   
                 }
-                System.out.println();
                 initGrid2();
                 
             }else{
@@ -408,8 +422,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         clientsIndex04.setCellValueFactory(new PropertyValueFactory<>("orderIndex05"));
         
         filteredData = new FilteredList<>(data, b -> true);
-//        autoSearch(txtSeeks98);
-//        autoSearch(txtSeeks99);
+        autoSearch(txtSeeks98);
         // 3. Wrap the FilteredList in a SortedList. 
         SortedList<OrderModel> sortedData = new SortedList<>(filteredData);
 
@@ -510,14 +523,35 @@ public class OrderProcessingController implements Initializable, ScreenInterface
        tblPaymenttype.setItems(data3);
  
     }
+    private void autoSearch(TextField txtField){
+        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
+        boolean fsCode = true;
+        txtField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(clients-> {
+                // If filter text is empty, display all persons.
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                // Compare first name and last name of every person with filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+                if(lnIndex == 98){
+                    return (clients.getOrderIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.   
+                }else {
+                    return (clients.getOrderIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.
+                }
+            });
+            changeTableView(0, ROWS_PER_PAGE);
+        });
+        loadTab();
+} 
     private void loadTab(){
-
-                int totalPage = (int) (Math.ceil(data.size() * 1.0 / ROWS_PER_PAGE));
-                pagination.setPageCount(totalPage);
-                pagination.setCurrentPageIndex(0);
-                changeTableView(0, ROWS_PER_PAGE);
-                pagination.currentPageIndexProperty().addListener(
-                        (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+        int totalPage = (int) (Math.ceil(data.size() * 1.0 / ROWS_PER_PAGE));
+        
+        pagination.setPageCount(totalPage);
+        pagination.setCurrentPageIndex(0);
+        changeTableView(0, ROWS_PER_PAGE);
+        pagination.currentPageIndexProperty().addListener(
+                (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
             
     } 
     private void changeTableView(int index, int limit) {
@@ -526,8 +560,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         
 
             int minIndex = Math.min(toIndex, filteredData.size());
-            SortedList<OrderModel> sortedData = new SortedList<>(
-                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+             SortedList<OrderModel> sortedData ;
+            if(filteredData.size()>0){sortedData = new SortedList<>(
+                FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
+            }else{sortedData = new SortedList<>(
+                    FXCollections.observableArrayList(filteredData.subList(Math.min(1, 1), 0)));
+            }
             sortedData.comparatorProperty().bind(tblClients.comparatorProperty());
             tblClients.setItems(sortedData);
                 
@@ -537,14 +575,12 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private void tblPaymenttype_Click (MouseEvent event) {
        
         if (pagecounter >= 0){ 
-            System.out.println("pagecounter = " + pagecounter);
             if(event.getClickCount()>0){
                 System.out.println("event click count = " + event.getClickCount());
                 if(!tblPaymenttype.getItems().isEmpty()){
                     try {
-                                pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
-                         System.out.println("Not Empty  index = " + pnRow1);
-                                loadPaymentDetail(data3.get(pnRow1).getPaymentIndex02(), pnRow1); 
+                        pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
+                        loadPaymentDetail(data3.get(pnRow1).getPaymentIndex02(), pnRow1); 
 
                     } catch (SQLException ex) {
                       ex.printStackTrace();
@@ -558,7 +594,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
          boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
                 
                 tblOrders.setDisable(!lbShow);
-                tblPaymenttype.setDisable(lbShow);
+//                tblPaymenttype.setDisable(lbShow);
                 tblissueditems.setDisable(!lbShow);
 
     }
