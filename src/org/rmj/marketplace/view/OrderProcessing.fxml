@@ -353,10 +353,10 @@
                                                                      <columns>
                                                                         <TableColumn fx:id="paymentIndex01" prefWidth="40.0" text="NO" />
                                                                         <TableColumn fx:id="paymentIndex02" prefWidth="160.0" text="TRANSACTION NO" />
-                                                                        <TableColumn fx:id="paymentIndex03" prefWidth="100.0" text="DATE" />
-                                                                        <TableColumn fx:id="paymentIndex04" minWidth="3.0" prefWidth="100.0" text="REFER CODE" />
-                                                                        <TableColumn fx:id="paymentIndex05" prefWidth="140.0" text="REFERENCE NO" />
-                                                                        <TableColumn fx:id="paymentIndex06" minWidth="0.0" prefWidth="130.0" text="AMOUNT" />
+                                                                        <TableColumn fx:id="paymentIndex03" prefWidth="100.0" text="REFERENCE NO" />
+                                                                        <TableColumn fx:id="paymentIndex04" minWidth="3.0" prefWidth="100.0" text="TERM" />
+                                                                        <TableColumn fx:id="paymentIndex05" prefWidth="140.0" text="AMOUNT PAID" />
+                                                                        <TableColumn fx:id="paymentIndex06" minWidth="0.0" prefWidth="130.0" text="TOTAL AMOUNT" />
                                                                      </columns>
                                                                   </TableView>
                                                                </children>

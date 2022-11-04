@@ -62,6 +62,7 @@ import org.rmj.marketplace.base.OrderList;
 import org.rmj.marketplace.model.ClientInfoModel;
 import org.rmj.marketplace.model.IssuedItemModel;
 import org.rmj.marketplace.model.OrderPaymentTaggingModel;
+import org.rmj.marketplace.model.ProductModel;
 
 
 /**
@@ -220,6 +221,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             pnRow = tblClients.getSelectionModel().getSelectedIndex();
             pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
     if (pagecounter >= 0){
+        oldPnRow = pagecounter;
         if(event.getClickCount() > 0){
             if(!tblClients.getItems().isEmpty()){
             
@@ -261,7 +263,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 
    }
  
-        private void loadOrders(){
+    private void loadOrders(){
         int lnCtr;
         try {
             data.clear();
@@ -389,10 +391,10 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 for (lnCtr = 1; lnCtr <= oTrans.getPaymentItemCount(); lnCtr++){
                     data3.add(new OrderPaymentTaggingModel(String.valueOf(lnCtr),
                             (String) oTrans.getPayment(lnCtr, "sTransNox"),
-                            (dateToWord1(oTrans.getPayment(lnCtr, "dTransact").toString())),
-                            (String) oTrans.getPayment(lnCtr, "sReferCde"),
-                            (String) oTrans.getPayment(lnCtr, "sReferNox"),
-                            priceWithDecimal(Double.valueOf(oTrans.getPayment(lnCtr, "nAmountxx").toString())),                           
+                            oTrans.getPayment(lnCtr, "sReferNox").toString(),
+                            (String) oTrans.getPayment(lnCtr, "sTermCode"),
+                            priceWithDecimal(Double.valueOf(oTrans.getPayment(lnCtr, "nAmtPaidx").toString())),     
+                            priceWithDecimal(Double.valueOf(oTrans.getPayment(lnCtr, "nTotlAmnt").toString())),                           
                             (String) oTrans.getPayment(lnCtr, "sSourceNo"),
                             (String) oTrans.getPayment(lnCtr, "cTranStat")               
                           
@@ -523,35 +525,57 @@ public class OrderProcessingController implements Initializable, ScreenInterface
        tblPaymenttype.setItems(data3);
  
     }
+//    private void autoSearch(TextField txtField){
+//        int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
+//        boolean fsCode = true;
+//        txtField.textProperty().addListener((observable, oldValue, newValue) -> {
+//            filteredData.setPredicate(clients-> {
+//                // If filter text is empty, display all persons.
+//                if (newValue == null || newValue.isEmpty()) {
+//                    return true;
+//                }
+//                // Compare first name and last name of every person with filter text.
+//                String lowerCaseFilter = newValue.toLowerCase();
+//                if(lnIndex == 98){
+//                    return (clients.getOrderIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.   
+//                }else {
+//                    return (clients.getOrderIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.
+//                }
+//            });
+//            changeTableView(0, ROWS_PER_PAGE);
+//        });
+//        loadTab();
+//} 
+    
     private void autoSearch(TextField txtField){
         int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
         boolean fsCode = true;
         txtField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(clients-> {
+            filteredData.setPredicate(orders-> {
                 // If filter text is empty, display all persons.
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
-                // Compare first name and last name of every person with filter text.
+                // Compare order no. and last name of every person with filter text.
                 String lowerCaseFilter = newValue.toLowerCase();
                 if(lnIndex == 98){
-                    return (clients.getOrderIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.   
+                    return (orders.getOrderIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.   
                 }else {
-                    return (clients.getOrderIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.
+                    return (orders.getOrderIndex02().toLowerCase().contains(lowerCaseFilter)); // Does not match.
                 }
             });
             changeTableView(0, ROWS_PER_PAGE);
         });
         loadTab();
-} 
+    } 
     private void loadTab(){
-        int totalPage = (int) (Math.ceil(data.size() * 1.0 / ROWS_PER_PAGE));
-        
-        pagination.setPageCount(totalPage);
-        pagination.setCurrentPageIndex(0);
-        changeTableView(0, ROWS_PER_PAGE);
-        pagination.currentPageIndexProperty().addListener(
-                (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
+
+                int totalPage = (int) (Math.ceil(data.size() * 1.0 / ROWS_PER_PAGE));
+                pagination.setPageCount(totalPage);
+                pagination.setCurrentPageIndex(0);
+                changeTableView(0, ROWS_PER_PAGE);
+                pagination.currentPageIndexProperty().addListener(
+                        (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
             
     } 
     private void changeTableView(int index, int limit) {
@@ -560,12 +584,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         
 
             int minIndex = Math.min(toIndex, filteredData.size());
-             SortedList<OrderModel> sortedData ;
-            if(filteredData.size()>0){sortedData = new SortedList<>(
-                FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
-            }else{sortedData = new SortedList<>(
-                    FXCollections.observableArrayList(filteredData.subList(Math.min(1, 1), 0)));
-            }
+            SortedList<OrderModel> sortedData = new SortedList<>(
+                    FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
             sortedData.comparatorProperty().bind(tblClients.comparatorProperty());
             tblClients.setItems(sortedData);
                 
@@ -574,7 +594,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     @FXML
     private void tblPaymenttype_Click (MouseEvent event) {
        
-        if (pagecounter >= 0){ 
+        pnRow1 = tblPaymenttype.getSelectionModel().getSelectedIndex(); 
+        if (pnRow1 >= 0){ 
             if(event.getClickCount()>0){
                 System.out.println("event click count = " + event.getClickCount());
                 if(!tblPaymenttype.getItems().isEmpty()){
@@ -652,6 +673,7 @@ public static String dateToWord1 (String dtransact) {
                 loControl.setListener(oListener);
                 loControl.setEditMode(EditMode.UPDATE);
                 loControl.setTableRow(fnRow + 1);
+                loControl.setDateTransact(txtField02.getText().toString());
 
                 fxmlLoader.setController(loControl);
 
