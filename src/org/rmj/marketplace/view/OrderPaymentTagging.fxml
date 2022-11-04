@@ -51,13 +51,13 @@
          <children>
             <AnchorPane layoutX="6.0" layoutY="4.0" prefHeight="271.0" prefWidth="335.0" style="-fx-border-color: orange; -fx-border-radius: 5;">
                <children>
-                  <Label fx:id="lblHeader" layoutX="105.0" layoutY="9.0" prefHeight="23.0" prefWidth="149.0" style="-fx-background-color: black; -fx-border-radius: 5;" />
+                  <Label fx:id="lblHeader" layoutX="105.0" layoutY="9.0" prefHeight="23.0" prefWidth="149.0" style="-fx-background-color: black; -fx-border-radius: 5;" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="6.0" />
                   <Label fx:id="label" layoutX="8.0" layoutY="11.0" text="Transaction No.">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtField01" layoutX="100.0" layoutY="5.0" prefHeight="17.0" prefWidth="151.0" style="-fx-border-radius: 5;">
+                  <TextField fx:id="txtField01" layoutX="100.0" layoutY="5.0" prefHeight="17.0" prefWidth="151.0" style="-fx-border-radius: 5;" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="8.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -79,7 +79,7 @@
                   </Label>
                   <Separator layoutX="8.0" layoutY="167.0" prefHeight="3.0" prefWidth="327.0" style="-fx-background-color: orange;" />
                   <TextField fx:id="txtField03" editable="false" layoutX="127.0" layoutY="72.0" prefHeight="25.0" prefWidth="201.0" />
-                  <Label layoutX="27.0" layoutY="105.0" prefHeight="15.0" prefWidth="70.0" text="Refer Code">
+                  <Label layoutX="27.0" layoutY="105.0" prefHeight="15.0" text="Total Amount">
                      <font>
                         <Font name="MS Reference Sans Serif" size="12.0" />
                      </font>
@@ -92,7 +92,7 @@
                   </Label>
                   <TextArea fx:id="txtField05" layoutX="105.0" layoutY="214.0" prefHeight="50.0" prefWidth="224.0" wrapText="true" />
                   <TextField fx:id="txtField02" editable="false" layoutX="127.0" layoutY="45.0" prefHeight="25.0" prefWidth="201.0" />
-                  <Label layoutX="29.0" layoutY="132.0" text="Amount">
+                  <Label layoutX="29.0" layoutY="132.0" text="Amount Paid">
                      <font>
                         <Font name="MS Reference Sans Serif" size="12.0" />
                      </font>

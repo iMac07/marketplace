@@ -51,6 +51,7 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     private LResult oListener;
     
     private String psCode;
+    private String dTransact;
     private OrderList oTrans;
     
     private int pnEditMode;
@@ -123,6 +124,10 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     
     public void setState(boolean fsValue){
         state = fsValue;
+    }
+
+    public void setDateTransact(String fsValue){
+        dTransact = fsValue;
     }
 
     public void setEditMode(int editmode){
@@ -204,17 +209,19 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     public void loadPaymentDetail(String psCode){
     
         try { 
+//                txtField02.setText((String) oTrans.getPayment(tbl_row, "dTransact"));
                 txtField01.setText((String) oTrans.getPayment(tbl_row, "sTransNox"));
-                txtField02.setText((String) oTrans.getPayment(tbl_row, "dTransact"));
-                txtField03.setText(String.valueOf(oTrans.getPayment(tbl_row, "sReferCde")));
-                txtField04.setText(String.valueOf(oTrans.getPayment(tbl_row, "sReferNox")));
+                txtField02.setText(dTransact);
+                txtField03.setText(String.valueOf(oTrans.getPayment(tbl_row, "sReferNox")));
+                txtField04.setText(String.valueOf(oTrans.getPayment(tbl_row, "nTotlAmnt")));
                 txtField05.setText((String) oTrans.getPayment(tbl_row, "sRemarksx"));
-                txtField06.setText(priceWithDecimal(Double.valueOf(oTrans.getPayment(tbl_row, "nAmountxx").toString())));
+                txtField06.setText(priceWithDecimal(Double.valueOf(oTrans.getPayment(tbl_row, "nAmtPaidx").toString())));
                 
                 
                 status.getSelectionModel().select(Integer.parseInt(oTrans.getPayment(tbl_row,"cTranStat").toString()));   
                 if(Integer.parseInt((String) oTrans.getPayment(tbl_row,"cTranStat"))>0){
                     status.setDisable(true);
+                    txtField05.setDisable(true);
                     btnSave.setDisable(true);
                 }
 //                loadTransactionMaster(); 
@@ -224,7 +231,6 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                 txtField03.setDisable(true);
                 txtField04.setDisable(true);
                 txtField06.setDisable(true);
-                txtField05.setDisable(pnEditMode != EditMode.ADDNEW && pnEditMode != EditMode.UPDATE);
               
                 
  
@@ -246,7 +252,7 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                     if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("1")){
                         ShowMessageFX.Warning(getStage(), "UNABLE TO SAVE A CONFIRM TRANSACTION","Warning", null);
                    
-                    } 
+                    }  
                     else if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("2")){
                         ShowMessageFX.Warning(getStage(), "UNABLE TO SAVE A POSTED TRANSACTION","Warning", null);
                    
