@@ -164,22 +164,17 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 oTrans.setWithUI(true);
                 pbLoaded = true;
                 loadOrders();
-                pnRow1 = -1;
-                loadOrderDetail(oldTransNox);
-                loadPaymentTagging(oldTransNox);
-                IssuedOrderDetail(oldPOSNox);
-                tblClients.getSelectionModel().select(oldPnRow);
              }
              @Override
              public void OnCancel(String message) {
                 System.out.println("OnCancel = " + message);
                 
                 loadOrders();
-                pnRow1 = -1;
-                loadOrderDetail(oldTransNox);
-                loadPaymentTagging(oldTransNox);
-                IssuedOrderDetail(oldPOSNox);
-                tblClients.getSelectionModel().select(oldPnRow);
+//                pnRow1 = -1;
+//                loadOrderDetail(oldTransNox);
+//                loadPaymentTagging(oldTransNox);
+//                IssuedOrderDetail(oldPOSNox);
+//                tblClients.getSelectionModel().select(oldPnRow);
                 initButton(pnEditMode);
              }
 
@@ -191,7 +186,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         };
         oTrans = new OrderList(oApp, oApp.getBranchCode(), false);
         oTrans.setListener(oListener);
-        oTrans.setTranStat(10234);
+        oTrans.setTranStat(102);
         oTrans.setWithUI(true);
                 loadOrders();
         pnEditMode = EditMode.UNKNOWN;
@@ -220,30 +215,30 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private void tblClients_Clicked(MouseEvent event) {
             pnRow = tblClients.getSelectionModel().getSelectedIndex();
             pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
-    if (pagecounter >= 0){
+    if (pnRow >= 0){
         oldPnRow = pagecounter;
         if(event.getClickCount() > 0){
             if(!tblClients.getItems().isEmpty()){
             
-            txtField02.setText(dateToWord(filteredData.get(pagecounter).getOrderIndex03()));
-            txtField01.setText(filteredData.get(pagecounter).getOrderIndex02());
-            label08.setText(filteredData.get(pagecounter).getOrderIndex05());
-            label02.setText(filteredData.get(pagecounter).getOrderIndex15());
-            label07.setText(filteredData.get(pagecounter).getOrderIndex09());
-            label03.setText(filteredData.get(pagecounter).getOrderIndex14());
-            label06.setText(priceWithDecimal(Double.valueOf(filteredData.get(pagecounter).getOrderIndex05().replaceAll("[ |₱|,]+", "")) + Double.valueOf(filteredData.get(pnRow).getOrderIndex09().replaceAll("[₱ ,]+", ""))));
-            label04.setText(filteredData.get(pagecounter).getOrderIndex12());
-            label05.setText(filteredData.get(pagecounter).getOrderIndex04());
-            label01.setText(filteredData.get(pagecounter).getOrderIndex13());
-            oldPnRow = pagecounter;
-             loadOrderDetail(filteredData.get(pagecounter).getOrderIndex02());
-             loadPaymentTagging(filteredData.get(pagecounter).getOrderIndex02()); 
-             IssuedOrderDetail(filteredData.get(pagecounter).getOrderIndex16());  
-                    } 
-                }            
-           }        
+                txtField02.setText(dateToWord(filteredData.get(pagecounter).getOrderIndex03()));
+                txtField01.setText(filteredData.get(pagecounter).getOrderIndex02());
+                label08.setText(filteredData.get(pagecounter).getOrderIndex05());
+                label02.setText(filteredData.get(pagecounter).getOrderIndex15());
+                label07.setText(filteredData.get(pagecounter).getOrderIndex09());
+                label03.setText(filteredData.get(pagecounter).getOrderIndex14());
+                label06.setText(priceWithDecimal(Double.valueOf(filteredData.get(pagecounter).getOrderIndex05().replaceAll("[ |₱|,]+", "")) + Double.valueOf(filteredData.get(pnRow).getOrderIndex09().replaceAll("[ |₱|,]+", ""))));
+                label04.setText(filteredData.get(pagecounter).getOrderIndex12());
+                label05.setText(filteredData.get(pagecounter).getOrderIndex04());
+                label01.setText(filteredData.get(pagecounter).getOrderIndex13());
+                oldPnRow = pagecounter;
+                loadOrderDetail(filteredData.get(pagecounter).getOrderIndex02());
+                loadPaymentTagging(filteredData.get(pagecounter).getOrderIndex02()); 
+                IssuedOrderDetail(filteredData.get(pagecounter).getOrderIndex16());  
+               } 
+            }            
+       }        
     }
-        private void loadMaster() throws SQLException {
+    private void loadMaster() throws SQLException {
         
         if (oTrans.getMaster(11).toString().equalsIgnoreCase("0")){
             lblOrder02.setVisible(true);
@@ -268,9 +263,11 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         try {
             data.clear();
             if (oTrans.LoadList("", true)){//true if by barcode; false if by description
-                oTrans.displayMasFields();
+//                oTrans.displayMasFields();
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
-                   
+                    if(oTrans.getDetail(lnCtr, "sTransNox").toString().equalsIgnoreCase("MX0122000007")){
+                        System.out.println("nProcPaym = " + oTrans.getDetail(lnCtr, "nProcPaym"));
+                    }
                     String adrress1 = (String) oTrans.getDetail(lnCtr, "sHouseNo1") +  " " +
                             (String) oTrans.getDetail(lnCtr, "sAddress1") + " " +
                             (String) oTrans.getDetail(lnCtr, "sBrgyNme1") + ", " +
@@ -440,9 +437,17 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                 header.setReordering(false);
             });
+            header.setDisable(true);
         });
-           if(oldPnRow >= 0){
-           tblClients.getSelectionModel().select(oldPnRow);
+        if(oldPnRow >= 0){
+//           tblClients.getSelectionModel().select(oldPnRow);
+           
+            pnRow1 = -1;
+            loadOrderDetail(oldTransNox);
+            loadPaymentTagging(oldTransNox);
+            IssuedOrderDetail(oldPOSNox);
+            tblClients.getSelectionModel().select(oldPnRow);
+           
        }
         
     }
@@ -693,7 +698,7 @@ public static String dateToWord1 (String dtransact) {
                         stage.setX(event.getScreenX() - xOffset);
                         stage.setY(event.getScreenY() - yOffset);
                     }
-               });
+                });
 
                 //set the main interface as the scene
                 Scene scene = new Scene(parent);
