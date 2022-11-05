@@ -213,10 +213,9 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                 txtField01.setText((String) oTrans.getPayment(tbl_row, "sTransNox"));
                 txtField02.setText(dTransact);
                 txtField03.setText(String.valueOf(oTrans.getPayment(tbl_row, "sReferNox")));
-                txtField04.setText(String.valueOf(oTrans.getPayment(tbl_row, "nTotlAmnt")));
+                txtField04.setText(priceWithDecimal(Double.valueOf(oTrans.getPayment(tbl_row, "nTotlAmnt").toString())));
                 txtField05.setText((String) oTrans.getPayment(tbl_row, "sRemarksx"));
                 txtField06.setText(priceWithDecimal(Double.valueOf(oTrans.getPayment(tbl_row, "nAmtPaidx").toString())));
-                
                 
                 status.getSelectionModel().select(Integer.parseInt(oTrans.getPayment(tbl_row,"cTranStat").toString()));   
                 if(Integer.parseInt((String) oTrans.getPayment(tbl_row,"cTranStat"))>0){
@@ -225,7 +224,8 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                     btnSave.setDisable(true);
                 }
 //                loadTransactionMaster(); 
-                    
+                
+                System.out.println(priceWithDecimal(Double.valueOf(oTrans.getMaster("nProcPaym").toString())));
                 txtField01.setDisable(true);
                 txtField02.setDisable(true);
                 txtField03.setDisable(true);
