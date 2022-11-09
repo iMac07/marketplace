@@ -158,11 +158,11 @@ public class OrderProcessingController implements Initializable, ScreenInterface
              @Override
              public void OnSave(String message) {
                 System.out.println("OnSave = " + message);
-                oTrans = new OrderList(oApp, oApp.getBranchCode(), false);
-                oTrans.setListener(oListener);
-                oTrans.setTranStat(012);
-                oTrans.setWithUI(true);
-                pbLoaded = true;
+//                oTrans = new OrderList(oApp, oApp.getBranchCode(), false);
+//                oTrans.setListener(oListener);
+//                oTrans.setTranStat(012);
+//                oTrans.setWithUI(true);
+//                pbLoaded = true;
                 loadOrders();
              }
              @Override
@@ -265,9 +265,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
             if (oTrans.LoadList("", true)){//true if by barcode; false if by description
 //                oTrans.displayMasFields();
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
-                    if(oTrans.getDetail(lnCtr, "sTransNox").toString().equalsIgnoreCase("MX0122000007")){
-                        System.out.println("nProcPaym = " + oTrans.getDetail(lnCtr, "nProcPaym"));
-                    }
+                    
                     String adrress1 = (String) oTrans.getDetail(lnCtr, "sHouseNo1") +  " " +
                             (String) oTrans.getDetail(lnCtr, "sAddress1") + " " +
                             (String) oTrans.getDetail(lnCtr, "sBrgyNme1") + ", " +
@@ -389,7 +387,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                     data3.add(new OrderPaymentTaggingModel(String.valueOf(lnCtr),
                             (String) oTrans.getPayment(lnCtr, "sTransNox"),
                             oTrans.getPayment(lnCtr, "sReferNox").toString(),
-                            (String) oTrans.getPayment(lnCtr, "sTermCode"),
+                            (String) oTrans.getPayment(lnCtr, "sTermName"),
                             priceWithDecimal(Double.valueOf(oTrans.getPayment(lnCtr, "nAmtPaidx").toString())),     
                             priceWithDecimal(Double.valueOf(oTrans.getPayment(lnCtr, "nTotlAmnt").toString())),                           
                             (String) oTrans.getPayment(lnCtr, "sSourceNo"),
@@ -509,8 +507,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         paymentIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         paymentIndex03.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         paymentIndex04.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        paymentIndex05.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
-        paymentIndex06.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
+        paymentIndex05.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
+        paymentIndex06.setStyle("-fx-alignment: CENTER-RIGHT;-fx-padding: 0 5 0 0;");
         paymentIndex01.setCellValueFactory(new PropertyValueFactory<>("paymentIndex01"));
         paymentIndex02.setCellValueFactory(new PropertyValueFactory<>("paymentIndex02"));
         paymentIndex03.setCellValueFactory(new PropertyValueFactory<>("paymentIndex03"));
@@ -625,7 +623,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 
     }
     public static String priceWithDecimal (Double price) {
-        DecimalFormat formatter = new DecimalFormat("₱ ###,###,##0.00");
+        DecimalFormat formatter = new DecimalFormat("###,###,##0.00");
         return formatter.format(price);
     }
     public static String dateToWord (String dtransact) {
@@ -667,10 +665,10 @@ public static String dateToWord1 (String dtransact) {
 
        private void loadPaymentDetail(String psCode, int fnRow) throws SQLException{
         try {
-            Stage stage = new Stage();
+                Stage stage = new Stage();
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/org/rmj/marketplace/view/OrderPaymentTagging.fxml"));
-
+                  
                 OrderPaymentTaggingController loControl = new OrderPaymentTaggingController();
                 loControl.setGRider(oApp);
                 loControl.setSalesOrder(oTrans);
