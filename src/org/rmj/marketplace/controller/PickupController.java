@@ -169,7 +169,7 @@ public class PickupController implements Initializable, ScreenInterface {
              
         oTrans = new Pickup(oApp, oApp.getBranchCode(), false);
         oTrans.setListener(oListener);
-        oTrans.setTranStat(12);
+        oTrans.setTranStat(012);
         oTrans.setWithUI(true);
         pbLoaded = true;
         loadList();
