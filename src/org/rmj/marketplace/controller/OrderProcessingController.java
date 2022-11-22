@@ -239,17 +239,17 @@ public class OrderProcessingController implements Initializable, ScreenInterface
        }        
     }
     private void loadMaster() throws SQLException {
-        
-        if (oTrans.getMaster(11).toString().equalsIgnoreCase("0")){
+        String lsIndex = filteredData.get(pagecounter).getOrderIndex11();
+        if (lsIndex.equalsIgnoreCase("0")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("OPEN");
-        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("1")){
+        }else if(lsIndex.equalsIgnoreCase("1")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("CLOSED");
-        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("2")){
+        }else if(lsIndex.equalsIgnoreCase("2")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("POSTED");
-        }else if(oTrans.getMaster(11).toString().equalsIgnoreCase("3")){
+        }else if(lsIndex.equalsIgnoreCase("3")){
             lblOrder02.setVisible(true);
             lblOrder02.setText("CANCELLED");
         }else{
@@ -257,7 +257,6 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         }
 
    }
- 
     private void loadOrders(){
         int lnCtr;
         try {
