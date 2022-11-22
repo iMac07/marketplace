@@ -247,8 +247,8 @@ public class WayBillController implements Initializable, ScreenInterface {
                             (String) oTrans.getOrder(lnCtr, "cTranStat"),
                             (String) oTrans.getOrder(lnCtr, "sRemarksx"),
                             (String) oTrans.getOrder(lnCtr, "sCompnyNm"),
-                            (String) oTrans.getOrder(lnCtr, "sAddressx"),
-                            (String) oTrans.getOrder(lnCtr, "sTownName"),
+                            (String) oTrans.getOrder(lnCtr, "sAddress1"),
+                            (String) oTrans.getOrder(lnCtr, "sTownNme1"),
                             (String) oTrans.getOrder(lnCtr, "sMobileNo"),
                             (String) oTrans.getOrder(lnCtr, "sEmailAdd"),
                             (String) oTrans.getOrder(lnCtr, "sWaybilNo")));
@@ -460,10 +460,6 @@ public class WayBillController implements Initializable, ScreenInterface {
                 loadWayBill(filteredData.get(pagecounter).getOrderIndex18());
             }
         } 
-
-        
-        
-
     }
     
     private void txtField_KeyPressed(KeyEvent event){
