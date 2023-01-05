@@ -61,51 +61,18 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
     private int pnEditMode;
     public int tbl_row = 0;
     
-        
-    @FXML
-    private VBox VBoxForm;
 
     @FXML
     private Button btnExit;
-
     @FXML
-    private FontAwesomeIconView glyphExit;
-
-    @FXML
-    private Label lblHeader;
-
-    @FXML
-    private Label label;
-
-    @FXML
-    private TextField txtField01;
-
-    @FXML
-    private TextField txtField02;
-
-    @FXML
-    private TextField txtField03;
-
+    private TextField txtField01,txtField02,txtField03,txtField04,txtField05,txtField06;
     @FXML
     private ComboBox status;
-    
-    private ObservableList<String> statuslb = FXCollections.observableArrayList("OPEN","CLOSED","POSTED","CANCELLED");
+        private ObservableList<String> statuslb = FXCollections.observableArrayList("OPEN","CLOSED","POSTED","CANCELLED");
 //    private String[] statuslb = {"OPEN","CLOSED","POSTED","CANCELLED"};
-    
     @FXML
-    private TextField txtField04;
+    private Button btnSave,btnClose;
 
-    @FXML
-    private TextArea txtField05;
-
-    @FXML
-    private TextField txtField06;
-
-    @FXML
-    private Button btnSave;
-
-    @FXML
-    private Button btnClose;
     
 
     @Override
@@ -258,6 +225,7 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                     CommonUtils.closeStage(btnClose);
                     break;
                 case "btnSave":
+                    
                     if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("1")){
                         ShowMessageFX.Warning(getStage(), "UNABLE TO SAVE A CONFIRM TRANSACTION","Warning", null);
                    
@@ -271,9 +239,24 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                     } 
                     else{
                         if(status.getSelectionModel().getSelectedIndex() > 0){
+                           oTrans.setPayment(tbl_row, "nAmtPaidx", Double.parseDouble(txtField06.getText().trim().replace(",", "")));
+                               if (status.getSelectionModel().getSelectedIndex() == 3 ){
+                                oTrans.setPayment(tbl_row, "sRemarksx", txtField05.getText());
+                                oTrans.setPayment(tbl_row, "cTranStat", status.getSelectionModel().getSelectedIndex());
+                                if (oTrans.SaveTransaction()){
+                                ShowMessageFX.Warning(getStage(), "Transaction save successfully.", "Warning", null);
+                                CommonUtils.closeStage(btnSave);
+
+                                }else {
+                                 ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+                            }
+                                
+                            }else if (oTrans.getPayment(tbl_row, "nAmtPaidx").toString().equalsIgnoreCase("0.0")) {
+                            ShowMessageFX.Warning(getStage(), "Invalid Amount Paid","Warning", null);
+  
+                            }else{
                             oTrans.setPayment(tbl_row, "sRemarksx", txtField05.getText());
                             oTrans.setPayment(tbl_row, "cTranStat", status.getSelectionModel().getSelectedIndex());
-                            oTrans.setPayment(tbl_row, "nAmtPaidx", Double.parseDouble(txtField06.getText().trim().replace(",", "")));
                             if (oTrans.SaveTransaction()){
                                 ShowMessageFX.Warning(getStage(), "Transaction save successfully.", "Warning", null);
                                 CommonUtils.closeStage(btnSave);
@@ -281,14 +264,12 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                             }else {
                              ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
                             }
-                        }else{
+                                }
+                            }else{
                             ShowMessageFX.Warning(getStage(), "Please Confirm the Transaction First","Warning", null);  
                         }
                         
                     }
-                        
-                
-           
                    
                     break;
                 case "btnExit":

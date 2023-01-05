@@ -72,7 +72,6 @@ import static javafx.scene.paint.Color.RED;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import static junit.framework.Assert.fail;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agent.MsgBox;
 import org.rmj.appdriver.agentfx.CommonUtils;
@@ -450,8 +449,6 @@ private void txtField_KeyPressed(KeyEvent event){
         try {
             client_data.clear();
             if (oTrans.LoadList()){      
-//                oTrans.displayMasFields();
-                System.out.println("List count -->" + oTrans.getItemCount());
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
                     client_data.add(new ClientInfoModel(String.valueOf(lnCtr),
                         (String) oTrans.getDetail(lnCtr, "sUserIDxx"),
@@ -469,11 +466,17 @@ private void txtField_KeyPressed(KeyEvent event){
 //                tblClients.getSelectionModel().select(clienrRow - 1);
             initClientsGrid1();
             loadTab();
-            } else
-               MsgBox.showOk(oTrans.getMessage());
-        } catch (SQLException e) {
-            fail(e.getMessage());
-        }   
+            }
+//            } else
+//               MsgBox.showOk(oTrans.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("SQLException" + ex.getMessage());
+        } catch (NullPointerException ex) {
+            System.out.println("NullPointerException" + ex.getMessage());
+        } catch (DateTimeException ex) {
+//            MsgBox.showOk(ex.getMessage());
+            System.out.println("DateTimeException" + ex.getMessage());
+        } 
     }
     @Override
     public void setGRider(GRider foValue) {
