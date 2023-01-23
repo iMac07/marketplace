@@ -33,6 +33,17 @@ public class OrderModel {
     private SimpleStringProperty orderIndex17;    
     private SimpleStringProperty orderIndex18;    
 
+//    Report CONSTRUCTOR
+    public OrderModel(String orderIndex01, String orderIndex02, String orderIndex03, 
+               String orderIndex04, String orderIndex05, String orderIndex06){
+        this.orderIndex01 = new SimpleStringProperty(orderIndex01);
+        this.orderIndex02 = new SimpleStringProperty(orderIndex02);
+        this.orderIndex03 = new SimpleStringProperty(orderIndex03);
+        this.orderIndex04 = new SimpleStringProperty(orderIndex04);
+        this.orderIndex05 = new SimpleStringProperty(orderIndex05);
+        this.orderIndex06 = new SimpleStringProperty(orderIndex06);
+    }
+    
     public OrderModel(String orderIndex01, String orderIndex02, String orderIndex03, 
                String orderIndex04){
         this.orderIndex01 = new SimpleStringProperty(orderIndex01);
