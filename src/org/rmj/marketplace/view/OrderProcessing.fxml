@@ -76,7 +76,7 @@
                                  <children>
                                     <BorderPane>
                                        <center>
-                                          <AnchorPane prefHeight="513.0" prefWidth="617.0" style="-fx-border-radius: 5; -fx-border-color: orange;" BorderPane.alignment="CENTER">
+                                          <AnchorPane fx:id="maindetailanchor" prefHeight="513.0" prefWidth="617.0" style="-fx-border-radius: 5; -fx-border-color: orange;" BorderPane.alignment="CENTER">
                                              <opaqueInsets>
                                                 <Insets />
                                              </opaqueInsets>
@@ -143,7 +143,7 @@
                                                                         <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="98.0" />
                                                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="0.0" prefWidth="18.0" />
                                                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="225.0" minWidth="10.0" prefWidth="225.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.0" minWidth="10.0" prefWidth="60.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="90.0" />
                                                                         <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="43.0" />
                                                                         <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="45.0" />
                                                                         <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="116.0" minWidth="10.0" prefWidth="39.0" />
@@ -157,7 +157,7 @@
                                                                         <RowConstraints maxHeight="71.0" minHeight="14.0" prefHeight="51.0" vgrow="SOMETIMES" />
                                                                      </rowConstraints>
                                                                      <children>
-                                                                        <Label prefHeight="14.0" prefWidth="196.0" text="Customer Name:">
+                                                                        <Label prefHeight="14.0" prefWidth="196.0" text="Customer Name">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -167,7 +167,7 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label layoutX="10.0" layoutY="77.0" prefHeight="14.0" prefWidth="196.0" text="Remarks:" GridPane.rowIndex="5">
+                                                                        <Label layoutX="10.0" layoutY="77.0" prefHeight="14.0" prefWidth="196.0" text="Remarks" GridPane.rowIndex="5">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -197,19 +197,19 @@
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label prefHeight="52.0" prefWidth="74.0" text="TOTAL PAYABLES" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                                                        <Label prefHeight="42.0" prefWidth="116.0" text="TOTAL PAYABLES" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label text="TERM" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                                                        <Label text="PAYMENT TYPE" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label fx:id="label05" prefHeight="35.0" prefWidth="196.0" text="COD" wrapText="true" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
+                                                                        <Label fx:id="label05" lineSpacing="1.0" prefHeight="35.0" prefWidth="196.0" style="-fx-background-color: #4d5656;" text="ONLINE PAYMENT" textAlignment="CENTER" textFill="ORANGE" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
                                                                            <font>
-                                                                              <Font name="System Bold" size="12.0" />
+                                                                              <Font name="System Bold" size="16.0" />
                                                                            </font>
                                                                         </Label>
                                                                         <Label fx:id="label07" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="197.0" style="-fx-background-color: #4d5656;" text="₱ 0.00" textAlignment="RIGHT" textFill="ORANGE" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
@@ -237,7 +237,7 @@
                                                                               <Font name="System Bold" size="16.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label prefHeight="14.0" prefWidth="196.0" text="Billing Address" wrapText="true" GridPane.rowIndex="4">
+                                                                        <Label prefHeight="14.0" prefWidth="196.0" text="Home Address" wrapText="true" GridPane.rowIndex="4">
                                                                            <font>
                                                                               <Font name="System Bold" size="12.0" />
                                                                            </font>
@@ -275,7 +275,7 @@
                                                                               <Font name="System Bold" size="14.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <Label layoutX="10.0" layoutY="17.0" prefHeight="14.0" prefWidth="196.0" text="STATUS:" GridPane.columnIndex="3">
+                                                                        <Label layoutX="10.0" layoutY="17.0" prefHeight="14.0" prefWidth="196.0" text="STATUS : " GridPane.columnIndex="3">
                                                                            <font>
                                                                               <Font name="System Bold" size="14.0" />
                                                                            </font>
@@ -310,12 +310,12 @@
                                                                   <Insets left="5.0" right="5.0" />
                                                                </padding>
                                                             </AnchorPane>
-                                                            <Separator prefWidth="200.0" style="-fx-background-color: orange;">
+                                                            <Separator prefWidth="200.0" style="-fx-background-color: orange;" visible="false">
                                                                <VBox.margin>
                                                                   <Insets top="5.0" />
                                                                </VBox.margin>
                                                             </Separator>
-                                                            <AnchorPane>
+                                                            <AnchorPane fx:id="issueanchor" visible="false">
                                                                <children>
                                                                   <Label text="ISSUED ITEMS" AnchorPane.topAnchor="5.0">
                                                                      <font>
@@ -342,7 +342,7 @@
                                                                </padding>
                                                             </AnchorPane>
                                                             <Separator prefWidth="200.0" style="-fx-background-color: orange;" />
-                                                            <AnchorPane fx:id="searchBar11" layoutX="10.0" layoutY="10.0">
+                                                            <AnchorPane fx:id="paymentanchor" layoutX="10.0" layoutY="10.0">
                                                                <padding>
                                                                   <Insets left="5.0" right="5.0" top="5.0" />
                                                                </padding>
@@ -354,17 +354,17 @@
                                                                   </Label>
                                                                   <TableView fx:id="tblPaymenttype" onMouseClicked="#tblPaymenttype_Click" prefHeight="200.0" stylesheets="@../css/Tables.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
                                                                      <columns>
-                                                                        <TableColumn fx:id="paymentIndex01" maxWidth="40.0" minWidth="40.0" prefWidth="-1.0" text="NO" />
-                                                                        <TableColumn fx:id="paymentIndex02" maxWidth="-1.0" minWidth="180.0" prefWidth="-1.0" text="TRANSACTION NO" />
-                                                                        <TableColumn fx:id="paymentIndex03" maxWidth="-1.0" minWidth="140.0" prefWidth="-1.0" text="REFERENCE NO" />
-                                                                        <TableColumn fx:id="paymentIndex04" maxWidth="-1.0" minWidth="160.0" prefWidth="-1.0" text="TERM" />
-                                                                        <TableColumn fx:id="paymentIndex05" maxWidth="-1.0" minWidth="140.0" prefWidth="-1.0" text="AMOUNT PAID" />
-                                                                        <TableColumn fx:id="paymentIndex06" maxWidth="-1.0" minWidth="140.0" prefWidth="-1.0" text="TOTAL AMOUNT" />
+                                                                        <TableColumn fx:id="paymentIndex01" editable="false" maxWidth="40.0" minWidth="30.0" prefWidth="-1.0" sortable="false" text="NO" />
+                                                                        <TableColumn fx:id="paymentIndex02" editable="false" maxWidth="200.0" minWidth="140.0" prefWidth="-1.0" text="TRANSACTION NO" />
+                                                                        <TableColumn fx:id="paymentIndex03" editable="false" maxWidth="200.0" minWidth="140.0" prefWidth="-1.0" sortable="false" text="REFERENCE NO" />
+                                                                        <TableColumn fx:id="paymentIndex04" editable="false" maxWidth="200.0" minWidth="100.0" prefWidth="-1.0" text="PAYMENT" />
+                                                                        <TableColumn fx:id="paymentIndex05" editable="false" maxWidth="200.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="AMOUNT PAID" />
+                                                                        <TableColumn fx:id="paymentIndex06" editable="false" maxWidth="200.0" minWidth="120.0" prefWidth="-1.0" sortable="false" text="TOTAL AMOUNT" />
                                                                      </columns>
                                                                   </TableView>
                                                                </children>
                                                             </AnchorPane>
-                                                            <Separator prefWidth="200.0" style="-fx-background-color: orange;" />
+                                                            <Separator fx:id="detailsep04" prefWidth="200.0" style="-fx-background-color: orange;" />
                                                          </children>
                                                       </VBox>
                                                    </content>
@@ -378,6 +378,50 @@
                                        <StackPane.margin>
                                           <Insets bottom="5.0" left="5.0" top="5.0" />
                                        </StackPane.margin>
+                                       <bottom>
+                                          <AnchorPane fx:id="detailanchor" prefHeight="45.0" prefWidth="359.0" style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <BorderPane.margin>
+                                                <Insets bottom="5.0" top="5.0" />
+                                             </BorderPane.margin>
+                                             <children>
+                                                <GridPane layoutX="42.0" layoutY="-31.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
+                                                  <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="120.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="60.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="55.0" minWidth="55.0" prefWidth="55.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" prefWidth="120.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="80.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Total Amount Paid :" GridPane.columnIndex="1">
+                                                         <font>
+                                                            <Font name="System Bold" size="12.0" />
+                                                         </font></Label>
+                                                      <Label fx:id="txtAmtPaid" prefHeight="17.0" prefWidth="118.0" text="0.00" textAlignment="RIGHT" GridPane.columnIndex="2">
+                                                         <font>
+                                                            <Font name="System Bold Italic" size="13.0" />
+                                                         </font></Label>
+                                                      <Label prefHeight="17.0" prefWidth="80.0" text="Balance :" GridPane.columnIndex="4">
+                                                         <font>
+                                                            <Font name="System Bold" size="12.0" />
+                                                         </font></Label>
+                                                      <Label fx:id="txtBalance" prefHeight="17.0" prefWidth="84.0" text="0.00" textAlignment="RIGHT" GridPane.columnIndex="5">
+                                                         <font>
+                                                            <Font name="System Bold Italic" size="13.0" />
+                                                         </font></Label>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                       </bottom>
                                     </BorderPane>
                                  </children>
                               </StackPane>
