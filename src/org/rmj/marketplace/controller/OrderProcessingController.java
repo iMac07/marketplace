@@ -49,6 +49,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -84,6 +85,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     private String oldTransNox = "";
     private String oldPOSNox = "";
     private String transNox = "";
+    private double lsBalance,lsAmtPaid = 0;
     double xOffset = 0;
     double yOffset = 0;
     private boolean state = false;
@@ -93,13 +95,13 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     @FXML
     private Pagination pagination;
     @FXML
-    private AnchorPane searchBar1;
+    private AnchorPane issueanchor,paymentanchor,detailanchor,maindetailanchor;
     @FXML
     private Label label01,label02,label03,label04,
                     label05,label06,label07,label08,label09,
                    lblOrder02,lblOrder01,
                    lblDetail01,lblDetail02,lblDetail03,
-                   lblStatus;
+                   lblStatus,txtBalance,txtAmtPaid;
     @FXML
     private TableView tblOrders,tblPaymenttype,tblClients;
     @FXML
@@ -119,6 +121,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
     @FXML
     private TableView tblissueditems;
 
+    @FXML
+    private Separator detailsep04;
     @FXML
     private TableColumn issuedIndex01,issuedIndex02,issuedIndex03,
                         issuedIndex04,issuedIndex05,issuedIndex06,issuedIndex07;
@@ -192,7 +196,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         pnEditMode = EditMode.UNKNOWN;
         pagination.setPageFactory(this::createPage); 
         pbLoaded = true;
-        
+        issueanchor.setManaged(false);
+        paymentanchor.setManaged(true);
     }    
     public String getTransNox(){
         return transNox;
@@ -213,6 +218,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 
     @FXML
     private void tblClients_Clicked(MouseEvent event) {
+        lsBalance= 0;
             pnRow = tblClients.getSelectionModel().getSelectedIndex();
             pagecounter = pnRow + pagination.getCurrentPageIndex() * ROWS_PER_PAGE;
     if (pnRow >= 0){
@@ -231,9 +237,11 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                 label05.setText(filteredData.get(pagecounter).getOrderIndex04());
                 label01.setText(filteredData.get(pagecounter).getOrderIndex13());
                 oldPnRow = pagecounter;
+                lsBalance = ((Double.valueOf(filteredData.get(pagecounter).getOrderIndex05().replaceAll("[ |₱|,]+", "")) + Double.valueOf(filteredData.get(pnRow).getOrderIndex09().replaceAll("[ |₱|,]+", ""))));
                 loadOrderDetail(filteredData.get(pagecounter).getOrderIndex02());
                 loadPaymentTagging(filteredData.get(pagecounter).getOrderIndex02()); 
                 IssuedOrderDetail(filteredData.get(pagecounter).getOrderIndex16());  
+                
                } 
             }            
        }        
@@ -328,10 +336,10 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                             "",
                             ""
                     )); 
+              
                 }
                 initGrid1();
                 loadMaster(); 
-                
                 
             }  else{
                 MsgBox.showOk(oTrans.getMessage());
@@ -378,6 +386,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 }
         private void loadPaymentTagging(String sTransNox) {
        try {
+           lsAmtPaid = 0;
+           
             int lnCtr;
         
             data3.clear();
@@ -391,13 +401,19 @@ public class OrderProcessingController implements Initializable, ScreenInterface
                             priceWithDecimal(Double.valueOf(oTrans.getPayment(lnCtr, "nTotlAmnt").toString())),                           
                             (String) oTrans.getPayment(lnCtr, "sSourceNo"),
                             (String) oTrans.getPayment(lnCtr, "cTranStat")               
-                          
-                    ));
                   
+                    ));
+                    
+                  lsAmtPaid = (Double.valueOf(oTrans.getPayment(lnCtr, "nAmtPaidx").toString())) + lsAmtPaid;
+                  lsBalance =   lsBalance - lsAmtPaid;
+
+               
                 }
             }
-                 
-                initGrid3();           
+                  txtBalance.setText("₱ " + priceWithDecimal(lsBalance));
+                  txtAmtPaid.setText("₱ " + priceWithDecimal(lsAmtPaid)); 
+                initGrid3();
+                initAnchor();
         } catch (SQLException ex) {
             System.out.println("SQLException" + ex.getMessage());
         } catch (NullPointerException ex) {
@@ -406,6 +422,20 @@ public class OrderProcessingController implements Initializable, ScreenInterface
 //            MsgBox.showOk(ex.getMessage());
             System.out.println("DateTimeException" + ex.getMessage());
         } 
+    }
+    private void initAnchor() {
+        boolean lbShow = (filteredData.get(pagecounter).getOrderIndex04().equalsIgnoreCase("COD"));
+            
+        detailsep04.setVisible(!lbShow);
+            paymentanchor.setVisible(!lbShow);
+            paymentanchor.setManaged(!lbShow);
+            detailanchor.setVisible(!lbShow);
+            detailanchor.setManaged(!lbShow);
+            maindetailanchor.setManaged(true);
+           
+            
+            
+        
     }
     private void initGrid() {
         clientsIndex01.setStyle("-fx-alignment: CENTER;");
@@ -441,6 +471,7 @@ public class OrderProcessingController implements Initializable, ScreenInterface
            
             pnRow1 = -1;
             loadOrderDetail(oldTransNox);
+            
             loadPaymentTagging(oldTransNox);
             IssuedOrderDetail(oldPOSNox);
             tblClients.getSelectionModel().select(oldPnRow);
