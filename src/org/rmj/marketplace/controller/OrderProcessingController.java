@@ -33,26 +33,23 @@ import org.rmj.marketplace.model.OrderModel;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agent.MsgBox;
 import org.rmj.appdriver.constants.EditMode;
-import org.rmj.marketplace.base.SalesOrder;
+
 import org.rmj.marketplace.model.OrderDetailModel;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javafx.animation.FadeTransition;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -60,10 +57,10 @@ import javafx.util.Duration;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
 import org.rmj.marketplace.base.LResult;
 import org.rmj.marketplace.base.OrderList;
-import org.rmj.marketplace.model.ClientInfoModel;
+
 import org.rmj.marketplace.model.IssuedItemModel;
 import org.rmj.marketplace.model.OrderPaymentTaggingModel;
-import org.rmj.marketplace.model.ProductModel;
+
 
 
 /**
@@ -387,7 +384,8 @@ public class OrderProcessingController implements Initializable, ScreenInterface
         private void loadPaymentTagging(String sTransNox) {
        try {
            lsAmtPaid = 0;
-           
+           lsBalance = ((Double.valueOf(filteredData.get(pagecounter).getOrderIndex05().replaceAll("[ |₱|,]+", "")) + Double.valueOf(filteredData.get(pnRow).getOrderIndex09().replaceAll("[ |₱|,]+", ""))));
+
             int lnCtr;
         
             data3.clear();
