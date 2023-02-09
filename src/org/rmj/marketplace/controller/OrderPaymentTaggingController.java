@@ -258,6 +258,7 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                     CommonUtils.closeStage(btnClose);
                     break;
                 case "btnSave":
+                    
                     if (oTrans.getPayment(tbl_row,"cTranStat").toString().equalsIgnoreCase("1")){
                         ShowMessageFX.Warning(getStage(), "UNABLE TO SAVE A CONFIRM TRANSACTION","Warning", null);
                    
@@ -271,24 +272,37 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
                     } 
                     else{
                         if(status.getSelectionModel().getSelectedIndex() > 0){
+                           oTrans.setPayment(tbl_row, "nAmtPaidx", Double.parseDouble(txtField06.getText().trim().replace(",", "")));
+                               if (status.getSelectionModel().getSelectedIndex() == 3 ){
+                                oTrans.setPayment(tbl_row, "sRemarksx", txtField05.getText());
+                                oTrans.setPayment(tbl_row, "cTranStat", status.getSelectionModel().getSelectedIndex());
+                                if (oTrans.SaveTransaction()){
+                                ShowMessageFX.Warning(getStage(), "Transaction save successfully.", "Warning", null);
+                                CommonUtils.closeStage(btnSave);
+
+                                }else {
+                                 ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
+                            }
+                                
+                            }else if (oTrans.getPayment(tbl_row, "nAmtPaidx").toString().equalsIgnoreCase("0.0")) {
+                            ShowMessageFX.Warning(getStage(), "Invalid Amount Paid","Warning", null);
+  
+                            }else{
                             oTrans.setPayment(tbl_row, "sRemarksx", txtField05.getText());
                             oTrans.setPayment(tbl_row, "cTranStat", status.getSelectionModel().getSelectedIndex());
-                            oTrans.setPayment(tbl_row, "nAmtPaidx", Double.parseDouble(txtField06.getText().trim().replace(",", "")));
                             if (oTrans.SaveTransaction()){
                                 ShowMessageFX.Warning(getStage(), "Transaction save successfully.", "Warning", null);
                                 CommonUtils.closeStage(btnSave);
 
-                            }else {
+                            }else { 
                              ShowMessageFX.Warning(getStage(), oTrans.getMessage(),"Warning", null);
                             }
-                        }else{
+                                }
+                            }else{ 
                             ShowMessageFX.Warning(getStage(), "Please Confirm the Transaction First","Warning", null);  
                         }
                         
                     }
-                        
-                
-           
                    
                     break;
                 case "btnExit":
@@ -302,6 +316,7 @@ public class OrderPaymentTaggingController implements Initializable, ScreenInter
             }
         } catch (SQLException ex) {
             Logger.getLogger(OrderPaymentTaggingController.class.getName()).log(Level.SEVERE, null, ex);
+            MsgBox.showOk(oTrans.getMessage());
         }
     } 
 

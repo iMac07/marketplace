@@ -38,8 +38,6 @@ import org.rmj.marketplace.model.ScreenInterface;
 import org.rmj.appdriver.GRider;
 import org.rmj.appdriver.agent.MsgBox;
 import org.rmj.appdriver.agentfx.CommonUtils;
-import org.rmj.fund.manager.base.Incentive;
-import org.rmj.fund.manager.base.LMasDetTrans;
 import org.rmj.marketplace.model.TableModel;
 
 /**
@@ -50,8 +48,6 @@ import org.rmj.marketplace.model.TableModel;
 public class MainDashboardController implements Initializable, ScreenInterface {
 
     private GRider oApp;
-    private Incentive oTrans;
-    private LMasDetTrans oListener;
     
     private final boolean pbLoaded = false;
     private Label pieLabel;
@@ -77,19 +73,6 @@ public class MainDashboardController implements Initializable, ScreenInterface {
     ObservableList<Series<String, Number>> data = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//          loadDetail();
-
-        oListener = new LMasDetTrans() {
-            @Override
-            public void MasterRetreive(int fnIndex, Object foValue) {
-            }
-            @Override
-            public void DetailRetreive(int fnRow, int fnIndex, Object foValue) {
-            }
-         };
-        oTrans  = new Incentive(oApp, oApp.getBranchCode(), false);
-        oTrans.setListener(oListener);
-        oTrans.setWithUI(true);
         
         loadLineChart();
         loadPieChart();
@@ -110,29 +93,29 @@ public class MainDashboardController implements Initializable, ScreenInterface {
     public void setGRider(GRider foValue) {
         oApp = foValue;//To change body of generated methods, choose Tools | Templates.
     } 
-    private void loadDetail(){
-        try {
-            inc_data.clear();
-//            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            for (int lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
-                inc_data.add(new TableModel(String.valueOf(lnCtr),
-                    oTrans.getDetail(lnCtr, "xEmployNm").toString(),
-                    oTrans.getDetail(lnCtr, "xEmpLevNm").toString(),
-                    oTrans.getDetail(lnCtr, "xPositnNm").toString(),
-                    oTrans.getDetail(lnCtr, "xSrvcYear").toString(),
-                    (CommonUtils.NumberFormat((Number)oTrans.getDetail(lnCtr, "nTotalAmt"), "#,##0.00"))) {});
-                
-//                series.getData().add(new XYChart.Data<String, Number>(oTrans.getDetail(lnCtr, "xEmployNm").toString(),(Number)oTrans.getDetail(lnCtr, "nTotalAmt")));
-                
-            }
-//            series.setName("Employee Incentives");
-//            saleLineChart.getData().add(series);
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-            MsgBox.showOk(e.getMessage());
-        }
-    }
+//    private void loadDetail(){
+//        try {
+//            inc_data.clear();
+////            XYChart.Series<String, Number> series = new XYChart.Series<>();
+//            for (int lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
+//                inc_data.add(new TableModel(String.valueOf(lnCtr),
+//                    oTrans.getDetail(lnCtr, "xEmployNm").toString(),
+//                    oTrans.getDetail(lnCtr, "xEmpLevNm").toString(),
+//                    oTrans.getDetail(lnCtr, "xPositnNm").toString(),
+//                    oTrans.getDetail(lnCtr, "xSrvcYear").toString(),
+//                    (CommonUtils.NumberFormat((Number)oTrans.getDetail(lnCtr, "nTotalAmt"), "#,##0.00"))) {});
+//                
+////                series.getData().add(new XYChart.Data<String, Number>(oTrans.getDetail(lnCtr, "xEmployNm").toString(),(Number)oTrans.getDetail(lnCtr, "nTotalAmt")));
+//                
+//            }
+////            series.setName("Employee Incentives");
+////            saleLineChart.getData().add(series);
+//            
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            MsgBox.showOk(e.getMessage());
+//        }
+//    }
     private void loadLineChart(){
             XYChart.Series<String, Number> series = new XYChart.Series<>();
             series.getData().add(new XYChart.Data<>("Apple (ios)", 30490));
