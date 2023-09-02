@@ -19,8 +19,10 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -52,8 +54,16 @@ import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableView.ResizeFeatures;
+import javafx.scene.image.ImageViewBuilder;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 import javax.imageio.ImageIO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -650,13 +660,17 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                     File imgFile = 
                         fileChooser.showOpenDialog(AnchorItemManagement.getScene().getWindow());
                     if (imgFile != null) {
+                        
                         BufferedImage image = ImageIO.read(new File(imgFile.getAbsolutePath()));
-                        File imgFilePath =  new File(imagePath, imgFile.getName());
-                        if (imgFilePath.exists() && imgFilePath.isFile() && imgFilePath.canWrite()) {
-                            imgFilePath.delete();//delete existing image file
+                        File directory =  new File(imagePath + "/" + (String)oTrans.getMaster(1));
+                        if (!directory.exists()){
+                            directory.mkdirs();
                         }
+                        
+                        File imgFilePath =  new File(imagePath  + "/" + (String)oTrans.getMaster(1), imgFile.getName());
                         ImageIO.write(image , "jpg",imgFilePath);
-                        if (oTrans.addImage(imgFilePath.toURI().toString())){
+                        String imgPath = "https://restgk.guanzongroup.com.ph/images/mp/uploads/listing/" + (String)oTrans.getMaster(1) + "/" + imgFile.getName();
+                        if (oTrans.addImage(imgPath)){
                             pnEditMode = oTrans.getEditMode();
                             img_data.add(new ImageModel(String.valueOf(img_data.size()), imgFilePath.toURI().toString()));
 
@@ -909,6 +923,8 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         detailIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         detailIndex01.setCellValueFactory(new PropertyValueFactory<>("detailIndex01"));
         detailIndex02.setCellValueFactory(new PropertyValueFactory<>("detailIndex02"));
+        
+        detailIndex02.setMinWidth(tblProdDesc.getWidth()* .90); // 90% width
        
         tblProdDesc.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblProdDesc.lookup("TableHeaderRow");
@@ -1082,7 +1098,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         try {
             
             dataDesc.clear();
-            JSONParser parser = new JSONParser();
+            JSONParser parser = new JSONParser();   
             JSONArray jsonArray = (JSONArray) parser.parse((String) oTrans.getMaster("sDescript").toString().replaceAll("'","\""));
 
 
@@ -1217,13 +1233,14 @@ public class ItemManagementController implements Initializable, ScreenInterface 
          detailIndex02.prefWidthProperty().bind(tblProdDesc.widthProperty().multiply(0.273));
           
     }
-
+    
     private void initImageGrid() {
         imageIndex01.setStyle("-fx-alignment: CENTER;");
         imageIndex02.setStyle("-fx-alignment: CENTER-LEFT;-fx-padding: 0 0 0 5;");
         imageIndex01.setCellValueFactory(new PropertyValueFactory<>("imgIndex01"));
         imageIndex02.setCellValueFactory(new PropertyValueFactory<>("imgIndex02"));
-       
+        imageIndex02.setMinWidth(tblProdImage.getWidth()* .90); // 90% width
+//        
         tblProdImage.widthProperty().addListener((ObservableValue<? extends Number> source, Number oldWidth, Number newWidth) -> {
             TableHeaderRow header = (TableHeaderRow) tblProdImage.lookup("TableHeaderRow");
             header.reorderingProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -1233,6 +1250,8 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         tblProdImage.setItems(img_data);
         tblProdImage.getSelectionModel().select(imgRow);
         tblProdImage.autosize();
+//        GUIUtils.autoFitTable(tblProdImage);
+        tblProdImage.setColumnResizePolicy( TableView.CONSTRAINED_RESIZE_POLICY );
         loadImage(imgRow);
     }
     
@@ -1301,8 +1320,20 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             if(!img_data.get(row).getImgIndex02().isEmpty()){
                System.out.println("img url = " + img_data.get(row).getImgIndex02());
                Image image = new Image(img_data.get(row).getImgIndex02());
-               imgProduct.setImage(image);
-               imgDefault.setImage(image);
+               System.out.println();
+               if(image.getProgress() == 1 && !image.isError()){
+                    imgProduct.setImage(image);
+                    imgDefault.setImage(image);
+//                    imgProduct = ImageViewBuilder.create()
+//                    .image(new Image(img_data.get(row).getImgIndex02()))
+//                    .build();
+//                    imgDefault = ImageViewBuilder.create()
+//                    .image(new Image(img_data.get(row).getImgIndex02()))
+//                    .build();
+               }else{
+                    imgDefault.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+                    imgProduct.setImage(new Image("/org/rmj/marketplace/images/no-image-available_1.png"));
+               }
             }
          }
     }
@@ -1313,6 +1344,27 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 System.out.println("Multiple directories are created!");
             } else {
                 System.out.println("Failed to create multiple directories!");
+            }
+        }
+    }
+
+    private class TableCellImpl extends TableCell<ImageModel, String> {
+
+        public TableCellImpl() {
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            
+            if (item == null || empty) {
+                setText(null);
+                setStyle("");
+            } else {
+                Text text = new Text(item);
+                text.setStyle("-fx-text-alignment:justify;");
+                text.wrappingWidthProperty().bind(getTableColumn().widthProperty().subtract(35));
+                setGraphic(text);
             }
         }
     }
