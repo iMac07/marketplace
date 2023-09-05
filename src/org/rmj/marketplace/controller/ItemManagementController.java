@@ -19,6 +19,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
+import javafx.beans.property.ReadOnlyBooleanPropertyBase;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,6 +62,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.rmj.appdriver.GRider;
+import org.rmj.appdriver.StringUtil;
 import org.rmj.appdriver.agent.MsgBox;
 import org.rmj.appdriver.agentfx.CommonUtils;
 import org.rmj.appdriver.agentfx.ShowMessageFX;
@@ -94,6 +97,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private double yOffset = 0;
     private  FileChooser fileChooser;
     private String imagePath = "D:/Guanzon/MarketPlaceImages";
+    public int TotalQTY = 0;
    
     private Desktop desktop = Desktop.getDesktop();
     private boolean pbLoaded = false;
@@ -160,6 +164,8 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     private Button btnListingStart;
     @FXML
     private Button btnRefresh;
+    @FXML
+    private Button btnActivate;
 //    @FXML
 //    private Button btnImgBrowse;
     @FXML
@@ -287,6 +293,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         
         fileChooser = new FileChooser();
         generateDirectory();
+//        btnActivate.setOnAction(this::cmdButton_Click);
         btnBrowse.setOnAction(this::cmdButton_Click);
         btnNew.setOnAction(this::cmdButton_Click);
         btnSave.setOnAction(this::cmdButton_Click);
@@ -312,6 +319,9 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         itemArr[2].setOnAction(this::item_EventHandler);
         itemArr[3].setOnAction(this::item_EventHandler);
         pnEditMode = EditMode.UNKNOWN;
+        
+        
+        txtField06.focusedProperty().addListener(txtField_Focus);
         
         initButton(pnEditMode);
         pbLoaded = true;
@@ -392,6 +402,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
         txtSeeks99.setText((String) oTrans.getMaster(16));
         txtField01.setText((String) oTrans.getMaster(1));
         txtField21.requestFocus();
+        txtField05.setText(txtField06.getText() + txtField08.getText());
   
         } catch (SQLException ex) {
             Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
@@ -403,21 +414,23 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             data.clear();
             if (oTrans.LoadList("", false)){//true if by barcode; false if by description
                 for (lnCtr = 1; lnCtr <= oTrans.getItemCount(); lnCtr++){
-                    
+                    Integer TotalQTY = 0;
                     String listingStart = "";
                     String listingEnd = "";
                     if(oTrans.getDetail(lnCtr, "dListStrt") != null){
                         listingStart = oTrans.getDetail(lnCtr, "dListStrt").toString();
                     }
                     if(oTrans.getDetail(lnCtr, "dListEndx") != null){
-                        listingEnd = oTrans.getDetail(lnCtr, "dListStrt").toString();
+                        listingEnd = oTrans.getDetail(lnCtr, "dListEndx").toString();
                     }
+                    TotalQTY = Integer.valueOf(oTrans.getDetail(lnCtr, "nSoldQtyx").toString()) + Integer.valueOf( oTrans.getDetail(lnCtr, "nQtyOnHnd").toString());
+                
                     data.add(new ProductModel(String.valueOf(lnCtr),
                             (String) oTrans.getDetail(lnCtr, "sListngID"),
                             (String) oTrans.getDetail(lnCtr, "xBarCodex"),
                             (String) oTrans.getDetail(lnCtr, "sBriefDsc"),
                             (String) oTrans.getDetail(lnCtr, "sDescript"),
-                            oTrans.getDetail(lnCtr, "nTotalQty").toString(),
+                            TotalQTY.toString(),
                             oTrans.getDetail(lnCtr, "nQtyOnHnd").toString(),
                             oTrans.getDetail(lnCtr, "nResvOrdr").toString(),
                             oTrans.getDetail(lnCtr, "nSoldQtyx").toString(),
@@ -433,7 +446,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                             (String) oTrans.getDetail(lnCtr, "sImagesxx")
                     ));
                   
-                }
+                  }
                 initGrid();
                 
                 loadTab();
@@ -650,13 +663,17 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                     File imgFile = 
                         fileChooser.showOpenDialog(AnchorItemManagement.getScene().getWindow());
                     if (imgFile != null) {
+                        
                         BufferedImage image = ImageIO.read(new File(imgFile.getAbsolutePath()));
-                        File imgFilePath =  new File(imagePath, imgFile.getName());
-                        if (imgFilePath.exists() && imgFilePath.isFile() && imgFilePath.canWrite()) {
-                            imgFilePath.delete();//delete existing image file
+                        File directory =  new File(imagePath + "/" + (String)oTrans.getMaster(1));
+                        if (!directory.exists()){
+                            directory.mkdirs();
                         }
+                        
+                        File imgFilePath =  new File(imagePath  + "/" + (String)oTrans.getMaster(1), imgFile.getName());
                         ImageIO.write(image , "jpg",imgFilePath);
-                        if (oTrans.addImage(imgFilePath.toURI().toString())){
+                        String imgPath = "https://restgk.guanzongroup.com.ph/images/mp/uploads/listing/" + (String)oTrans.getMaster(1) + "/" + imgFile.getName();
+                        if (oTrans.addImage(imgPath)){
                             pnEditMode = oTrans.getEditMode();
                             img_data.add(new ImageModel(String.valueOf(img_data.size()), imgFilePath.toURI().toString()));
 
@@ -726,6 +743,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                 case "btnListingStart":
                     loadListingDate("Start");
                     txtField10.setText(listingStart);
+                    oTrans.setMaster(10, listingStart);
                     break;
                     
                 case "btnListingEnd":
@@ -734,6 +752,7 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                     }else{
                         loadListingDate("End");
                         txtField11.setText(listingEnd);
+                        oTrans.setMaster(11, listingEnd);
                     }
                     break;
                case "btnRefresh":
@@ -749,6 +768,17 @@ public class ItemManagementController implements Initializable, ScreenInterface 
                         break;
                     } else
                         return;
+                case "btnActivate":
+                    if(ShowMessageFX.OkayCancel(null, "Activate", "Are you sure, do you want to Activate?") == true){
+                        if  (oTrans.getDetail(oldPnRow +1,"cTranStat").equals("0")) {
+                            if (oTrans.CloseTransaction()){
+                                ShowMessageFX.OkayCancel(null, "Activate Product", "Product is Already Activated");
+
+                            }
+                        }
+                        break;
+                    } else
+                        return;    
             }
             initButton(pnEditMode);
         } catch (SQLException e) {
@@ -801,14 +831,15 @@ public class ItemManagementController implements Initializable, ScreenInterface 
     }
     private void initButton(int fnValue){
         boolean lbShow = (fnValue == EditMode.ADDNEW || fnValue == EditMode.UPDATE);
-
+//        btnActivate.setDisable(true);
         btnBrowse.setVisible(!lbShow);
         btnNew.setVisible(!lbShow);
         btnSave.setVisible(lbShow);
         btnUpdate.setVisible(!lbShow);
+//        btnActivate.setVisible(!lbShow);
         btnSearch.setVisible(lbShow);
         btnCancel.setVisible(lbShow);
-        
+         
         btnMoveUp.setDisable(!lbShow);
         btnMoveDown.setDisable(!lbShow);
         btnImgMoveUp.setDisable(!lbShow);
@@ -844,7 +875,8 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             btnNew.setVisible(!lbShow);
             btnBrowse.setManaged(false);
             btnNew.setManaged(false);
-            btnUpdate.setManaged(false); 
+            btnUpdate.setManaged(false);     
+//            btnActivate.setManaged(false);  
         }
     }
     private void autoSearch(TextField txtField){
@@ -1073,10 +1105,16 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             txtField11.setText(filteredData.get(pagecounter).getProdIndex12());
             txtField18.setText(filteredData.get(pagecounter).getProdIndex13());
             txtField19.setText(filteredData.get(pagecounter).getProdIndex14());
-            
+//            if (oTrans.getDetail(oldPnRow +1,"cTranStat").equals("0")){
+//                btnActivate.setDisable(false);
+//            }
+          
         }catch (ParseException ex) {
             MsgBox.showOk("error");
-        } 
+        }
+//catch (SQLException ex) {
+//            Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     private void generateDescripton(){
         try {
@@ -1316,5 +1354,37 @@ public class ItemManagementController implements Initializable, ScreenInterface 
             }
         }
     }
+    final ChangeListener<? super Boolean> txtField_Focus = (o,ov,nv)->{
+        try{
+            if (!pbLoaded) return;
+
+            TextField txtField = (TextField)((ReadOnlyBooleanPropertyBase)o).getBean();
+            int lnIndex = Integer.parseInt(txtField.getId().substring(8, 10));
+            String lsValue = txtField.getText();
+
+            if (lsValue == null) return;
+
+            if(!nv){ /*Lost Focus*/
+                switch (lnIndex){
+                    case 06://nQtyOnHand
+                     Number x =0;
+                    try{
+                        x =Integer.valueOf(lsValue);
+                    }catch (NumberFormatException e){
+                        x = 0;
+                    }
+                    oTrans.setMaster(6,x);
+                    break;
+
+                    default:
+                        ShowMessageFX.Warning(null, pxeModuleName, "Text field with name " + txtField.getId() + " not registered.");
+                        return;
+                }
+            } else
+                txtField.selectAll();
+            } catch (SQLException ex) {
+            Logger.getLogger(ItemManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        };
 }
 
