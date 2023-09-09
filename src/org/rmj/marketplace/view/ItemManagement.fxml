@@ -49,7 +49,7 @@
                <center>
                   <StackPane BorderPane.alignment="CENTER">
                      <children>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                        <BorderPane prefHeight="619.0" prefWidth="1043.0">
                            <left>
                               <AnchorPane style="-fx-border-color: orange; -fx-border-radius: 5;" BorderPane.alignment="CENTER">
                                  <children>
@@ -409,6 +409,14 @@
                                                       <Button fx:id="btnCancel" contentDisplay="TOP" ellipsisString="" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" styleClass="button_process" text="Cancel">
                                                          <graphic>
                                                             <FontAwesomeIconView glyphName="CLOSE" size="20" />
+                                                         </graphic>
+                                                         <effect>
+                                                            <Blend />
+                                                         </effect>
+                                                      </Button>
+                                                      <Button fx:id="btnActivate" contentDisplay="TOP" ellipsisString="" mnemonicParsing="false" prefHeight="50.0" prefWidth="70.0" styleClass="button_process" text="Activate" visible="false">
+                                                         <graphic>
+                                                            <FontAwesomeIconView glyphName="CHECK" size="20" />
                                                          </graphic>
                                                          <effect>
                                                             <Blend />
